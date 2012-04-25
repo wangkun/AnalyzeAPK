@@ -1,0 +1,6 @@
+bin
+gen
+gen-java
+Jike.AnalyzeAPK.log
+*.png
+*.bak
