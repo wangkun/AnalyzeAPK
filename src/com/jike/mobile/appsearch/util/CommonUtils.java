@@ -2,16 +2,27 @@
 package com.jike.mobile.appsearch.util;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 
+import java.io.BufferedInputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.PropertyResourceBundle;
+import java.util.ResourceBundle;
+import java.util.Set;
 
 public class CommonUtils {
+    private static final Logger log = LogManager.getLogger(CommonUtils.class);
 
     public static void deleteFiles(File file) {
         if (file.exists()) { // 判断文件是否存在
@@ -87,5 +98,30 @@ public class CommonUtils {
         } catch (IOException e) {
         }
         return iconFile;
+    }
+    public static HashMap<String, String> getPropertiesValueMap(String properties){
+        HashMap<String, String> hm = new HashMap<String, String>();
+        InputStream in = null;
+        try {
+            in = new BufferedInputStream(new FileInputStream(properties));
+            ResourceBundle bundle = new PropertyResourceBundle(in);
+            Set<String> e = bundle.keySet();
+            Iterator<String> keys = e.iterator();
+            while(keys.hasNext()) {
+                String key = keys.next();
+                hm.put(key, bundle.getString(key));
+            }
+        } catch (FileNotFoundException e) {
+            log.error("Can not find properties to configurate...");
+            try {
+                throw new FileNotFoundException();
+            } catch (FileNotFoundException e1) {
+                // TODO Auto-generated catch block
+                e1.printStackTrace();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return hm;
     }
 }

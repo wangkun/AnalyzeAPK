@@ -33,7 +33,7 @@ public class GetApkInfos {
      * @param args
      */
     public static void main(String[] args) {
-        apkPath = "D:\\apks\\AppSearch_Android_1426l.apk";
+        apkPath = "D:\\apks\\9089465703133677000.apk";
         // decompileApk(apkPath);
         getApkInfoProperty(apkPath);
     }

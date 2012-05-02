@@ -20,7 +20,7 @@ public class GetApkInfosClient {
      * @param args
      */
     public static void main(String[] args) {
-        String apkPath="D:/apks/AppSearch_Android_1426l.apk";
+        String apkPath="D:/apks/9089465703133677000.apk";
       //IP host port
         TTransport transport = new TSocket("localhost",7911);
         
