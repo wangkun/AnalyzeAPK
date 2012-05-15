@@ -267,12 +267,12 @@ public class DecompileXML {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-        log.debug("getSignature start");
-        String waitSHstr = manifestProperty.getPackageName() + ":"
-                + manifestProperty.getVersionCode() + ":" + manifestProperty.getVersionName()
-                + "\n" + getSig.getSignatureString(apkPath);
-        manifestProperty.setSignature(DigestUtils.shaHex(waitSHstr).toUpperCase());
-        log.debug("getSignature end");
+//        log.debug("getSignature start");
+//        String waitSHstr = manifestProperty.getPackageName() + ":"
+//                + manifestProperty.getVersionCode() + ":" + manifestProperty.getVersionName()
+//                + "\n" + getSig.getSignatureString(apkPath);
+//        manifestProperty.setSignature(DigestUtils.shaHex(waitSHstr).toUpperCase());
+//        log.debug("getSignature end");
         return manifestProperty;
     }
 

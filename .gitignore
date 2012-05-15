@@ -1,6 +1,9 @@
 bin
 gen
 gen-java
+gen-cpp
 Jike.AnalyzeAPK.log
 *.png
 *.bak
+deFiles
+iconFile

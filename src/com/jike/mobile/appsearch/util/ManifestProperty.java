@@ -6,54 +6,54 @@ import java.util.ArrayList;
 public class ManifestProperty {
     
     
-    private String PackageName;
-    private String VersionName;
-    private String VersionCode;
-    private String Signature;
+    String packageName;
+    String versionName;
+    String versionCode;
+//    String Signature;
     //TO DO : permission list ; Screen support ; minSDK; targetSDK; use feature List;
 
     public String getPackageName() {
-        return PackageName;
+        return packageName;
     }
 
 
     public void setPackageName(String packageName) {
-        PackageName = packageName;
+        this.packageName = packageName;
     }
 
 
     public String getVersionName() {
-        return VersionName;
+        return versionName;
     }
 
 
     public void setVersionName(String versionName) {
-        VersionName = versionName;
+        this.versionName = versionName;
     }
 
 
     public String getVersionCode() {
-        return VersionCode;
+        return versionCode;
     }
 
 
     public void setVersionCode(String versionCode) {
-        VersionCode = versionCode;
+        this.versionCode = versionCode;
     }
 
 
-    public String getSignature() {
-        return Signature;
-    }
+//    public String getSignature() {
+//        return Signature;
+//    }
 
 
-    public void setSignature(String signature) {
-        Signature = signature;
-    }
+//    public void setSignature(String signature) {
+//        Signature = signature;
+//    }
 
 
-    private String iconString;
-    private String appNameString;
+    String iconString=null;
+    String appNameString;
     
     public String getIconString() {
         return iconString;
@@ -74,8 +74,8 @@ public class ManifestProperty {
         this.appNameString = appNameString;
     }
 
-    private ArrayList<String> usesPermissonArrayList = new ArrayList<String>();
-    private ArrayList<String> usesFeatureArrayList = new ArrayList<String>();
+    ArrayList<String> usesPermissonArrayList = new ArrayList<String>();
+    ArrayList<String> usesFeatureArrayList = new ArrayList<String>();
 
     
     public ArrayList<String> getUsesPermissonArrayList() {
@@ -97,12 +97,12 @@ public class ManifestProperty {
         this.usesFeatureArrayList = usesFeatureArrayList;
     }
 
-    private int minSdkVersion = 0;
-    private int targetSdkVersion = 0;
-    private boolean smallScreen = true;
-    private boolean normalScreen = true;
-    private boolean largeScreen = true;
-    private boolean xlargeScreens = true;
+    int minSdkVersion = 0;
+    int targetSdkVersion = 0;
+    boolean smallScreen = true;
+    boolean normalScreen = true;
+    boolean largeScreen = true;
+    boolean xlargeScreens = true;
     
     public int getMinSdkVersion() {
         return minSdkVersion;

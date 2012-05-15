@@ -12,9 +12,11 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.Array;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.PropertyResourceBundle;
@@ -124,4 +126,39 @@ public class CommonUtils {
         }
         return hm;
     }
+    static String str = "[android.permission.WRITE_EXTERNAL_STORAGE, com.android.launcher.permission.INSTALL_SHORTCUT, android.permission.INTERNET, android.permission.ACCESS_FINE_LOCATION, android.permission.ACCESS_COARSE_LOCATION, android.permission.CALL_PHONE, android.permission.SEND_SMS, android.permission.VIBRATE, android.permission.ACCESS_WIFI_STATE, android.permission.CHANGE_WIFI_STATE, android.permission.READ_PHONE_STATE, android.permission.PERSISTENT_ACTIVITY, android.permission.RESTART_PACKAGES, android.permission.GET_TASKS, android.permission.ACCESS_NETWORK_STATE, android.permission.RECORD_AUDIO, android.permission.ACCESS_FINE_LOCATION, android.permission.INTERNET, android.permission.ACCESS_COARSE_LOCATION, android.permission.WRITE_EXTERNAL_STORAGE, android.permission.WRITE_EXTERNAL_STORAGE, com.android.launcher.permission.INSTALL_SHORTCUT, android.permission.INTERNET, android.permission.ACCESS_FINE_LOCATION, android.permission.ACCESS_COARSE_LOCATION, android.permission.CALL_PHONE, android.permission.SEND_SMS, android.permission.VIBRATE, android.permission.ACCESS_WIFI_STATE, android.permission.CHANGE_WIFI_STATE, android.permission.READ_PHONE_STATE, android.permission.PERSISTENT_ACTIVITY, android.permission.RESTART_PACKAGES, android.permission.GET_TASKS, android.permission.ACCESS_NETWORK_STATE, android.permission.RECORD_AUDIO]";
+    public static ArrayList<String> getArrayListFromString(String str){
+        ArrayList<String> strArrayList = new ArrayList<String>();
+        if (str.length()>4) {
+            str = str.substring(1, str.length()-1);
+            strArrayList.addAll(Arrays.asList(str.split(", ")));
+        }
+        return strArrayList;
+    }
+    
+    public static void main(String[] args) {
+        System.out.println(getArrayListFromString(str).toString());
+    }
+    public static InputStream ByteBufferToInputStream(final ByteBuffer buf) {
+//        CommonUtils.WriteByteBufferToFile(buf, "ByteBufferToInputStream.png");
+        return new InputStream() {
+            public synchronized int read() throws IOException {
+                if (!buf.hasRemaining()) {
+                    return -1;
+                }
+                return buf.get();
+            }
+
+            public synchronized int read(byte[] bytes, int off, int len) throws IOException {
+                if (!buf.hasRemaining()) {
+                return -1;
+                }
+                // Read only what's left
+                len = Math.min(len, buf.remaining());
+                buf.get(bytes, off, len);
+                return len;
+                }
+        };
+    }
+    
 }

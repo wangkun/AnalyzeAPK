@@ -8,33 +8,37 @@ import com.jike.mobile.appsearch.util.ManifestProperty;
 import org.apache.thrift.TException;
 
 public class GetApkInfosSerivceImpl implements GetApkInfo.Iface{
-    @Override
-    public ApkSimpleProperty getApkSimpleProperty(String apkPath) throws TException {
-        ApkSimpleProperty apkSimpleProperty = new ApkSimpleProperty();
-//        ManifestProperty manifestProperty = GetApkInfos.getManifestProperty(apkPath);
-        ManifestProperty manifestProperty = DecompileXML.getManifestProperty(apkPath);
-        apkSimpleProperty.packageName=manifestProperty.getPackageName();
-        apkSimpleProperty.versionName=manifestProperty.getVersionName();
-        apkSimpleProperty.versionCode=manifestProperty.getVersionCode();
-        apkSimpleProperty.usesPermissonList=manifestProperty.getUsesPermissonArrayList();
-        apkSimpleProperty.usesFeatureList=manifestProperty.getUsesFeatureArrayList();
-        
-        apkSimpleProperty.minSDK=manifestProperty.getMinSdkVersion();
-        apkSimpleProperty.targetSDK=manifestProperty.getTargetSdkVersion();
-        
-        apkSimpleProperty.smallScreen=manifestProperty.isSmallScreen();
-        apkSimpleProperty.normalScreen=manifestProperty.isNormalScreen();
-        apkSimpleProperty.largeScreen=manifestProperty.isLargeScreen();
-        apkSimpleProperty.xlargeScreen=manifestProperty.isxLargeScreen();
-        
-        apkSimpleProperty.signature=manifestProperty.getSignature();
-        return apkSimpleProperty;
-    }
+//    @Override
+//    public ApkSimpleProperty getApkSimpleProperty(String apkPath) throws TException {
+//        ApkSimpleProperty apkSimpleProperty = new ApkSimpleProperty();
+////        ManifestProperty manifestProperty = GetApkInfos.getManifestProperty(apkPath);
+//        ManifestProperty manifestProperty = DecompileXML.getManifestProperty(apkPath);
+//        apkSimpleProperty.packageName=manifestProperty.getPackageName();
+//        apkSimpleProperty.versionName=manifestProperty.getVersionName();
+//        apkSimpleProperty.versionCode=manifestProperty.getVersionCode();
+//        apkSimpleProperty.usesPermissonList=manifestProperty.getUsesPermissonArrayList();
+//        apkSimpleProperty.usesFeatureList=manifestProperty.getUsesFeatureArrayList();
+//        
+//        apkSimpleProperty.minSDK=manifestProperty.getMinSdkVersion();
+//        apkSimpleProperty.targetSDK=manifestProperty.getTargetSdkVersion();
+//        
+//        apkSimpleProperty.smallScreen=manifestProperty.isSmallScreen();
+//        apkSimpleProperty.normalScreen=manifestProperty.isNormalScreen();
+//        apkSimpleProperty.largeScreen=manifestProperty.isLargeScreen();
+//        apkSimpleProperty.xlargeScreen=manifestProperty.isxLargeScreen();
+//        
+//        apkSimpleProperty.signature=manifestProperty.getSignature();
+//        return apkSimpleProperty;
+//    }
 
     @Override
     public ApkFullProperty getApkFullProperty(String apkPath) throws TException {
         ApkFullProperty apkFullProperty = new ApkFullProperty();
         ApkInfoProperty apkInfoProperty = GetApkInfos.getApkInfoProperty(apkPath);
+        if (apkInfoProperty==null) {
+            System.err.println("get failed @ getApkInfoProperty");
+            return null;
+        }
         ManifestProperty manifestProperty = apkInfoProperty.getManifestProperty();
         
         apkFullProperty.packageName=manifestProperty.getPackageName();
@@ -51,10 +55,14 @@ public class GetApkInfosSerivceImpl implements GetApkInfo.Iface{
         apkFullProperty.largeScreen=manifestProperty.isLargeScreen();
         apkFullProperty.xlargeScreen=manifestProperty.isxLargeScreen();
         //TODO
-        apkFullProperty.signature=manifestProperty.getSignature();
-        
-        apkFullProperty.icon = apkInfoProperty.getIconStream();
+        apkFullProperty.signature=apkInfoProperty.getMD5();
+        if (apkInfoProperty.getIconStream()!=null) {
+            apkFullProperty.icon = apkInfoProperty.getIconStream();
+        }
         apkFullProperty.appName = apkInfoProperty.getAppNameMap();
+        apkFullProperty.AdsList = apkInfoProperty.getAdsList();
+        apkFullProperty.apkSize = apkInfoProperty.getApkSize();
+        apkFullProperty.securityLevel = apkInfoProperty.getSecurityLevel();
       //TODO: AppName
         return apkFullProperty;
     }

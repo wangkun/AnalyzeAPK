@@ -1,6 +1,4 @@
-namespace cpp com.jike.mobile.appsearch.thirft
-namespace java com.jike.mobile.appsearch.thirft
-
+﻿//apk analyze 
 struct ApkFullProperty{
 	1: required string packageName;                 // the app's package name
 	2: required string versionName;                 // the app's versionName
@@ -19,8 +17,4 @@ struct ApkFullProperty{
 	15: required list<string> AdsList;              // the Ads contains in apk
 	16: required double apkSize = 0;                //the apk size
 	17: optional i32 securityLevel = 0;             // security level from apk analyze, not yet finish
-}
-
-service GetApkInfo{
-	ApkFullProperty getApkFullProperty(1:string apkKey);
 }

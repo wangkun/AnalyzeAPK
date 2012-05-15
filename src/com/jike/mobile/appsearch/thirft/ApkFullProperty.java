@@ -44,8 +44,9 @@ public class ApkFullProperty implements org.apache.thrift.TBase<ApkFullProperty,
   private static final org.apache.thrift.protocol.TField SIGNATURE_FIELD_DESC = new org.apache.thrift.protocol.TField("signature", org.apache.thrift.protocol.TType.STRING, (short)12);
   private static final org.apache.thrift.protocol.TField ICON_FIELD_DESC = new org.apache.thrift.protocol.TField("icon", org.apache.thrift.protocol.TType.STRING, (short)13);
   private static final org.apache.thrift.protocol.TField APP_NAME_FIELD_DESC = new org.apache.thrift.protocol.TField("appName", org.apache.thrift.protocol.TType.MAP, (short)14);
-  private static final org.apache.thrift.protocol.TField SECURITY_LEVEL_FIELD_DESC = new org.apache.thrift.protocol.TField("securityLevel", org.apache.thrift.protocol.TType.I32, (short)15);
-  private static final org.apache.thrift.protocol.TField IS_HAS_ADS_FIELD_DESC = new org.apache.thrift.protocol.TField("isHasAds", org.apache.thrift.protocol.TType.BOOL, (short)16);
+  private static final org.apache.thrift.protocol.TField ADS_LIST_FIELD_DESC = new org.apache.thrift.protocol.TField("AdsList", org.apache.thrift.protocol.TType.LIST, (short)15);
+  private static final org.apache.thrift.protocol.TField APK_SIZE_FIELD_DESC = new org.apache.thrift.protocol.TField("apkSize", org.apache.thrift.protocol.TType.DOUBLE, (short)16);
+  private static final org.apache.thrift.protocol.TField SECURITY_LEVEL_FIELD_DESC = new org.apache.thrift.protocol.TField("securityLevel", org.apache.thrift.protocol.TType.I32, (short)17);
 
   private static final Map<Class<? extends IScheme>, SchemeFactory> schemes = new HashMap<Class<? extends IScheme>, SchemeFactory>();
   static {
@@ -67,8 +68,9 @@ public class ApkFullProperty implements org.apache.thrift.TBase<ApkFullProperty,
   public String signature; // required
   public ByteBuffer icon; // required
   public Map<String,String> appName; // required
-  public int securityLevel; // required
-  public boolean isHasAds; // required
+  public List<String> AdsList; // required
+  public double apkSize; // required
+  public int securityLevel; // optional
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {
@@ -86,8 +88,9 @@ public class ApkFullProperty implements org.apache.thrift.TBase<ApkFullProperty,
     SIGNATURE((short)12, "signature"),
     ICON((short)13, "icon"),
     APP_NAME((short)14, "appName"),
-    SECURITY_LEVEL((short)15, "securityLevel"),
-    IS_HAS_ADS((short)16, "isHasAds");
+    ADS_LIST((short)15, "AdsList"),
+    APK_SIZE((short)16, "apkSize"),
+    SECURITY_LEVEL((short)17, "securityLevel");
 
     private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
@@ -130,10 +133,12 @@ public class ApkFullProperty implements org.apache.thrift.TBase<ApkFullProperty,
           return ICON;
         case 14: // APP_NAME
           return APP_NAME;
-        case 15: // SECURITY_LEVEL
+        case 15: // ADS_LIST
+          return ADS_LIST;
+        case 16: // APK_SIZE
+          return APK_SIZE;
+        case 17: // SECURITY_LEVEL
           return SECURITY_LEVEL;
-        case 16: // IS_HAS_ADS
-          return IS_HAS_ADS;
         default:
           return null;
       }
@@ -180,9 +185,10 @@ public class ApkFullProperty implements org.apache.thrift.TBase<ApkFullProperty,
   private static final int __NORMALSCREEN_ISSET_ID = 3;
   private static final int __LARGESCREEN_ISSET_ID = 4;
   private static final int __XLARGESCREEN_ISSET_ID = 5;
-  private static final int __SECURITYLEVEL_ISSET_ID = 6;
-  private static final int __ISHASADS_ISSET_ID = 7;
+  private static final int __APKSIZE_ISSET_ID = 6;
+  private static final int __SECURITYLEVEL_ISSET_ID = 7;
   private BitSet __isset_bit_vector = new BitSet(8);
+  private _Fields optionals[] = {_Fields.SECURITY_LEVEL};
   public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
   static {
     Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
@@ -218,10 +224,13 @@ public class ApkFullProperty implements org.apache.thrift.TBase<ApkFullProperty,
         new org.apache.thrift.meta_data.MapMetaData(org.apache.thrift.protocol.TType.MAP, 
             new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING), 
             new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING))));
-    tmpMap.put(_Fields.SECURITY_LEVEL, new org.apache.thrift.meta_data.FieldMetaData("securityLevel", org.apache.thrift.TFieldRequirementType.REQUIRED, 
+    tmpMap.put(_Fields.ADS_LIST, new org.apache.thrift.meta_data.FieldMetaData("AdsList", org.apache.thrift.TFieldRequirementType.REQUIRED, 
+        new org.apache.thrift.meta_data.ListMetaData(org.apache.thrift.protocol.TType.LIST, 
+            new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING))));
+    tmpMap.put(_Fields.APK_SIZE, new org.apache.thrift.meta_data.FieldMetaData("apkSize", org.apache.thrift.TFieldRequirementType.REQUIRED, 
+        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.DOUBLE)));
+    tmpMap.put(_Fields.SECURITY_LEVEL, new org.apache.thrift.meta_data.FieldMetaData("securityLevel", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I32)));
-    tmpMap.put(_Fields.IS_HAS_ADS, new org.apache.thrift.meta_data.FieldMetaData("isHasAds", org.apache.thrift.TFieldRequirementType.REQUIRED, 
-        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.BOOL)));
     metaDataMap = Collections.unmodifiableMap(tmpMap);
     org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(ApkFullProperty.class, metaDataMap);
   }
@@ -241,11 +250,9 @@ public class ApkFullProperty implements org.apache.thrift.TBase<ApkFullProperty,
 
     this.signature = "";
 
-    this.appName = new HashMap<String,String>();
+    this.apkSize = (double)0;
 
     this.securityLevel = 0;
-
-    this.isHasAds = false;
 
   }
 
@@ -264,8 +271,8 @@ public class ApkFullProperty implements org.apache.thrift.TBase<ApkFullProperty,
     String signature,
     ByteBuffer icon,
     Map<String,String> appName,
-    int securityLevel,
-    boolean isHasAds)
+    List<String> AdsList,
+    double apkSize)
   {
     this();
     this.packageName = packageName;
@@ -288,10 +295,9 @@ public class ApkFullProperty implements org.apache.thrift.TBase<ApkFullProperty,
     this.signature = signature;
     this.icon = icon;
     this.appName = appName;
-    this.securityLevel = securityLevel;
-    setSecurityLevelIsSet(true);
-    this.isHasAds = isHasAds;
-    setIsHasAdsIsSet(true);
+    this.AdsList = AdsList;
+    this.apkSize = apkSize;
+    setApkSizeIsSet(true);
   }
 
   /**
@@ -351,8 +357,15 @@ public class ApkFullProperty implements org.apache.thrift.TBase<ApkFullProperty,
       }
       this.appName = __this__appName;
     }
+    if (other.isSetAdsList()) {
+      List<String> __this__AdsList = new ArrayList<String>();
+      for (String other_element : other.AdsList) {
+        __this__AdsList.add(other_element);
+      }
+      this.AdsList = __this__AdsList;
+    }
+    this.apkSize = other.apkSize;
     this.securityLevel = other.securityLevel;
-    this.isHasAds = other.isHasAds;
   }
 
   public ApkFullProperty deepCopy() {
@@ -381,11 +394,11 @@ public class ApkFullProperty implements org.apache.thrift.TBase<ApkFullProperty,
     this.signature = "";
 
     this.icon = null;
-    this.appName = new HashMap<String,String>();
+    this.appName = null;
+    this.AdsList = null;
+    this.apkSize = (double)0;
 
     this.securityLevel = 0;
-
-    this.isHasAds = false;
 
   }
 
@@ -770,6 +783,68 @@ public class ApkFullProperty implements org.apache.thrift.TBase<ApkFullProperty,
     }
   }
 
+  public int getAdsListSize() {
+    return (this.AdsList == null) ? 0 : this.AdsList.size();
+  }
+
+  public java.util.Iterator<String> getAdsListIterator() {
+    return (this.AdsList == null) ? null : this.AdsList.iterator();
+  }
+
+  public void addToAdsList(String elem) {
+    if (this.AdsList == null) {
+      this.AdsList = new ArrayList<String>();
+    }
+    this.AdsList.add(elem);
+  }
+
+  public List<String> getAdsList() {
+    return this.AdsList;
+  }
+
+  public ApkFullProperty setAdsList(List<String> AdsList) {
+    this.AdsList = AdsList;
+    return this;
+  }
+
+  public void unsetAdsList() {
+    this.AdsList = null;
+  }
+
+  /** Returns true if field AdsList is set (has been assigned a value) and false otherwise */
+  public boolean isSetAdsList() {
+    return this.AdsList != null;
+  }
+
+  public void setAdsListIsSet(boolean value) {
+    if (!value) {
+      this.AdsList = null;
+    }
+  }
+
+  public double getApkSize() {
+    return this.apkSize;
+  }
+
+  public ApkFullProperty setApkSize(double apkSize) {
+    this.apkSize = apkSize;
+    setApkSizeIsSet(true);
+    return this;
+  }
+
+  public void unsetApkSize() {
+    __isset_bit_vector.clear(__APKSIZE_ISSET_ID);
+  }
+
+  /** Returns true if field apkSize is set (has been assigned a value) and false otherwise */
+  public boolean isSetApkSize() {
+    return __isset_bit_vector.get(__APKSIZE_ISSET_ID);
+  }
+
+  public void setApkSizeIsSet(boolean value) {
+    __isset_bit_vector.set(__APKSIZE_ISSET_ID, value);
+  }
+
   public int getSecurityLevel() {
     return this.securityLevel;
   }
@@ -791,29 +866,6 @@ public class ApkFullProperty implements org.apache.thrift.TBase<ApkFullProperty,
 
   public void setSecurityLevelIsSet(boolean value) {
     __isset_bit_vector.set(__SECURITYLEVEL_ISSET_ID, value);
-  }
-
-  public boolean isIsHasAds() {
-    return this.isHasAds;
-  }
-
-  public ApkFullProperty setIsHasAds(boolean isHasAds) {
-    this.isHasAds = isHasAds;
-    setIsHasAdsIsSet(true);
-    return this;
-  }
-
-  public void unsetIsHasAds() {
-    __isset_bit_vector.clear(__ISHASADS_ISSET_ID);
-  }
-
-  /** Returns true if field isHasAds is set (has been assigned a value) and false otherwise */
-  public boolean isSetIsHasAds() {
-    return __isset_bit_vector.get(__ISHASADS_ISSET_ID);
-  }
-
-  public void setIsHasAdsIsSet(boolean value) {
-    __isset_bit_vector.set(__ISHASADS_ISSET_ID, value);
   }
 
   public void setFieldValue(_Fields field, Object value) {
@@ -930,19 +982,27 @@ public class ApkFullProperty implements org.apache.thrift.TBase<ApkFullProperty,
       }
       break;
 
+    case ADS_LIST:
+      if (value == null) {
+        unsetAdsList();
+      } else {
+        setAdsList((List<String>)value);
+      }
+      break;
+
+    case APK_SIZE:
+      if (value == null) {
+        unsetApkSize();
+      } else {
+        setApkSize((Double)value);
+      }
+      break;
+
     case SECURITY_LEVEL:
       if (value == null) {
         unsetSecurityLevel();
       } else {
         setSecurityLevel((Integer)value);
-      }
-      break;
-
-    case IS_HAS_ADS:
-      if (value == null) {
-        unsetIsHasAds();
-      } else {
-        setIsHasAds((Boolean)value);
       }
       break;
 
@@ -993,11 +1053,14 @@ public class ApkFullProperty implements org.apache.thrift.TBase<ApkFullProperty,
     case APP_NAME:
       return getAppName();
 
+    case ADS_LIST:
+      return getAdsList();
+
+    case APK_SIZE:
+      return Double.valueOf(getApkSize());
+
     case SECURITY_LEVEL:
       return Integer.valueOf(getSecurityLevel());
-
-    case IS_HAS_ADS:
-      return Boolean.valueOf(isIsHasAds());
 
     }
     throw new IllegalStateException();
@@ -1038,10 +1101,12 @@ public class ApkFullProperty implements org.apache.thrift.TBase<ApkFullProperty,
       return isSetIcon();
     case APP_NAME:
       return isSetAppName();
+    case ADS_LIST:
+      return isSetAdsList();
+    case APK_SIZE:
+      return isSetApkSize();
     case SECURITY_LEVEL:
       return isSetSecurityLevel();
-    case IS_HAS_ADS:
-      return isSetIsHasAds();
     }
     throw new IllegalStateException();
   }
@@ -1185,21 +1250,30 @@ public class ApkFullProperty implements org.apache.thrift.TBase<ApkFullProperty,
         return false;
     }
 
-    boolean this_present_securityLevel = true;
-    boolean that_present_securityLevel = true;
+    boolean this_present_AdsList = true && this.isSetAdsList();
+    boolean that_present_AdsList = true && that.isSetAdsList();
+    if (this_present_AdsList || that_present_AdsList) {
+      if (!(this_present_AdsList && that_present_AdsList))
+        return false;
+      if (!this.AdsList.equals(that.AdsList))
+        return false;
+    }
+
+    boolean this_present_apkSize = true;
+    boolean that_present_apkSize = true;
+    if (this_present_apkSize || that_present_apkSize) {
+      if (!(this_present_apkSize && that_present_apkSize))
+        return false;
+      if (this.apkSize != that.apkSize)
+        return false;
+    }
+
+    boolean this_present_securityLevel = true && this.isSetSecurityLevel();
+    boolean that_present_securityLevel = true && that.isSetSecurityLevel();
     if (this_present_securityLevel || that_present_securityLevel) {
       if (!(this_present_securityLevel && that_present_securityLevel))
         return false;
       if (this.securityLevel != that.securityLevel)
-        return false;
-    }
-
-    boolean this_present_isHasAds = true;
-    boolean that_present_isHasAds = true;
-    if (this_present_isHasAds || that_present_isHasAds) {
-      if (!(this_present_isHasAds && that_present_isHasAds))
-        return false;
-      if (this.isHasAds != that.isHasAds)
         return false;
     }
 
@@ -1359,22 +1433,32 @@ public class ApkFullProperty implements org.apache.thrift.TBase<ApkFullProperty,
         return lastComparison;
       }
     }
+    lastComparison = Boolean.valueOf(isSetAdsList()).compareTo(typedOther.isSetAdsList());
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    if (isSetAdsList()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.AdsList, typedOther.AdsList);
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+    }
+    lastComparison = Boolean.valueOf(isSetApkSize()).compareTo(typedOther.isSetApkSize());
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    if (isSetApkSize()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.apkSize, typedOther.apkSize);
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+    }
     lastComparison = Boolean.valueOf(isSetSecurityLevel()).compareTo(typedOther.isSetSecurityLevel());
     if (lastComparison != 0) {
       return lastComparison;
     }
     if (isSetSecurityLevel()) {
       lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.securityLevel, typedOther.securityLevel);
-      if (lastComparison != 0) {
-        return lastComparison;
-      }
-    }
-    lastComparison = Boolean.valueOf(isSetIsHasAds()).compareTo(typedOther.isSetIsHasAds());
-    if (lastComparison != 0) {
-      return lastComparison;
-    }
-    if (isSetIsHasAds()) {
-      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.isHasAds, typedOther.isHasAds);
       if (lastComparison != 0) {
         return lastComparison;
       }
@@ -1487,13 +1571,23 @@ public class ApkFullProperty implements org.apache.thrift.TBase<ApkFullProperty,
     }
     first = false;
     if (!first) sb.append(", ");
-    sb.append("securityLevel:");
-    sb.append(this.securityLevel);
+    sb.append("AdsList:");
+    if (this.AdsList == null) {
+      sb.append("null");
+    } else {
+      sb.append(this.AdsList);
+    }
     first = false;
     if (!first) sb.append(", ");
-    sb.append("isHasAds:");
-    sb.append(this.isHasAds);
+    sb.append("apkSize:");
+    sb.append(this.apkSize);
     first = false;
+    if (isSetSecurityLevel()) {
+      if (!first) sb.append(", ");
+      sb.append("securityLevel:");
+      sb.append(this.securityLevel);
+      first = false;
+    }
     sb.append(")");
     return sb.toString();
   }
@@ -1530,8 +1624,10 @@ public class ApkFullProperty implements org.apache.thrift.TBase<ApkFullProperty,
     if (appName == null) {
       throw new org.apache.thrift.protocol.TProtocolException("Required field 'appName' was not present! Struct: " + toString());
     }
-    // alas, we cannot check 'securityLevel' because it's a primitive and you chose the non-beans generator.
-    // alas, we cannot check 'isHasAds' because it's a primitive and you chose the non-beans generator.
+    if (AdsList == null) {
+      throw new org.apache.thrift.protocol.TProtocolException("Required field 'AdsList' was not present! Struct: " + toString());
+    }
+    // alas, we cannot check 'apkSize' because it's a primitive and you chose the non-beans generator.
   }
 
   private void writeObject(java.io.ObjectOutputStream out) throws java.io.IOException {
@@ -1597,13 +1693,13 @@ public class ApkFullProperty implements org.apache.thrift.TBase<ApkFullProperty,
           case 4: // USES_PERMISSON_LIST
             if (schemeField.type == org.apache.thrift.protocol.TType.LIST) {
               {
-                org.apache.thrift.protocol.TList _list16 = iprot.readListBegin();
-                struct.usesPermissonList = new ArrayList<String>(_list16.size);
-                for (int _i17 = 0; _i17 < _list16.size; ++_i17)
+                org.apache.thrift.protocol.TList _list0 = iprot.readListBegin();
+                struct.usesPermissonList = new ArrayList<String>(_list0.size);
+                for (int _i1 = 0; _i1 < _list0.size; ++_i1)
                 {
-                  String _elem18; // required
-                  _elem18 = iprot.readString();
-                  struct.usesPermissonList.add(_elem18);
+                  String _elem2; // required
+                  _elem2 = iprot.readString();
+                  struct.usesPermissonList.add(_elem2);
                 }
                 iprot.readListEnd();
               }
@@ -1615,13 +1711,13 @@ public class ApkFullProperty implements org.apache.thrift.TBase<ApkFullProperty,
           case 5: // USES_FEATURE_LIST
             if (schemeField.type == org.apache.thrift.protocol.TType.LIST) {
               {
-                org.apache.thrift.protocol.TList _list19 = iprot.readListBegin();
-                struct.usesFeatureList = new ArrayList<String>(_list19.size);
-                for (int _i20 = 0; _i20 < _list19.size; ++_i20)
+                org.apache.thrift.protocol.TList _list3 = iprot.readListBegin();
+                struct.usesFeatureList = new ArrayList<String>(_list3.size);
+                for (int _i4 = 0; _i4 < _list3.size; ++_i4)
                 {
-                  String _elem21; // required
-                  _elem21 = iprot.readString();
-                  struct.usesFeatureList.add(_elem21);
+                  String _elem5; // required
+                  _elem5 = iprot.readString();
+                  struct.usesFeatureList.add(_elem5);
                 }
                 iprot.readListEnd();
               }
@@ -1697,15 +1793,15 @@ public class ApkFullProperty implements org.apache.thrift.TBase<ApkFullProperty,
           case 14: // APP_NAME
             if (schemeField.type == org.apache.thrift.protocol.TType.MAP) {
               {
-                org.apache.thrift.protocol.TMap _map22 = iprot.readMapBegin();
-                struct.appName = new HashMap<String,String>(2*_map22.size);
-                for (int _i23 = 0; _i23 < _map22.size; ++_i23)
+                org.apache.thrift.protocol.TMap _map6 = iprot.readMapBegin();
+                struct.appName = new HashMap<String,String>(2*_map6.size);
+                for (int _i7 = 0; _i7 < _map6.size; ++_i7)
                 {
-                  String _key24; // required
-                  String _val25; // required
-                  _key24 = iprot.readString();
-                  _val25 = iprot.readString();
-                  struct.appName.put(_key24, _val25);
+                  String _key8; // required
+                  String _val9; // required
+                  _key8 = iprot.readString();
+                  _val9 = iprot.readString();
+                  struct.appName.put(_key8, _val9);
                 }
                 iprot.readMapEnd();
               }
@@ -1714,18 +1810,36 @@ public class ApkFullProperty implements org.apache.thrift.TBase<ApkFullProperty,
               org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
             }
             break;
-          case 15: // SECURITY_LEVEL
-            if (schemeField.type == org.apache.thrift.protocol.TType.I32) {
-              struct.securityLevel = iprot.readI32();
-              struct.setSecurityLevelIsSet(true);
+          case 15: // ADS_LIST
+            if (schemeField.type == org.apache.thrift.protocol.TType.LIST) {
+              {
+                org.apache.thrift.protocol.TList _list10 = iprot.readListBegin();
+                struct.AdsList = new ArrayList<String>(_list10.size);
+                for (int _i11 = 0; _i11 < _list10.size; ++_i11)
+                {
+                  String _elem12; // required
+                  _elem12 = iprot.readString();
+                  struct.AdsList.add(_elem12);
+                }
+                iprot.readListEnd();
+              }
+              struct.setAdsListIsSet(true);
             } else { 
               org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
             }
             break;
-          case 16: // IS_HAS_ADS
-            if (schemeField.type == org.apache.thrift.protocol.TType.BOOL) {
-              struct.isHasAds = iprot.readBool();
-              struct.setIsHasAdsIsSet(true);
+          case 16: // APK_SIZE
+            if (schemeField.type == org.apache.thrift.protocol.TType.DOUBLE) {
+              struct.apkSize = iprot.readDouble();
+              struct.setApkSizeIsSet(true);
+            } else { 
+              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+            }
+            break;
+          case 17: // SECURITY_LEVEL
+            if (schemeField.type == org.apache.thrift.protocol.TType.I32) {
+              struct.securityLevel = iprot.readI32();
+              struct.setSecurityLevelIsSet(true);
             } else { 
               org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
             }
@@ -1756,11 +1870,8 @@ public class ApkFullProperty implements org.apache.thrift.TBase<ApkFullProperty,
       if (!struct.isSetXlargeScreen()) {
         throw new org.apache.thrift.protocol.TProtocolException("Required field 'xlargeScreen' was not found in serialized data! Struct: " + toString());
       }
-      if (!struct.isSetSecurityLevel()) {
-        throw new org.apache.thrift.protocol.TProtocolException("Required field 'securityLevel' was not found in serialized data! Struct: " + toString());
-      }
-      if (!struct.isSetIsHasAds()) {
-        throw new org.apache.thrift.protocol.TProtocolException("Required field 'isHasAds' was not found in serialized data! Struct: " + toString());
+      if (!struct.isSetApkSize()) {
+        throw new org.apache.thrift.protocol.TProtocolException("Required field 'apkSize' was not found in serialized data! Struct: " + toString());
       }
       struct.validate();
     }
@@ -1788,9 +1899,9 @@ public class ApkFullProperty implements org.apache.thrift.TBase<ApkFullProperty,
         oprot.writeFieldBegin(USES_PERMISSON_LIST_FIELD_DESC);
         {
           oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRING, struct.usesPermissonList.size()));
-          for (String _iter26 : struct.usesPermissonList)
+          for (String _iter13 : struct.usesPermissonList)
           {
-            oprot.writeString(_iter26);
+            oprot.writeString(_iter13);
           }
           oprot.writeListEnd();
         }
@@ -1800,9 +1911,9 @@ public class ApkFullProperty implements org.apache.thrift.TBase<ApkFullProperty,
         oprot.writeFieldBegin(USES_FEATURE_LIST_FIELD_DESC);
         {
           oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRING, struct.usesFeatureList.size()));
-          for (String _iter27 : struct.usesFeatureList)
+          for (String _iter14 : struct.usesFeatureList)
           {
-            oprot.writeString(_iter27);
+            oprot.writeString(_iter14);
           }
           oprot.writeListEnd();
         }
@@ -1840,21 +1951,35 @@ public class ApkFullProperty implements org.apache.thrift.TBase<ApkFullProperty,
         oprot.writeFieldBegin(APP_NAME_FIELD_DESC);
         {
           oprot.writeMapBegin(new org.apache.thrift.protocol.TMap(org.apache.thrift.protocol.TType.STRING, org.apache.thrift.protocol.TType.STRING, struct.appName.size()));
-          for (Map.Entry<String, String> _iter28 : struct.appName.entrySet())
+          for (Map.Entry<String, String> _iter15 : struct.appName.entrySet())
           {
-            oprot.writeString(_iter28.getKey());
-            oprot.writeString(_iter28.getValue());
+            oprot.writeString(_iter15.getKey());
+            oprot.writeString(_iter15.getValue());
           }
           oprot.writeMapEnd();
         }
         oprot.writeFieldEnd();
       }
-      oprot.writeFieldBegin(SECURITY_LEVEL_FIELD_DESC);
-      oprot.writeI32(struct.securityLevel);
+      if (struct.AdsList != null) {
+        oprot.writeFieldBegin(ADS_LIST_FIELD_DESC);
+        {
+          oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRING, struct.AdsList.size()));
+          for (String _iter16 : struct.AdsList)
+          {
+            oprot.writeString(_iter16);
+          }
+          oprot.writeListEnd();
+        }
+        oprot.writeFieldEnd();
+      }
+      oprot.writeFieldBegin(APK_SIZE_FIELD_DESC);
+      oprot.writeDouble(struct.apkSize);
       oprot.writeFieldEnd();
-      oprot.writeFieldBegin(IS_HAS_ADS_FIELD_DESC);
-      oprot.writeBool(struct.isHasAds);
-      oprot.writeFieldEnd();
+      if (struct.isSetSecurityLevel()) {
+        oprot.writeFieldBegin(SECURITY_LEVEL_FIELD_DESC);
+        oprot.writeI32(struct.securityLevel);
+        oprot.writeFieldEnd();
+      }
       oprot.writeFieldStop();
       oprot.writeStructEnd();
     }
@@ -1877,16 +2002,16 @@ public class ApkFullProperty implements org.apache.thrift.TBase<ApkFullProperty,
       oprot.writeString(struct.versionCode);
       {
         oprot.writeI32(struct.usesPermissonList.size());
-        for (String _iter29 : struct.usesPermissonList)
+        for (String _iter17 : struct.usesPermissonList)
         {
-          oprot.writeString(_iter29);
+          oprot.writeString(_iter17);
         }
       }
       {
         oprot.writeI32(struct.usesFeatureList.size());
-        for (String _iter30 : struct.usesFeatureList)
+        for (String _iter18 : struct.usesFeatureList)
         {
-          oprot.writeString(_iter30);
+          oprot.writeString(_iter18);
         }
       }
       oprot.writeI32(struct.minSDK);
@@ -1899,14 +2024,28 @@ public class ApkFullProperty implements org.apache.thrift.TBase<ApkFullProperty,
       oprot.writeBinary(struct.icon);
       {
         oprot.writeI32(struct.appName.size());
-        for (Map.Entry<String, String> _iter31 : struct.appName.entrySet())
+        for (Map.Entry<String, String> _iter19 : struct.appName.entrySet())
         {
-          oprot.writeString(_iter31.getKey());
-          oprot.writeString(_iter31.getValue());
+          oprot.writeString(_iter19.getKey());
+          oprot.writeString(_iter19.getValue());
         }
       }
-      oprot.writeI32(struct.securityLevel);
-      oprot.writeBool(struct.isHasAds);
+      {
+        oprot.writeI32(struct.AdsList.size());
+        for (String _iter20 : struct.AdsList)
+        {
+          oprot.writeString(_iter20);
+        }
+      }
+      oprot.writeDouble(struct.apkSize);
+      BitSet optionals = new BitSet();
+      if (struct.isSetSecurityLevel()) {
+        optionals.set(0);
+      }
+      oprot.writeBitSet(optionals, 1);
+      if (struct.isSetSecurityLevel()) {
+        oprot.writeI32(struct.securityLevel);
+      }
     }
 
     @Override
@@ -1919,24 +2058,24 @@ public class ApkFullProperty implements org.apache.thrift.TBase<ApkFullProperty,
       struct.versionCode = iprot.readString();
       struct.setVersionCodeIsSet(true);
       {
-        org.apache.thrift.protocol.TList _list32 = new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRING, iprot.readI32());
-        struct.usesPermissonList = new ArrayList<String>(_list32.size);
-        for (int _i33 = 0; _i33 < _list32.size; ++_i33)
+        org.apache.thrift.protocol.TList _list21 = new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRING, iprot.readI32());
+        struct.usesPermissonList = new ArrayList<String>(_list21.size);
+        for (int _i22 = 0; _i22 < _list21.size; ++_i22)
         {
-          String _elem34; // required
-          _elem34 = iprot.readString();
-          struct.usesPermissonList.add(_elem34);
+          String _elem23; // required
+          _elem23 = iprot.readString();
+          struct.usesPermissonList.add(_elem23);
         }
       }
       struct.setUsesPermissonListIsSet(true);
       {
-        org.apache.thrift.protocol.TList _list35 = new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRING, iprot.readI32());
-        struct.usesFeatureList = new ArrayList<String>(_list35.size);
-        for (int _i36 = 0; _i36 < _list35.size; ++_i36)
+        org.apache.thrift.protocol.TList _list24 = new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRING, iprot.readI32());
+        struct.usesFeatureList = new ArrayList<String>(_list24.size);
+        for (int _i25 = 0; _i25 < _list24.size; ++_i25)
         {
-          String _elem37; // required
-          _elem37 = iprot.readString();
-          struct.usesFeatureList.add(_elem37);
+          String _elem26; // required
+          _elem26 = iprot.readString();
+          struct.usesFeatureList.add(_elem26);
         }
       }
       struct.setUsesFeatureListIsSet(true);
@@ -1957,22 +2096,36 @@ public class ApkFullProperty implements org.apache.thrift.TBase<ApkFullProperty,
       struct.icon = iprot.readBinary();
       struct.setIconIsSet(true);
       {
-        org.apache.thrift.protocol.TMap _map38 = new org.apache.thrift.protocol.TMap(org.apache.thrift.protocol.TType.STRING, org.apache.thrift.protocol.TType.STRING, iprot.readI32());
-        struct.appName = new HashMap<String,String>(2*_map38.size);
-        for (int _i39 = 0; _i39 < _map38.size; ++_i39)
+        org.apache.thrift.protocol.TMap _map27 = new org.apache.thrift.protocol.TMap(org.apache.thrift.protocol.TType.STRING, org.apache.thrift.protocol.TType.STRING, iprot.readI32());
+        struct.appName = new HashMap<String,String>(2*_map27.size);
+        for (int _i28 = 0; _i28 < _map27.size; ++_i28)
         {
-          String _key40; // required
-          String _val41; // required
-          _key40 = iprot.readString();
-          _val41 = iprot.readString();
-          struct.appName.put(_key40, _val41);
+          String _key29; // required
+          String _val30; // required
+          _key29 = iprot.readString();
+          _val30 = iprot.readString();
+          struct.appName.put(_key29, _val30);
         }
       }
       struct.setAppNameIsSet(true);
-      struct.securityLevel = iprot.readI32();
-      struct.setSecurityLevelIsSet(true);
-      struct.isHasAds = iprot.readBool();
-      struct.setIsHasAdsIsSet(true);
+      {
+        org.apache.thrift.protocol.TList _list31 = new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRING, iprot.readI32());
+        struct.AdsList = new ArrayList<String>(_list31.size);
+        for (int _i32 = 0; _i32 < _list31.size; ++_i32)
+        {
+          String _elem33; // required
+          _elem33 = iprot.readString();
+          struct.AdsList.add(_elem33);
+        }
+      }
+      struct.setAdsListIsSet(true);
+      struct.apkSize = iprot.readDouble();
+      struct.setApkSizeIsSet(true);
+      BitSet incoming = iprot.readBitSet(1);
+      if (incoming.get(0)) {
+        struct.securityLevel = iprot.readI32();
+        struct.setSecurityLevelIsSet(true);
+      }
     }
   }
 

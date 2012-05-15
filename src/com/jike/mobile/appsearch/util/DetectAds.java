@@ -1,6 +1,7 @@
 package com.jike.mobile.appsearch.util;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -18,7 +19,7 @@ public class DetectAds {
         adsMap = Constants.AdsMap;
         System.out.println(adsMap);
         String rootFile = "D:/APK反编译/CoinFlip_1.0.5/";
-        isHasAds(rootFile);
+        getAdsList(rootFile);
     }
   //adMob "/smali/com/admob"
   //adSence  "/smali/com/google/ads"
@@ -38,15 +39,26 @@ public class DetectAds {
   //millennialmedia "/smali/com/millennialmedia"
   //inmobi "/smali/com/inmobi"
   //zestadz "/smali/com/zestadz"
-    public static HashMap<String, String> isHasAds(String filePath) {
-        HashMap<String, String> findAdsMap = new HashMap<String, String>();
+//    public static HashMap<String, String> getAdsMap(String filePath) {
+//        HashMap<String, String> findAdsMap = new HashMap<String, String>();
+//        for(Map.Entry<String, String> element:Constants.AdsMap.entrySet()){
+//            if (new File(filePath+element.getValue()).exists()) {
+//                System.out.println(element.getKey()+"-"+element.getValue());
+//                findAdsMap.put(element.getKey(),element.getValue());
+//            }
+//        }
+//        return findAdsMap;
+//    }
+    
+    public static ArrayList<String> getAdsList(String filePath) {
+        ArrayList<String> findAdsList = new ArrayList<String>();
         for(Map.Entry<String, String> element:Constants.AdsMap.entrySet()){
             if (new File(filePath+element.getValue()).exists()) {
                 System.out.println(element.getKey()+"-"+element.getValue());
-                findAdsMap.put(element.getKey(),element.getValue());
+                findAdsList.add(element.getKey());
             }
         }
-        return findAdsMap;
+        return findAdsList;
     }
 
 }

@@ -31,17 +31,13 @@ public class GetApkInfo {
 
   public interface Iface {
 
-    public ApkSimpleProperty getApkSimpleProperty(String apkPath) throws org.apache.thrift.TException;
-
-    public ApkFullProperty getApkFullProperty(String apkPath) throws org.apache.thrift.TException;
+    public ApkFullProperty getApkFullProperty(String apkKey) throws org.apache.thrift.TException;
 
   }
 
   public interface AsyncIface {
 
-    public void getApkSimpleProperty(String apkPath, org.apache.thrift.async.AsyncMethodCallback<AsyncClient.getApkSimpleProperty_call> resultHandler) throws org.apache.thrift.TException;
-
-    public void getApkFullProperty(String apkPath, org.apache.thrift.async.AsyncMethodCallback<AsyncClient.getApkFullProperty_call> resultHandler) throws org.apache.thrift.TException;
+    public void getApkFullProperty(String apkKey, org.apache.thrift.async.AsyncMethodCallback<AsyncClient.getApkFullProperty_call> resultHandler) throws org.apache.thrift.TException;
 
   }
 
@@ -65,39 +61,16 @@ public class GetApkInfo {
       super(iprot, oprot);
     }
 
-    public ApkSimpleProperty getApkSimpleProperty(String apkPath) throws org.apache.thrift.TException
+    public ApkFullProperty getApkFullProperty(String apkKey) throws org.apache.thrift.TException
     {
-      send_getApkSimpleProperty(apkPath);
-      return recv_getApkSimpleProperty();
-    }
-
-    public void send_getApkSimpleProperty(String apkPath) throws org.apache.thrift.TException
-    {
-      getApkSimpleProperty_args args = new getApkSimpleProperty_args();
-      args.setApkPath(apkPath);
-      sendBase("getApkSimpleProperty", args);
-    }
-
-    public ApkSimpleProperty recv_getApkSimpleProperty() throws org.apache.thrift.TException
-    {
-      getApkSimpleProperty_result result = new getApkSimpleProperty_result();
-      receiveBase(result, "getApkSimpleProperty");
-      if (result.isSetSuccess()) {
-        return result.success;
-      }
-      throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "getApkSimpleProperty failed: unknown result");
-    }
-
-    public ApkFullProperty getApkFullProperty(String apkPath) throws org.apache.thrift.TException
-    {
-      send_getApkFullProperty(apkPath);
+      send_getApkFullProperty(apkKey);
       return recv_getApkFullProperty();
     }
 
-    public void send_getApkFullProperty(String apkPath) throws org.apache.thrift.TException
+    public void send_getApkFullProperty(String apkKey) throws org.apache.thrift.TException
     {
       getApkFullProperty_args args = new getApkFullProperty_args();
-      args.setApkPath(apkPath);
+      args.setApkKey(apkKey);
       sendBase("getApkFullProperty", args);
     }
 
@@ -129,56 +102,24 @@ public class GetApkInfo {
       super(protocolFactory, clientManager, transport);
     }
 
-    public void getApkSimpleProperty(String apkPath, org.apache.thrift.async.AsyncMethodCallback<getApkSimpleProperty_call> resultHandler) throws org.apache.thrift.TException {
+    public void getApkFullProperty(String apkKey, org.apache.thrift.async.AsyncMethodCallback<getApkFullProperty_call> resultHandler) throws org.apache.thrift.TException {
       checkReady();
-      getApkSimpleProperty_call method_call = new getApkSimpleProperty_call(apkPath, resultHandler, this, ___protocolFactory, ___transport);
-      this.___currentMethod = method_call;
-      ___manager.call(method_call);
-    }
-
-    public static class getApkSimpleProperty_call extends org.apache.thrift.async.TAsyncMethodCall {
-      private String apkPath;
-      public getApkSimpleProperty_call(String apkPath, org.apache.thrift.async.AsyncMethodCallback<getApkSimpleProperty_call> resultHandler, org.apache.thrift.async.TAsyncClient client, org.apache.thrift.protocol.TProtocolFactory protocolFactory, org.apache.thrift.transport.TNonblockingTransport transport) throws org.apache.thrift.TException {
-        super(client, protocolFactory, transport, resultHandler, false);
-        this.apkPath = apkPath;
-      }
-
-      public void write_args(org.apache.thrift.protocol.TProtocol prot) throws org.apache.thrift.TException {
-        prot.writeMessageBegin(new org.apache.thrift.protocol.TMessage("getApkSimpleProperty", org.apache.thrift.protocol.TMessageType.CALL, 0));
-        getApkSimpleProperty_args args = new getApkSimpleProperty_args();
-        args.setApkPath(apkPath);
-        args.write(prot);
-        prot.writeMessageEnd();
-      }
-
-      public ApkSimpleProperty getResult() throws org.apache.thrift.TException {
-        if (getState() != org.apache.thrift.async.TAsyncMethodCall.State.RESPONSE_READ) {
-          throw new IllegalStateException("Method call not finished!");
-        }
-        org.apache.thrift.transport.TMemoryInputTransport memoryTransport = new org.apache.thrift.transport.TMemoryInputTransport(getFrameBuffer().array());
-        org.apache.thrift.protocol.TProtocol prot = client.getProtocolFactory().getProtocol(memoryTransport);
-        return (new Client(prot)).recv_getApkSimpleProperty();
-      }
-    }
-
-    public void getApkFullProperty(String apkPath, org.apache.thrift.async.AsyncMethodCallback<getApkFullProperty_call> resultHandler) throws org.apache.thrift.TException {
-      checkReady();
-      getApkFullProperty_call method_call = new getApkFullProperty_call(apkPath, resultHandler, this, ___protocolFactory, ___transport);
+      getApkFullProperty_call method_call = new getApkFullProperty_call(apkKey, resultHandler, this, ___protocolFactory, ___transport);
       this.___currentMethod = method_call;
       ___manager.call(method_call);
     }
 
     public static class getApkFullProperty_call extends org.apache.thrift.async.TAsyncMethodCall {
-      private String apkPath;
-      public getApkFullProperty_call(String apkPath, org.apache.thrift.async.AsyncMethodCallback<getApkFullProperty_call> resultHandler, org.apache.thrift.async.TAsyncClient client, org.apache.thrift.protocol.TProtocolFactory protocolFactory, org.apache.thrift.transport.TNonblockingTransport transport) throws org.apache.thrift.TException {
+      private String apkKey;
+      public getApkFullProperty_call(String apkKey, org.apache.thrift.async.AsyncMethodCallback<getApkFullProperty_call> resultHandler, org.apache.thrift.async.TAsyncClient client, org.apache.thrift.protocol.TProtocolFactory protocolFactory, org.apache.thrift.transport.TNonblockingTransport transport) throws org.apache.thrift.TException {
         super(client, protocolFactory, transport, resultHandler, false);
-        this.apkPath = apkPath;
+        this.apkKey = apkKey;
       }
 
       public void write_args(org.apache.thrift.protocol.TProtocol prot) throws org.apache.thrift.TException {
         prot.writeMessageBegin(new org.apache.thrift.protocol.TMessage("getApkFullProperty", org.apache.thrift.protocol.TMessageType.CALL, 0));
         getApkFullProperty_args args = new getApkFullProperty_args();
-        args.setApkPath(apkPath);
+        args.setApkKey(apkKey);
         args.write(prot);
         prot.writeMessageEnd();
       }
@@ -206,25 +147,8 @@ public class GetApkInfo {
     }
 
     private static <I extends Iface> Map<String,  org.apache.thrift.ProcessFunction<I, ? extends  org.apache.thrift.TBase>> getProcessMap(Map<String,  org.apache.thrift.ProcessFunction<I, ? extends  org.apache.thrift.TBase>> processMap) {
-      processMap.put("getApkSimpleProperty", new getApkSimpleProperty());
       processMap.put("getApkFullProperty", new getApkFullProperty());
       return processMap;
-    }
-
-    private static class getApkSimpleProperty<I extends Iface> extends org.apache.thrift.ProcessFunction<I, getApkSimpleProperty_args> {
-      public getApkSimpleProperty() {
-        super("getApkSimpleProperty");
-      }
-
-      protected getApkSimpleProperty_args getEmptyArgsInstance() {
-        return new getApkSimpleProperty_args();
-      }
-
-      protected getApkSimpleProperty_result getResult(I iface, getApkSimpleProperty_args args) throws org.apache.thrift.TException {
-        getApkSimpleProperty_result result = new getApkSimpleProperty_result();
-        result.success = iface.getApkSimpleProperty(args.apkPath);
-        return result;
-      }
     }
 
     private static class getApkFullProperty<I extends Iface> extends org.apache.thrift.ProcessFunction<I, getApkFullProperty_args> {
@@ -238,716 +162,8 @@ public class GetApkInfo {
 
       protected getApkFullProperty_result getResult(I iface, getApkFullProperty_args args) throws org.apache.thrift.TException {
         getApkFullProperty_result result = new getApkFullProperty_result();
-        result.success = iface.getApkFullProperty(args.apkPath);
+        result.success = iface.getApkFullProperty(args.apkKey);
         return result;
-      }
-    }
-
-  }
-
-  public static class getApkSimpleProperty_args implements org.apache.thrift.TBase<getApkSimpleProperty_args, getApkSimpleProperty_args._Fields>, java.io.Serializable, Cloneable   {
-    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("getApkSimpleProperty_args");
-
-    private static final org.apache.thrift.protocol.TField APK_PATH_FIELD_DESC = new org.apache.thrift.protocol.TField("apkPath", org.apache.thrift.protocol.TType.STRING, (short)1);
-
-    private static final Map<Class<? extends IScheme>, SchemeFactory> schemes = new HashMap<Class<? extends IScheme>, SchemeFactory>();
-    static {
-      schemes.put(StandardScheme.class, new getApkSimpleProperty_argsStandardSchemeFactory());
-      schemes.put(TupleScheme.class, new getApkSimpleProperty_argsTupleSchemeFactory());
-    }
-
-    public String apkPath; // required
-
-    /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
-    public enum _Fields implements org.apache.thrift.TFieldIdEnum {
-      APK_PATH((short)1, "apkPath");
-
-      private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
-
-      static {
-        for (_Fields field : EnumSet.allOf(_Fields.class)) {
-          byName.put(field.getFieldName(), field);
-        }
-      }
-
-      /**
-       * Find the _Fields constant that matches fieldId, or null if its not found.
-       */
-      public static _Fields findByThriftId(int fieldId) {
-        switch(fieldId) {
-          case 1: // APK_PATH
-            return APK_PATH;
-          default:
-            return null;
-        }
-      }
-
-      /**
-       * Find the _Fields constant that matches fieldId, throwing an exception
-       * if it is not found.
-       */
-      public static _Fields findByThriftIdOrThrow(int fieldId) {
-        _Fields fields = findByThriftId(fieldId);
-        if (fields == null) throw new IllegalArgumentException("Field " + fieldId + " doesn't exist!");
-        return fields;
-      }
-
-      /**
-       * Find the _Fields constant that matches name, or null if its not found.
-       */
-      public static _Fields findByName(String name) {
-        return byName.get(name);
-      }
-
-      private final short _thriftId;
-      private final String _fieldName;
-
-      _Fields(short thriftId, String fieldName) {
-        _thriftId = thriftId;
-        _fieldName = fieldName;
-      }
-
-      public short getThriftFieldId() {
-        return _thriftId;
-      }
-
-      public String getFieldName() {
-        return _fieldName;
-      }
-    }
-
-    // isset id assignments
-    public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
-    static {
-      Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
-      tmpMap.put(_Fields.APK_PATH, new org.apache.thrift.meta_data.FieldMetaData("apkPath", org.apache.thrift.TFieldRequirementType.DEFAULT, 
-          new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
-      metaDataMap = Collections.unmodifiableMap(tmpMap);
-      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(getApkSimpleProperty_args.class, metaDataMap);
-    }
-
-    public getApkSimpleProperty_args() {
-    }
-
-    public getApkSimpleProperty_args(
-      String apkPath)
-    {
-      this();
-      this.apkPath = apkPath;
-    }
-
-    /**
-     * Performs a deep copy on <i>other</i>.
-     */
-    public getApkSimpleProperty_args(getApkSimpleProperty_args other) {
-      if (other.isSetApkPath()) {
-        this.apkPath = other.apkPath;
-      }
-    }
-
-    public getApkSimpleProperty_args deepCopy() {
-      return new getApkSimpleProperty_args(this);
-    }
-
-    @Override
-    public void clear() {
-      this.apkPath = null;
-    }
-
-    public String getApkPath() {
-      return this.apkPath;
-    }
-
-    public getApkSimpleProperty_args setApkPath(String apkPath) {
-      this.apkPath = apkPath;
-      return this;
-    }
-
-    public void unsetApkPath() {
-      this.apkPath = null;
-    }
-
-    /** Returns true if field apkPath is set (has been assigned a value) and false otherwise */
-    public boolean isSetApkPath() {
-      return this.apkPath != null;
-    }
-
-    public void setApkPathIsSet(boolean value) {
-      if (!value) {
-        this.apkPath = null;
-      }
-    }
-
-    public void setFieldValue(_Fields field, Object value) {
-      switch (field) {
-      case APK_PATH:
-        if (value == null) {
-          unsetApkPath();
-        } else {
-          setApkPath((String)value);
-        }
-        break;
-
-      }
-    }
-
-    public Object getFieldValue(_Fields field) {
-      switch (field) {
-      case APK_PATH:
-        return getApkPath();
-
-      }
-      throw new IllegalStateException();
-    }
-
-    /** Returns true if field corresponding to fieldID is set (has been assigned a value) and false otherwise */
-    public boolean isSet(_Fields field) {
-      if (field == null) {
-        throw new IllegalArgumentException();
-      }
-
-      switch (field) {
-      case APK_PATH:
-        return isSetApkPath();
-      }
-      throw new IllegalStateException();
-    }
-
-    @Override
-    public boolean equals(Object that) {
-      if (that == null)
-        return false;
-      if (that instanceof getApkSimpleProperty_args)
-        return this.equals((getApkSimpleProperty_args)that);
-      return false;
-    }
-
-    public boolean equals(getApkSimpleProperty_args that) {
-      if (that == null)
-        return false;
-
-      boolean this_present_apkPath = true && this.isSetApkPath();
-      boolean that_present_apkPath = true && that.isSetApkPath();
-      if (this_present_apkPath || that_present_apkPath) {
-        if (!(this_present_apkPath && that_present_apkPath))
-          return false;
-        if (!this.apkPath.equals(that.apkPath))
-          return false;
-      }
-
-      return true;
-    }
-
-    @Override
-    public int hashCode() {
-      return 0;
-    }
-
-    public int compareTo(getApkSimpleProperty_args other) {
-      if (!getClass().equals(other.getClass())) {
-        return getClass().getName().compareTo(other.getClass().getName());
-      }
-
-      int lastComparison = 0;
-      getApkSimpleProperty_args typedOther = (getApkSimpleProperty_args)other;
-
-      lastComparison = Boolean.valueOf(isSetApkPath()).compareTo(typedOther.isSetApkPath());
-      if (lastComparison != 0) {
-        return lastComparison;
-      }
-      if (isSetApkPath()) {
-        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.apkPath, typedOther.apkPath);
-        if (lastComparison != 0) {
-          return lastComparison;
-        }
-      }
-      return 0;
-    }
-
-    public _Fields fieldForId(int fieldId) {
-      return _Fields.findByThriftId(fieldId);
-    }
-
-    public void read(org.apache.thrift.protocol.TProtocol iprot) throws org.apache.thrift.TException {
-      schemes.get(iprot.getScheme()).getScheme().read(iprot, this);
-    }
-
-    public void write(org.apache.thrift.protocol.TProtocol oprot) throws org.apache.thrift.TException {
-      schemes.get(oprot.getScheme()).getScheme().write(oprot, this);
-    }
-
-    @Override
-    public String toString() {
-      StringBuilder sb = new StringBuilder("getApkSimpleProperty_args(");
-      boolean first = true;
-
-      sb.append("apkPath:");
-      if (this.apkPath == null) {
-        sb.append("null");
-      } else {
-        sb.append(this.apkPath);
-      }
-      first = false;
-      sb.append(")");
-      return sb.toString();
-    }
-
-    public void validate() throws org.apache.thrift.TException {
-      // check for required fields
-    }
-
-    private void writeObject(java.io.ObjectOutputStream out) throws java.io.IOException {
-      try {
-        write(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(out)));
-      } catch (org.apache.thrift.TException te) {
-        throw new java.io.IOException(te);
-      }
-    }
-
-    private void readObject(java.io.ObjectInputStream in) throws java.io.IOException, ClassNotFoundException {
-      try {
-        read(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(in)));
-      } catch (org.apache.thrift.TException te) {
-        throw new java.io.IOException(te);
-      }
-    }
-
-    private static class getApkSimpleProperty_argsStandardSchemeFactory implements SchemeFactory {
-      public getApkSimpleProperty_argsStandardScheme getScheme() {
-        return new getApkSimpleProperty_argsStandardScheme();
-      }
-    }
-
-    private static class getApkSimpleProperty_argsStandardScheme extends StandardScheme<getApkSimpleProperty_args> {
-
-      public void read(org.apache.thrift.protocol.TProtocol iprot, getApkSimpleProperty_args struct) throws org.apache.thrift.TException {
-        org.apache.thrift.protocol.TField schemeField;
-        iprot.readStructBegin();
-        while (true)
-        {
-          schemeField = iprot.readFieldBegin();
-          if (schemeField.type == org.apache.thrift.protocol.TType.STOP) { 
-            break;
-          }
-          switch (schemeField.id) {
-            case 1: // APK_PATH
-              if (schemeField.type == org.apache.thrift.protocol.TType.STRING) {
-                struct.apkPath = iprot.readString();
-                struct.setApkPathIsSet(true);
-              } else { 
-                org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
-              }
-              break;
-            default:
-              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
-          }
-          iprot.readFieldEnd();
-        }
-        iprot.readStructEnd();
-
-        // check for required fields of primitive type, which can't be checked in the validate method
-        struct.validate();
-      }
-
-      public void write(org.apache.thrift.protocol.TProtocol oprot, getApkSimpleProperty_args struct) throws org.apache.thrift.TException {
-        struct.validate();
-
-        oprot.writeStructBegin(STRUCT_DESC);
-        if (struct.apkPath != null) {
-          oprot.writeFieldBegin(APK_PATH_FIELD_DESC);
-          oprot.writeString(struct.apkPath);
-          oprot.writeFieldEnd();
-        }
-        oprot.writeFieldStop();
-        oprot.writeStructEnd();
-      }
-
-    }
-
-    private static class getApkSimpleProperty_argsTupleSchemeFactory implements SchemeFactory {
-      public getApkSimpleProperty_argsTupleScheme getScheme() {
-        return new getApkSimpleProperty_argsTupleScheme();
-      }
-    }
-
-    private static class getApkSimpleProperty_argsTupleScheme extends TupleScheme<getApkSimpleProperty_args> {
-
-      @Override
-      public void write(org.apache.thrift.protocol.TProtocol prot, getApkSimpleProperty_args struct) throws org.apache.thrift.TException {
-        TTupleProtocol oprot = (TTupleProtocol) prot;
-        BitSet optionals = new BitSet();
-        if (struct.isSetApkPath()) {
-          optionals.set(0);
-        }
-        oprot.writeBitSet(optionals, 1);
-        if (struct.isSetApkPath()) {
-          oprot.writeString(struct.apkPath);
-        }
-      }
-
-      @Override
-      public void read(org.apache.thrift.protocol.TProtocol prot, getApkSimpleProperty_args struct) throws org.apache.thrift.TException {
-        TTupleProtocol iprot = (TTupleProtocol) prot;
-        BitSet incoming = iprot.readBitSet(1);
-        if (incoming.get(0)) {
-          struct.apkPath = iprot.readString();
-          struct.setApkPathIsSet(true);
-        }
-      }
-    }
-
-  }
-
-  public static class getApkSimpleProperty_result implements org.apache.thrift.TBase<getApkSimpleProperty_result, getApkSimpleProperty_result._Fields>, java.io.Serializable, Cloneable   {
-    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("getApkSimpleProperty_result");
-
-    private static final org.apache.thrift.protocol.TField SUCCESS_FIELD_DESC = new org.apache.thrift.protocol.TField("success", org.apache.thrift.protocol.TType.STRUCT, (short)0);
-
-    private static final Map<Class<? extends IScheme>, SchemeFactory> schemes = new HashMap<Class<? extends IScheme>, SchemeFactory>();
-    static {
-      schemes.put(StandardScheme.class, new getApkSimpleProperty_resultStandardSchemeFactory());
-      schemes.put(TupleScheme.class, new getApkSimpleProperty_resultTupleSchemeFactory());
-    }
-
-    public ApkSimpleProperty success; // required
-
-    /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
-    public enum _Fields implements org.apache.thrift.TFieldIdEnum {
-      SUCCESS((short)0, "success");
-
-      private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
-
-      static {
-        for (_Fields field : EnumSet.allOf(_Fields.class)) {
-          byName.put(field.getFieldName(), field);
-        }
-      }
-
-      /**
-       * Find the _Fields constant that matches fieldId, or null if its not found.
-       */
-      public static _Fields findByThriftId(int fieldId) {
-        switch(fieldId) {
-          case 0: // SUCCESS
-            return SUCCESS;
-          default:
-            return null;
-        }
-      }
-
-      /**
-       * Find the _Fields constant that matches fieldId, throwing an exception
-       * if it is not found.
-       */
-      public static _Fields findByThriftIdOrThrow(int fieldId) {
-        _Fields fields = findByThriftId(fieldId);
-        if (fields == null) throw new IllegalArgumentException("Field " + fieldId + " doesn't exist!");
-        return fields;
-      }
-
-      /**
-       * Find the _Fields constant that matches name, or null if its not found.
-       */
-      public static _Fields findByName(String name) {
-        return byName.get(name);
-      }
-
-      private final short _thriftId;
-      private final String _fieldName;
-
-      _Fields(short thriftId, String fieldName) {
-        _thriftId = thriftId;
-        _fieldName = fieldName;
-      }
-
-      public short getThriftFieldId() {
-        return _thriftId;
-      }
-
-      public String getFieldName() {
-        return _fieldName;
-      }
-    }
-
-    // isset id assignments
-    public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
-    static {
-      Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
-      tmpMap.put(_Fields.SUCCESS, new org.apache.thrift.meta_data.FieldMetaData("success", org.apache.thrift.TFieldRequirementType.DEFAULT, 
-          new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, ApkSimpleProperty.class)));
-      metaDataMap = Collections.unmodifiableMap(tmpMap);
-      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(getApkSimpleProperty_result.class, metaDataMap);
-    }
-
-    public getApkSimpleProperty_result() {
-    }
-
-    public getApkSimpleProperty_result(
-      ApkSimpleProperty success)
-    {
-      this();
-      this.success = success;
-    }
-
-    /**
-     * Performs a deep copy on <i>other</i>.
-     */
-    public getApkSimpleProperty_result(getApkSimpleProperty_result other) {
-      if (other.isSetSuccess()) {
-        this.success = new ApkSimpleProperty(other.success);
-      }
-    }
-
-    public getApkSimpleProperty_result deepCopy() {
-      return new getApkSimpleProperty_result(this);
-    }
-
-    @Override
-    public void clear() {
-      this.success = null;
-    }
-
-    public ApkSimpleProperty getSuccess() {
-      return this.success;
-    }
-
-    public getApkSimpleProperty_result setSuccess(ApkSimpleProperty success) {
-      this.success = success;
-      return this;
-    }
-
-    public void unsetSuccess() {
-      this.success = null;
-    }
-
-    /** Returns true if field success is set (has been assigned a value) and false otherwise */
-    public boolean isSetSuccess() {
-      return this.success != null;
-    }
-
-    public void setSuccessIsSet(boolean value) {
-      if (!value) {
-        this.success = null;
-      }
-    }
-
-    public void setFieldValue(_Fields field, Object value) {
-      switch (field) {
-      case SUCCESS:
-        if (value == null) {
-          unsetSuccess();
-        } else {
-          setSuccess((ApkSimpleProperty)value);
-        }
-        break;
-
-      }
-    }
-
-    public Object getFieldValue(_Fields field) {
-      switch (field) {
-      case SUCCESS:
-        return getSuccess();
-
-      }
-      throw new IllegalStateException();
-    }
-
-    /** Returns true if field corresponding to fieldID is set (has been assigned a value) and false otherwise */
-    public boolean isSet(_Fields field) {
-      if (field == null) {
-        throw new IllegalArgumentException();
-      }
-
-      switch (field) {
-      case SUCCESS:
-        return isSetSuccess();
-      }
-      throw new IllegalStateException();
-    }
-
-    @Override
-    public boolean equals(Object that) {
-      if (that == null)
-        return false;
-      if (that instanceof getApkSimpleProperty_result)
-        return this.equals((getApkSimpleProperty_result)that);
-      return false;
-    }
-
-    public boolean equals(getApkSimpleProperty_result that) {
-      if (that == null)
-        return false;
-
-      boolean this_present_success = true && this.isSetSuccess();
-      boolean that_present_success = true && that.isSetSuccess();
-      if (this_present_success || that_present_success) {
-        if (!(this_present_success && that_present_success))
-          return false;
-        if (!this.success.equals(that.success))
-          return false;
-      }
-
-      return true;
-    }
-
-    @Override
-    public int hashCode() {
-      return 0;
-    }
-
-    public int compareTo(getApkSimpleProperty_result other) {
-      if (!getClass().equals(other.getClass())) {
-        return getClass().getName().compareTo(other.getClass().getName());
-      }
-
-      int lastComparison = 0;
-      getApkSimpleProperty_result typedOther = (getApkSimpleProperty_result)other;
-
-      lastComparison = Boolean.valueOf(isSetSuccess()).compareTo(typedOther.isSetSuccess());
-      if (lastComparison != 0) {
-        return lastComparison;
-      }
-      if (isSetSuccess()) {
-        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.success, typedOther.success);
-        if (lastComparison != 0) {
-          return lastComparison;
-        }
-      }
-      return 0;
-    }
-
-    public _Fields fieldForId(int fieldId) {
-      return _Fields.findByThriftId(fieldId);
-    }
-
-    public void read(org.apache.thrift.protocol.TProtocol iprot) throws org.apache.thrift.TException {
-      schemes.get(iprot.getScheme()).getScheme().read(iprot, this);
-    }
-
-    public void write(org.apache.thrift.protocol.TProtocol oprot) throws org.apache.thrift.TException {
-      schemes.get(oprot.getScheme()).getScheme().write(oprot, this);
-      }
-
-    @Override
-    public String toString() {
-      StringBuilder sb = new StringBuilder("getApkSimpleProperty_result(");
-      boolean first = true;
-
-      sb.append("success:");
-      if (this.success == null) {
-        sb.append("null");
-      } else {
-        sb.append(this.success);
-      }
-      first = false;
-      sb.append(")");
-      return sb.toString();
-    }
-
-    public void validate() throws org.apache.thrift.TException {
-      // check for required fields
-    }
-
-    private void writeObject(java.io.ObjectOutputStream out) throws java.io.IOException {
-      try {
-        write(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(out)));
-      } catch (org.apache.thrift.TException te) {
-        throw new java.io.IOException(te);
-      }
-    }
-
-    private void readObject(java.io.ObjectInputStream in) throws java.io.IOException, ClassNotFoundException {
-      try {
-        read(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(in)));
-      } catch (org.apache.thrift.TException te) {
-        throw new java.io.IOException(te);
-      }
-    }
-
-    private static class getApkSimpleProperty_resultStandardSchemeFactory implements SchemeFactory {
-      public getApkSimpleProperty_resultStandardScheme getScheme() {
-        return new getApkSimpleProperty_resultStandardScheme();
-      }
-    }
-
-    private static class getApkSimpleProperty_resultStandardScheme extends StandardScheme<getApkSimpleProperty_result> {
-
-      public void read(org.apache.thrift.protocol.TProtocol iprot, getApkSimpleProperty_result struct) throws org.apache.thrift.TException {
-        org.apache.thrift.protocol.TField schemeField;
-        iprot.readStructBegin();
-        while (true)
-        {
-          schemeField = iprot.readFieldBegin();
-          if (schemeField.type == org.apache.thrift.protocol.TType.STOP) { 
-            break;
-          }
-          switch (schemeField.id) {
-            case 0: // SUCCESS
-              if (schemeField.type == org.apache.thrift.protocol.TType.STRUCT) {
-                struct.success = new ApkSimpleProperty();
-                struct.success.read(iprot);
-                struct.setSuccessIsSet(true);
-              } else { 
-                org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
-              }
-              break;
-            default:
-              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
-          }
-          iprot.readFieldEnd();
-        }
-        iprot.readStructEnd();
-
-        // check for required fields of primitive type, which can't be checked in the validate method
-        struct.validate();
-      }
-
-      public void write(org.apache.thrift.protocol.TProtocol oprot, getApkSimpleProperty_result struct) throws org.apache.thrift.TException {
-        struct.validate();
-
-        oprot.writeStructBegin(STRUCT_DESC);
-        if (struct.success != null) {
-          oprot.writeFieldBegin(SUCCESS_FIELD_DESC);
-          struct.success.write(oprot);
-          oprot.writeFieldEnd();
-        }
-        oprot.writeFieldStop();
-        oprot.writeStructEnd();
-      }
-
-    }
-
-    private static class getApkSimpleProperty_resultTupleSchemeFactory implements SchemeFactory {
-      public getApkSimpleProperty_resultTupleScheme getScheme() {
-        return new getApkSimpleProperty_resultTupleScheme();
-      }
-    }
-
-    private static class getApkSimpleProperty_resultTupleScheme extends TupleScheme<getApkSimpleProperty_result> {
-
-      @Override
-      public void write(org.apache.thrift.protocol.TProtocol prot, getApkSimpleProperty_result struct) throws org.apache.thrift.TException {
-        TTupleProtocol oprot = (TTupleProtocol) prot;
-        BitSet optionals = new BitSet();
-        if (struct.isSetSuccess()) {
-          optionals.set(0);
-        }
-        oprot.writeBitSet(optionals, 1);
-        if (struct.isSetSuccess()) {
-          struct.success.write(oprot);
-        }
-      }
-
-      @Override
-      public void read(org.apache.thrift.protocol.TProtocol prot, getApkSimpleProperty_result struct) throws org.apache.thrift.TException {
-        TTupleProtocol iprot = (TTupleProtocol) prot;
-        BitSet incoming = iprot.readBitSet(1);
-        if (incoming.get(0)) {
-          struct.success = new ApkSimpleProperty();
-          struct.success.read(iprot);
-          struct.setSuccessIsSet(true);
-        }
       }
     }
 
@@ -956,7 +172,7 @@ public class GetApkInfo {
   public static class getApkFullProperty_args implements org.apache.thrift.TBase<getApkFullProperty_args, getApkFullProperty_args._Fields>, java.io.Serializable, Cloneable   {
     private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("getApkFullProperty_args");
 
-    private static final org.apache.thrift.protocol.TField APK_PATH_FIELD_DESC = new org.apache.thrift.protocol.TField("apkPath", org.apache.thrift.protocol.TType.STRING, (short)1);
+    private static final org.apache.thrift.protocol.TField APK_KEY_FIELD_DESC = new org.apache.thrift.protocol.TField("apkKey", org.apache.thrift.protocol.TType.STRING, (short)1);
 
     private static final Map<Class<? extends IScheme>, SchemeFactory> schemes = new HashMap<Class<? extends IScheme>, SchemeFactory>();
     static {
@@ -964,11 +180,11 @@ public class GetApkInfo {
       schemes.put(TupleScheme.class, new getApkFullProperty_argsTupleSchemeFactory());
     }
 
-    public String apkPath; // required
+    public String apkKey; // required
 
     /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
     public enum _Fields implements org.apache.thrift.TFieldIdEnum {
-      APK_PATH((short)1, "apkPath");
+      APK_KEY((short)1, "apkKey");
 
       private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
@@ -983,8 +199,8 @@ public class GetApkInfo {
        */
       public static _Fields findByThriftId(int fieldId) {
         switch(fieldId) {
-          case 1: // APK_PATH
-            return APK_PATH;
+          case 1: // APK_KEY
+            return APK_KEY;
           default:
             return null;
         }
@@ -1028,7 +244,7 @@ public class GetApkInfo {
     public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
     static {
       Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
-      tmpMap.put(_Fields.APK_PATH, new org.apache.thrift.meta_data.FieldMetaData("apkPath", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+      tmpMap.put(_Fields.APK_KEY, new org.apache.thrift.meta_data.FieldMetaData("apkKey", org.apache.thrift.TFieldRequirementType.DEFAULT, 
           new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
       metaDataMap = Collections.unmodifiableMap(tmpMap);
       org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(getApkFullProperty_args.class, metaDataMap);
@@ -1038,18 +254,18 @@ public class GetApkInfo {
     }
 
     public getApkFullProperty_args(
-      String apkPath)
+      String apkKey)
     {
       this();
-      this.apkPath = apkPath;
+      this.apkKey = apkKey;
     }
 
     /**
      * Performs a deep copy on <i>other</i>.
      */
     public getApkFullProperty_args(getApkFullProperty_args other) {
-      if (other.isSetApkPath()) {
-        this.apkPath = other.apkPath;
+      if (other.isSetApkKey()) {
+        this.apkKey = other.apkKey;
       }
     }
 
@@ -1059,40 +275,40 @@ public class GetApkInfo {
 
     @Override
     public void clear() {
-      this.apkPath = null;
+      this.apkKey = null;
     }
 
-    public String getApkPath() {
-      return this.apkPath;
+    public String getApkKey() {
+      return this.apkKey;
     }
 
-    public getApkFullProperty_args setApkPath(String apkPath) {
-      this.apkPath = apkPath;
+    public getApkFullProperty_args setApkKey(String apkKey) {
+      this.apkKey = apkKey;
       return this;
     }
 
-    public void unsetApkPath() {
-      this.apkPath = null;
+    public void unsetApkKey() {
+      this.apkKey = null;
     }
 
-    /** Returns true if field apkPath is set (has been assigned a value) and false otherwise */
-    public boolean isSetApkPath() {
-      return this.apkPath != null;
+    /** Returns true if field apkKey is set (has been assigned a value) and false otherwise */
+    public boolean isSetApkKey() {
+      return this.apkKey != null;
     }
 
-    public void setApkPathIsSet(boolean value) {
+    public void setApkKeyIsSet(boolean value) {
       if (!value) {
-        this.apkPath = null;
+        this.apkKey = null;
       }
     }
 
     public void setFieldValue(_Fields field, Object value) {
       switch (field) {
-      case APK_PATH:
+      case APK_KEY:
         if (value == null) {
-          unsetApkPath();
+          unsetApkKey();
         } else {
-          setApkPath((String)value);
+          setApkKey((String)value);
         }
         break;
 
@@ -1101,8 +317,8 @@ public class GetApkInfo {
 
     public Object getFieldValue(_Fields field) {
       switch (field) {
-      case APK_PATH:
-        return getApkPath();
+      case APK_KEY:
+        return getApkKey();
 
       }
       throw new IllegalStateException();
@@ -1115,8 +331,8 @@ public class GetApkInfo {
       }
 
       switch (field) {
-      case APK_PATH:
-        return isSetApkPath();
+      case APK_KEY:
+        return isSetApkKey();
       }
       throw new IllegalStateException();
     }
@@ -1134,12 +350,12 @@ public class GetApkInfo {
       if (that == null)
         return false;
 
-      boolean this_present_apkPath = true && this.isSetApkPath();
-      boolean that_present_apkPath = true && that.isSetApkPath();
-      if (this_present_apkPath || that_present_apkPath) {
-        if (!(this_present_apkPath && that_present_apkPath))
+      boolean this_present_apkKey = true && this.isSetApkKey();
+      boolean that_present_apkKey = true && that.isSetApkKey();
+      if (this_present_apkKey || that_present_apkKey) {
+        if (!(this_present_apkKey && that_present_apkKey))
           return false;
-        if (!this.apkPath.equals(that.apkPath))
+        if (!this.apkKey.equals(that.apkKey))
           return false;
       }
 
@@ -1159,12 +375,12 @@ public class GetApkInfo {
       int lastComparison = 0;
       getApkFullProperty_args typedOther = (getApkFullProperty_args)other;
 
-      lastComparison = Boolean.valueOf(isSetApkPath()).compareTo(typedOther.isSetApkPath());
+      lastComparison = Boolean.valueOf(isSetApkKey()).compareTo(typedOther.isSetApkKey());
       if (lastComparison != 0) {
         return lastComparison;
       }
-      if (isSetApkPath()) {
-        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.apkPath, typedOther.apkPath);
+      if (isSetApkKey()) {
+        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.apkKey, typedOther.apkKey);
         if (lastComparison != 0) {
           return lastComparison;
         }
@@ -1189,11 +405,11 @@ public class GetApkInfo {
       StringBuilder sb = new StringBuilder("getApkFullProperty_args(");
       boolean first = true;
 
-      sb.append("apkPath:");
-      if (this.apkPath == null) {
+      sb.append("apkKey:");
+      if (this.apkKey == null) {
         sb.append("null");
       } else {
-        sb.append(this.apkPath);
+        sb.append(this.apkKey);
       }
       first = false;
       sb.append(")");
@@ -1238,10 +454,10 @@ public class GetApkInfo {
             break;
           }
           switch (schemeField.id) {
-            case 1: // APK_PATH
+            case 1: // APK_KEY
               if (schemeField.type == org.apache.thrift.protocol.TType.STRING) {
-                struct.apkPath = iprot.readString();
-                struct.setApkPathIsSet(true);
+                struct.apkKey = iprot.readString();
+                struct.setApkKeyIsSet(true);
               } else { 
                 org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
               }
@@ -1261,9 +477,9 @@ public class GetApkInfo {
         struct.validate();
 
         oprot.writeStructBegin(STRUCT_DESC);
-        if (struct.apkPath != null) {
-          oprot.writeFieldBegin(APK_PATH_FIELD_DESC);
-          oprot.writeString(struct.apkPath);
+        if (struct.apkKey != null) {
+          oprot.writeFieldBegin(APK_KEY_FIELD_DESC);
+          oprot.writeString(struct.apkKey);
           oprot.writeFieldEnd();
         }
         oprot.writeFieldStop();
@@ -1284,12 +500,12 @@ public class GetApkInfo {
       public void write(org.apache.thrift.protocol.TProtocol prot, getApkFullProperty_args struct) throws org.apache.thrift.TException {
         TTupleProtocol oprot = (TTupleProtocol) prot;
         BitSet optionals = new BitSet();
-        if (struct.isSetApkPath()) {
+        if (struct.isSetApkKey()) {
           optionals.set(0);
         }
         oprot.writeBitSet(optionals, 1);
-        if (struct.isSetApkPath()) {
-          oprot.writeString(struct.apkPath);
+        if (struct.isSetApkKey()) {
+          oprot.writeString(struct.apkKey);
         }
       }
 
@@ -1298,8 +514,8 @@ public class GetApkInfo {
         TTupleProtocol iprot = (TTupleProtocol) prot;
         BitSet incoming = iprot.readBitSet(1);
         if (incoming.get(0)) {
-          struct.apkPath = iprot.readString();
-          struct.setApkPathIsSet(true);
+          struct.apkKey = iprot.readString();
+          struct.setApkKeyIsSet(true);
         }
       }
     }

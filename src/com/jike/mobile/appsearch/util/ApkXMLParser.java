@@ -1,7 +1,7 @@
 package com.jike.mobile.appsearch.util;
 
 
-import org.apache.commons.codec.digest.DigestUtils;
+//import org.apache.commons.codec.digest.DigestUtils;
 import org.dom4j.Attribute;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
@@ -14,10 +14,6 @@ import java.util.Iterator;
 import java.util.List;
 
 public class ApkXMLParser {
-    
-    static ArrayList<String> userPermissionArrayList = new ArrayList<String>();
-    static ArrayList<String> userFeatureArrayList = new ArrayList<String>();
-
     /**
      * @param args
      */
@@ -51,7 +47,8 @@ public class ApkXMLParser {
         return appName;
     }
     public static ManifestProperty parserManifestXML(File xmlFile) {
-
+        ArrayList<String> userPermissionArrayList = new ArrayList<String>();
+        ArrayList<String> userFeatureArrayList = new ArrayList<String>();
         SAXReader saxReader = new SAXReader();
         ManifestProperty manifestProperty = new ManifestProperty();
         try {
@@ -142,10 +139,10 @@ public class ApkXMLParser {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-        String waitSHstr = manifestProperty.getPackageName() + ":"
-                + manifestProperty.getVersionCode() + ":" + manifestProperty.getVersionName()
-                + "\n" + getSig.getSignatureString(xmlFile.getAbsolutePath());
-        manifestProperty.setSignature(DigestUtils.shaHex(waitSHstr).toUpperCase());
+//        String waitSHstr = manifestProperty.getPackageName() + ":"
+//                + manifestProperty.getVersionCode() + ":" + manifestProperty.getVersionName()
+//                + "\n" + getSig.getSignatureString(xmlFile.getAbsolutePath());
+//        manifestProperty.setSignature(DigestUtils.shaHex(waitSHstr).toUpperCase());
         return manifestProperty;
     }
 

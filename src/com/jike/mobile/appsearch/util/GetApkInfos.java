@@ -1,16 +1,22 @@
 
 package com.jike.mobile.appsearch.util;
 
+import com.jike.mobile.appsearch.datebase.ApkInfoBuilder;
+import com.jike.mobile.appsearch.thirft.ApkFullProperty;
+
 import brut.androlib.AndrolibException;
 
+import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.io.FileUtils;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
-import java.awt.List;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FilenameFilter;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -19,32 +25,36 @@ import java.util.Map;
 public class GetApkInfos {
     private static final Logger log = LogManager.getLogger(GetApkInfos.class); 
 
-    private static String apkPath;
 
     public final static String POSTFIX = ".apk";
 
-    static File[] decompileFiles;
 
-    private static int flag = 0;
 
-    private static String outputPath = "";
+    private static String outputPath = "./deFiles/";
+
+
+    private static String defalut_icon = "defalut_icon.png";
 
     /**
      * @param args
      */
     public static void main(String[] args) {
-        apkPath = "D:\\apks\\9089465703133677000.apk";
+        String apkPath = "D:\\apks\\carpenter.apk";
         // decompileApk(apkPath);
+        apkPath="D:\\apks\\apks9631\\apks9631\\wsv.slayton.apk";
+        System.out.println("getApkMD5 = "+getApkMD5(apkPath));
         getApkInfoProperty(apkPath);
     }
 
-    private static File decompileApk(String apkPath) {
+    
+    
+    private static File decompileApk(File apkFile) {
         
         File rootFile = null;
-        if (!apkPath.endsWith(POSTFIX)) {
+        if (!apkFile.getName().endsWith(POSTFIX)) {
             return null;
         }
-        File apkFile = new File(apkPath);
+//        File apkFile = new File(apkPath);
         log.debug("decompileApk Start……"+apkFile.getAbsolutePath());
         String appName = (apkFile.getName().substring(0, apkFile.getName().length() - 4)).trim();
         try {
@@ -53,19 +63,14 @@ public class GetApkInfos {
                         "decode", "-f", apkFile.getAbsolutePath(), outputPath + appName
                 });
                 rootFile = new File(outputPath + appName);
-                flag = 0;
             } else {
-                flag = 1;
             }
         } catch (AndrolibException e) {
             e.printStackTrace();
-            flag = 1;
         } catch (IOException e) {
             e.printStackTrace();
-            flag = 1;
         } catch (InterruptedException e) {
             e.printStackTrace();
-            flag = 1;
         }
         log.debug("decompileApk end……");
         return rootFile;
@@ -76,8 +81,9 @@ public class GetApkInfos {
         ArrayList<File> iconFileList = new ArrayList<File>();
         File resFile = new File(file.getAbsolutePath() + "/" + "res");
         try {
-            if (!FileUtils.directoryContains(file, resFile)) {
-                return null;
+            if (!FileUtils.directoryContains(file, resFile)&&iconString==null) {
+                maxIconFile=new File(defalut_icon);
+                return maxIconFile;
             }
             File[] files = resFile.listFiles(new FilenameFilter() {
                 @Override
@@ -92,19 +98,20 @@ public class GetApkInfos {
                 File iconFile = new File(drawableFile.getAbsolutePath() + "/" + iconString + ".png");
                 if (FileUtils.directoryContains(drawableFile, iconFile)) {
                     iconFileList.add(iconFile);
+                    System.out.println("find icon .");
                 }
             }
-            File drawableFile = new File(file.getAbsolutePath() + "/res/drawable");
-            File iconFile = new File(drawableFile.getAbsolutePath() + "/" + iconString + ".png");
-            System.out.println(drawableFile.getAbsolutePath());
-
-            if (FileUtils.directoryContains(drawableFile, iconFile)) {
-                System.out.println("find icon");
-            } else {
-                System.err.println("cann't find icon res ");
-            }
+            
+//            File drawableFile = new File(file.getAbsolutePath() + "/res/drawable");
+//            File iconFile = new File(drawableFile.getAbsolutePath() + "/" + iconString + ".png");
+//            System.out.println(drawableFile.getAbsolutePath());
+//
+//            if (FileUtils.directoryContains(drawableFile, iconFile)) {
+//                System.out.println("find icon");
+//            } else {
+//                System.err.println("cann't find icon res ");
+//            }
         } catch (IOException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
         // get bigest icon;
@@ -119,7 +126,7 @@ public class GetApkInfos {
             System.out.println(f.getAbsolutePath() + ". size : " + f.length());
         }
 
-        return maxIconFile;
+        return maxIconFile==null?new File(defalut_icon):maxIconFile;
 
     }
     public static Map<String, String> getAppNameMap(File file, String appNameString) {
@@ -147,37 +154,140 @@ public class GetApkInfos {
                 }
             }
         } catch (IOException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
         return appNameMap;
     }
 
+    public static String getApkMD5(String apkPath ) {
+        File apkFile = new File(apkPath);
+        return getApkMD5(apkFile);
+    }
+    public static String getApkMD5(File apkFile ) {
+        String hashcodeString = "";
+        try {
+            hashcodeString = getApkMD5(new FileInputStream(apkFile));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        return hashcodeString;
+    }
+
+    public static String getApkMD5(InputStream apkFileStream) {
+        String hashcodeString = "";
+        try {
+            hashcodeString = DigestUtils.md5Hex(apkFileStream);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return hashcodeString;
+    }
     public static ApkInfoProperty getApkInfoProperty(String apkPath) {
+        File apkFile = new File(apkPath);
+        return getApkInfoProperty(apkFile);
+    }
+    public static ApkInfoProperty getApkInfoProperty(File apkFile) {
+        
+        
         ApkInfoProperty apkInfoProperty = new ApkInfoProperty();
-        File rootFile = decompileApk(apkPath);
+        apkInfoProperty.MD5 = getApkMD5(apkFile);
+        //TODO verify MD5, if exist in DB, then , return DB result;
+        boolean isAnalyzed=ApkInfoBuilder.checkApkIsAnalyzed(apkInfoProperty.MD5);
+        if (isAnalyzed) {
+            log.debug("isAnalyzed");
+            ApkFullProperty apkFullProperty = ApkInfoBuilder.getAPKInfoFromDB(apkInfoProperty.MD5);
+            ManifestProperty manifestProperty = new ManifestProperty();
+            manifestProperty.packageName=apkFullProperty.packageName;
+            manifestProperty.versionName=apkFullProperty.versionName;
+            manifestProperty.versionCode=apkFullProperty.versionCode;
+            
+            manifestProperty.usesPermissonArrayList=(ArrayList<String>)apkFullProperty.usesPermissonList;
+            manifestProperty.usesFeatureArrayList=(ArrayList<String>)apkFullProperty.usesFeatureList;
+            
+            manifestProperty.minSdkVersion=apkFullProperty.minSDK;
+            manifestProperty.targetSdkVersion=apkFullProperty.targetSDK;
+            
+            manifestProperty.smallScreen=apkFullProperty.smallScreen;
+            manifestProperty.normalScreen=apkFullProperty.normalScreen;
+            manifestProperty.largeScreen=apkFullProperty.largeScreen;
+            manifestProperty.xlargeScreens=apkFullProperty.xlargeScreen;
+            
+            apkInfoProperty.manifestProperty = manifestProperty;
+            
+            apkInfoProperty.MD5 = apkFullProperty.signature;
+            apkInfoProperty.iconStream=apkFullProperty.icon;
+            apkInfoProperty.appNameMap = apkFullProperty.appName;
+            apkInfoProperty.adsList=(ArrayList<String>)apkFullProperty.AdsList;
+            apkInfoProperty.apkSize=apkFullProperty.apkSize;
+            apkInfoProperty.securityLevel=apkFullProperty.securityLevel;
+            log.debug("get from DB");
+            return apkInfoProperty;
+        }
+        File rootFile = decompileApk(apkFile);
+        if (rootFile==null) {
+            System.err.println("failed @ rootFile==null");
+            return null;
+        }
         ManifestProperty manifestProperty = getManifestProperty(rootFile);
         apkInfoProperty.manifestProperty = manifestProperty;
         File iconFile = getIconRes(rootFile,manifestProperty.getIconString());
+        log.debug("getIconRes");
 //        iconFile.
+        if (iconFile==null&&iconFile.length()<1) {
+            System.err.println("iconFile==null");
+            return null;
+        }
         try {
             apkInfoProperty.iconStream = ByteBuffer.wrap(FileUtils.readFileToByteArray(iconFile));
         } catch (IOException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
-        System.out.println(getAppNameMap(rootFile, manifestProperty.getAppName()));
+        log.debug("getAppNameMap "+getAppNameMap(rootFile, manifestProperty.getAppName()));
         apkInfoProperty.appNameMap = getAppNameMap(rootFile, manifestProperty.getAppName());
+        apkInfoProperty.adsList = DetectAds.getAdsList(rootFile.getAbsolutePath());
+        log.debug("getAdsList");
+        apkInfoProperty.apkSize = (double)apkFile.length()/1000;
+        log.debug("delete begin ..");
         CommonUtils.deleteFiles(rootFile);
         log.debug(" delete rootFile " + rootFile.getAbsolutePath());
+        if (!isAnalyzed) {
+            ApkFullProperty apkFullProperty = new ApkFullProperty();
+            apkFullProperty.packageName=manifestProperty.getPackageName();
+            apkFullProperty.versionName=manifestProperty.getVersionName();
+            apkFullProperty.versionCode=manifestProperty.getVersionCode();
+            apkFullProperty.usesPermissonList=manifestProperty.getUsesPermissonArrayList();
+            apkFullProperty.usesFeatureList=manifestProperty.getUsesFeatureArrayList();
+            
+            apkFullProperty.minSDK=manifestProperty.getMinSdkVersion();
+            apkFullProperty.targetSDK=manifestProperty.getTargetSdkVersion();
+            
+            apkFullProperty.smallScreen=manifestProperty.isSmallScreen();
+            apkFullProperty.normalScreen=manifestProperty.isNormalScreen();
+            apkFullProperty.largeScreen=manifestProperty.isLargeScreen();
+            apkFullProperty.xlargeScreen=manifestProperty.isxLargeScreen();
+            //TODO
+            apkFullProperty.signature=apkInfoProperty.getMD5();
+            
+            apkFullProperty.icon = apkInfoProperty.getIconStream();
+            apkFullProperty.appName = apkInfoProperty.getAppNameMap();
+            apkFullProperty.AdsList = apkInfoProperty.getAdsList();
+            apkFullProperty.apkSize = apkInfoProperty.getApkSize();
+            apkFullProperty.securityLevel = apkInfoProperty.getSecurityLevel();
+            ApkInfoBuilder.SaveApkInfoToDB(apkFullProperty);
+            log.debug("save to DB");
+        }
         return apkInfoProperty;
     }
+    
     public static ManifestProperty getManifestProperty(File rootFile) {
 //        File rootFile = decompileApk(apkPath);
         log.debug("getManifestProperty Start……");
         ManifestProperty mManifestProperty = new ManifestProperty();
         File manifestXMLFile = null;
-        decompileFiles = rootFile.listFiles(new FilenameFilter() {
+        if (rootFile.exists()==false) {
+            return null;
+        }
+        File[]  decompileFiles = rootFile.listFiles(new FilenameFilter() {
             @Override
             public boolean accept(File arg0, String arg1) {
                 if ("res".equalsIgnoreCase(arg1)) {
