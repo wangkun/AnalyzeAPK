@@ -29,32 +29,32 @@ public class GetApkInfosClient {
         String apkPath="D:\\apks\\apks9631\\apks9631\\wsv.slayton.apk";
         
         getAPKinfo(apkPath);
-//        String filePathString="D:/apks/apks9631/apks9631";
-//        File list=new File("D:/apks/apks9631/list.txt");
-//        BufferedReader br = null;
-//        try {
-//            br = new BufferedReader(new InputStreamReader(  
-//                    new FileInputStream("D:/apks/apks9631/list.txt")));
-//        } catch (FileNotFoundException e) {
-//            // TODO Auto-generated catch block
-//            e.printStackTrace();
-//        }  
-//  
-//        try {
-//            for (String line = br.readLine(); line != null; line = br.readLine()) {  
-//                getAPKinfo(filePathString+"/"+line); 
-//            }
-//        } catch (IOException e) {
-//            // TODO Auto-generated catch block
-//            e.printStackTrace();
-//        }  
-//        try {
-//            br.close();
-//        } catch (IOException e) {
-//            // TODO Auto-generated catch block
-//            e.printStackTrace();
-//        }  
-//        analyzeAds.SortMapValue();
+        String filePathString="D:/apks/apks9631/apks9631";
+        File list=new File("D:/apks/apks9631/list.txt");
+        BufferedReader br = null;
+        try {
+            br = new BufferedReader(new InputStreamReader(  
+                    new FileInputStream("D:/apks/apks9631/list.txt")));
+        } catch (FileNotFoundException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }  
+  
+        try {
+            for (String line = br.readLine(); line != null; line = br.readLine()) {  
+                getAPKinfo(filePathString+"/"+line); 
+            }
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }  
+        try {
+            br.close();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }  
+        analyzeAds.SortMapValue();
     }
     public static void getAPKinfo(String apkPath) {
         

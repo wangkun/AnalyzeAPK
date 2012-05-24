@@ -1,7 +1,5 @@
 package com.jike.mobile.appsearch.util;
 
-import org.jf.smali.smaliParser.integer_literal_return;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;

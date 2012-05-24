@@ -42,7 +42,8 @@ public class GetApkInfos {
         String apkPath = "D:\\apks\\carpenter.apk";
         // decompileApk(apkPath);
         apkPath="D:\\apks\\apks9631\\apks9631\\wsv.slayton.apk";
-        System.out.println("getApkMD5 = "+getApkMD5(apkPath));
+        apkPath = "12154871019707775886";
+//        System.out.println("getApkMD5 = "+getApkMD5(apkPath));
         getApkInfoProperty(apkPath);
     }
 
@@ -60,7 +61,7 @@ public class GetApkInfos {
         try {
             if (apkFile.exists()) {
                 brut.apktool.Main.main(new String[] {
-                        "decode", "-f", apkFile.getAbsolutePath(), outputPath + appName
+                        "d", "-f", apkFile.getAbsolutePath(), outputPath + appName
                 });
                 rootFile = new File(outputPath + appName);
             } else {
@@ -80,39 +81,25 @@ public class GetApkInfos {
         File maxIconFile = null;
         ArrayList<File> iconFileList = new ArrayList<File>();
         File resFile = new File(file.getAbsolutePath() + "/" + "res");
-        try {
-            if (!FileUtils.directoryContains(file, resFile)&&iconString==null) {
-                maxIconFile=new File(defalut_icon);
-                return maxIconFile;
-            }
-            File[] files = resFile.listFiles(new FilenameFilter() {
-                @Override
-                public boolean accept(File dir, String name) {
-                    if (name.startsWith("drawable")) {
-                        return true;
-                    }
-                    return false;
+        if (!resFile.exists()&&iconString==null) {
+            maxIconFile=new File(defalut_icon);
+            return maxIconFile;
+        }
+        File[] files = resFile.listFiles(new FilenameFilter() {
+            @Override
+            public boolean accept(File dir, String name) {
+                if (name.startsWith("drawable")) {
+                    return true;
                 }
-            });
-            for (File drawableFile : files) {
-                File iconFile = new File(drawableFile.getAbsolutePath() + "/" + iconString + ".png");
-                if (FileUtils.directoryContains(drawableFile, iconFile)) {
-                    iconFileList.add(iconFile);
-                    System.out.println("find icon .");
-                }
+                return false;
             }
-            
-//            File drawableFile = new File(file.getAbsolutePath() + "/res/drawable");
-//            File iconFile = new File(drawableFile.getAbsolutePath() + "/" + iconString + ".png");
-//            System.out.println(drawableFile.getAbsolutePath());
-//
-//            if (FileUtils.directoryContains(drawableFile, iconFile)) {
-//                System.out.println("find icon");
-//            } else {
-//                System.err.println("cann't find icon res ");
-//            }
-        } catch (IOException e) {
-            e.printStackTrace();
+        });
+        for (File drawableFile : files) {
+            File iconFile = new File(drawableFile.getAbsolutePath() + "/" + iconString + ".png");
+            if (iconFile.exists()) {
+                iconFileList.add(iconFile);
+                System.out.println("find icon .");
+            }
         }
         // get bigest icon;
         long maxSize = 0;
@@ -129,32 +116,36 @@ public class GetApkInfos {
         return maxIconFile==null?new File(defalut_icon):maxIconFile;
 
     }
+    public static String getAppVersionName(File file, String appNameString) {
+        String appVersionName = "";
+        File resFile = new File(file.getAbsolutePath() + "/" + "res/values/strings.xml");
+        if (resFile.exists()) {
+            appVersionName = ApkXMLParser.parserStringsXML(resFile, appNameString);
+        }
+        return appVersionName;
+    }
     public static Map<String, String> getAppNameMap(File file, String appNameString) {
         Map<String, String>  appNameMap = new HashMap<String, String>();//<String, String>;
         File resFile = new File(file.getAbsolutePath() + "/" + "res");
-        try {
-            if (!FileUtils.directoryContains(file, resFile)) {
-                return null;
-            }
-            File[] files = resFile.listFiles(new FilenameFilter() {
-                @Override
-                public boolean accept(File dir, String name) {
-                    if (name.startsWith("values")) {
-                        return true;
-                    }
-                    return false;
+        if (!resFile.exists()) {
+            return null;
+        }
+        File[] files = resFile.listFiles(new FilenameFilter() {
+            @Override
+            public boolean accept(File dir, String name) {
+                if (name.startsWith("values")) {
+                    return true;
                 }
-            });
-            for (File valuesFile : files) {
-                String fileName = valuesFile.getName();
-                File stringsFile = new File(valuesFile.getAbsoluteFile()+ "/" + "strings.xml");
-                if (FileUtils.directoryContains(valuesFile, stringsFile)) {
-                    String appName = ApkXMLParser.parserStringsXML(stringsFile, appNameString);
-                    appNameMap.put(fileName, appName);
-                }
+                return false;
             }
-        } catch (IOException e) {
-            e.printStackTrace();
+        });
+        for (File valuesFile : files) {
+            String fileName = valuesFile.getName();
+            File stringsFile = new File(valuesFile.getAbsoluteFile()+ "/" + "strings.xml");
+            if (stringsFile.exists()) {
+                String appName = ApkXMLParser.parserStringsXML(stringsFile, appNameString);
+                appNameMap.put(fileName, appName);
+            }
         }
         return appNameMap;
     }
@@ -183,13 +174,28 @@ public class GetApkInfos {
         return hashcodeString;
     }
     public static ApkInfoProperty getApkInfoProperty(String apkPath) {
-        File apkFile = new File(apkPath);
+            File apkFile = GetApkFileFromCassandra.getAPK(apkPath);
+//        apkFile = getApkFileByKey(apkPath);//TODO 
+            if (!apkFile.exists()) {
+                return null;
+            }
         return getApkInfoProperty(apkFile);
     }
+    
+//    public static File getApkFileByKey(String key){
+//        File apkFile = null;
+//        apkFile=GetApkFileFromCassandra.getAPK(key);
+//        
+//        return apkFile;
+//    }
+    
     public static ApkInfoProperty getApkInfoProperty(File apkFile) {
         
         
         ApkInfoProperty apkInfoProperty = new ApkInfoProperty();
+        if (!apkFile.exists()) {
+            return null;
+        }
         apkInfoProperty.MD5 = getApkMD5(apkFile);
         //TODO verify MD5, if exist in DB, then , return DB result;
         boolean isAnalyzed=ApkInfoBuilder.checkApkIsAnalyzed(apkInfoProperty.MD5);
@@ -229,6 +235,10 @@ public class GetApkInfos {
             return null;
         }
         ManifestProperty manifestProperty = getManifestProperty(rootFile);
+        if (manifestProperty.versionName.startsWith("@string")) {
+            manifestProperty.versionName=getAppVersionName(rootFile, manifestProperty.versionName.split("/")[1]);
+        }
+        
         apkInfoProperty.manifestProperty = manifestProperty;
         File iconFile = getIconRes(rootFile,manifestProperty.getIconString());
         log.debug("getIconRes");
@@ -247,9 +257,7 @@ public class GetApkInfos {
         apkInfoProperty.adsList = DetectAds.getAdsList(rootFile.getAbsolutePath());
         log.debug("getAdsList");
         apkInfoProperty.apkSize = (double)apkFile.length()/1000;
-        log.debug("delete begin ..");
-        CommonUtils.deleteFiles(rootFile);
-        log.debug(" delete rootFile " + rootFile.getAbsolutePath());
+        
         if (!isAnalyzed) {
             ApkFullProperty apkFullProperty = new ApkFullProperty();
             apkFullProperty.packageName=manifestProperty.getPackageName();
@@ -276,6 +284,14 @@ public class GetApkInfos {
             ApkInfoBuilder.SaveApkInfoToDB(apkFullProperty);
             log.debug("save to DB");
         }
+        log.debug("delete begin ..");
+        CommonUtils.deleteFiles(rootFile);
+        log.debug(" delete rootFile " + rootFile.getAbsolutePath());
+        //TODO
+        if (!Constants.debugAtLocal) {
+//            CommonUtils.deleteFiles(apkFile);
+        }
+//        CommonUtils.deleteFiles(apkFile);
         return apkInfoProperty;
     }
     

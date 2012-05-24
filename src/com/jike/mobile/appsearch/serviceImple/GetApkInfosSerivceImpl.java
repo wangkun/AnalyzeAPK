@@ -2,12 +2,16 @@ package com.jike.mobile.appsearch.serviceImple;
 import com.jike.mobile.appsearch.thirft.*;
 import com.jike.mobile.appsearch.util.ApkInfoProperty;
 import com.jike.mobile.appsearch.util.DecompileXML;
+import com.jike.mobile.appsearch.util.GetApkFileFromCassandra;
 import com.jike.mobile.appsearch.util.GetApkInfos;
 import com.jike.mobile.appsearch.util.ManifestProperty;
 
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 import org.apache.thrift.TException;
 
 public class GetApkInfosSerivceImpl implements GetApkInfo.Iface{
+    private static final Logger log = LogManager.getLogger(GetApkInfosSerivceImpl.class);
 //    @Override
 //    public ApkSimpleProperty getApkSimpleProperty(String apkPath) throws TException {
 //        ApkSimpleProperty apkSimpleProperty = new ApkSimpleProperty();
@@ -34,10 +38,15 @@ public class GetApkInfosSerivceImpl implements GetApkInfo.Iface{
     @Override
     public ApkFullProperty getApkFullProperty(String apkPath) throws TException {
         ApkFullProperty apkFullProperty = new ApkFullProperty();
+        log.debug("getApkFullProperty apkKey="+apkPath);
+        if (apkPath.equalsIgnoreCase("")||apkPath==null||apkPath.length()<1) {
+            log.debug("apkPath==null");
+            return apkFullProperty;
+        }
         ApkInfoProperty apkInfoProperty = GetApkInfos.getApkInfoProperty(apkPath);
         if (apkInfoProperty==null) {
             System.err.println("get failed @ getApkInfoProperty");
-            return null;
+            return apkFullProperty;
         }
         ManifestProperty manifestProperty = apkInfoProperty.getManifestProperty();
         

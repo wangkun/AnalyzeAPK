@@ -2,7 +2,7 @@
 package com.jike.mobile.appsearch.util;
 
 
-import com.org.xmlpull.v1.XmlPullParser;
+import org.xmlpull.v1.XmlPullParser;
 
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.log4j.LogManager;
@@ -15,8 +15,8 @@ import org.dom4j.io.SAXReader;
 
 import zip.tool.Decompression;
 
-import android.content.res.AXmlResourceParser;
-import android.util.TypedValue;
+import android.content.res.local.AXmlResourceParser;
+import android.util.local.TypedValue;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;

@@ -10,6 +10,7 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
+import org.jf.dexlib.ClassDefItem.StaticFieldInitializer;
 import org.jf.smali.smaliParser.nonvoid_type_descriptor_return;
 
 import java.io.ByteArrayInputStream;
@@ -33,14 +34,30 @@ public class ApkInfoBuilder {
 
     private static final Logger log = LogManager
             .getLogger(ApkInfoBuilder.class);
-    final static String host = "127.0.0.1";
-    final static String databaseName = "jike";
-    final static String databaseUserName = "root";
-    final static String databaseUserPassword = "123456";
-    final static String tableName = "analyzeapk";
+//    final static String host = "127.0.0.1";
+//    final static String databaseName = "jike";
+//    final static String databaseUserName = "root";
+//    final static String databaseUserPassword = "123456";
+    final static String proFilePath = "DBInfo.properties";
+    static String host = "127.0.0.1";
+    static String host_bk = "58.68.249.9";
+    static String databaseName = "appsearch_mobile";
+    static String databaseUserName = "jike";
+    static String databaseUserPassword = "jikemobile";
+    static String tableName = "analyzeapk";
     private static File iconFile = new File("defalut_icon.png");
     
+    private static void initDB() {
+        // TODO Auto-generated method stub
+        host = CommonUtils.getPropertiesValue("host", proFilePath);
+        host_bk = CommonUtils.getPropertiesValue("host_bk", proFilePath);
+        databaseName = CommonUtils.getPropertiesValue("databaseName", proFilePath);
+        databaseUserName = CommonUtils.getPropertiesValue("databaseUserName", proFilePath);
+        databaseUserPassword = CommonUtils.getPropertiesValue("databaseUserPassword", proFilePath);
+        tableName = CommonUtils.getPropertiesValue("tableName", proFilePath);
+    }
     public static DatabaseManager ConnectDB(){
+        initDB();
         if (databaseName == null || databaseUserName == null
                 || databaseUserPassword == null || tableName == null
                 ) {
@@ -61,10 +78,21 @@ public class ApkInfoBuilder {
         log.debug("databaseManager.connectDatabase()  "
                 + re);
         if (re==-1) {
-            return null;
+            log.debug("retry host_bk");
+            databaseManager.setConnectionString("jdbc:mysql://"+host_bk+":3306/"
+                    + databaseName + "?useUnicode=true&characterEncoding=utf8");
+            databaseManager.setUserName(databaseUserName);
+            databaseManager.setPassword(databaseUserPassword);
+            re = databaseManager.connectDatabase();
+            if(re==-1){   
+                log.debug("host_bk databaseManager.connectDatabase()  "
+                        + re);
+                return null;
+            }
         }
         return databaseManager;
     }
+    
     public static void CloseDB(DatabaseManager databaseManager){
         try {
             if (databaseManager != null) {

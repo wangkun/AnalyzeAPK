@@ -126,6 +126,22 @@ public class CommonUtils {
         }
         return hm;
     }
+    public static String getPropertiesValue(String name,String proFilePath) {
+//        String proFilePath = "PrivacyInfo.properties";
+        InputStream in = null;
+        String value = null;
+        try {
+            in = new BufferedInputStream(new FileInputStream(proFilePath));
+            ResourceBundle bundle = new PropertyResourceBundle(in);
+            value = bundle.getString(name);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        in = null;
+        return value;
+    }
     static String str = "[android.permission.WRITE_EXTERNAL_STORAGE, com.android.launcher.permission.INSTALL_SHORTCUT, android.permission.INTERNET, android.permission.ACCESS_FINE_LOCATION, android.permission.ACCESS_COARSE_LOCATION, android.permission.CALL_PHONE, android.permission.SEND_SMS, android.permission.VIBRATE, android.permission.ACCESS_WIFI_STATE, android.permission.CHANGE_WIFI_STATE, android.permission.READ_PHONE_STATE, android.permission.PERSISTENT_ACTIVITY, android.permission.RESTART_PACKAGES, android.permission.GET_TASKS, android.permission.ACCESS_NETWORK_STATE, android.permission.RECORD_AUDIO, android.permission.ACCESS_FINE_LOCATION, android.permission.INTERNET, android.permission.ACCESS_COARSE_LOCATION, android.permission.WRITE_EXTERNAL_STORAGE, android.permission.WRITE_EXTERNAL_STORAGE, com.android.launcher.permission.INSTALL_SHORTCUT, android.permission.INTERNET, android.permission.ACCESS_FINE_LOCATION, android.permission.ACCESS_COARSE_LOCATION, android.permission.CALL_PHONE, android.permission.SEND_SMS, android.permission.VIBRATE, android.permission.ACCESS_WIFI_STATE, android.permission.CHANGE_WIFI_STATE, android.permission.READ_PHONE_STATE, android.permission.PERSISTENT_ACTIVITY, android.permission.RESTART_PACKAGES, android.permission.GET_TASKS, android.permission.ACCESS_NETWORK_STATE, android.permission.RECORD_AUDIO]";
     public static ArrayList<String> getArrayListFromString(String str){
         ArrayList<String> strArrayList = new ArrayList<String>();
