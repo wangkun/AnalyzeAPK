@@ -6,9 +6,9 @@ import java.util.ArrayList;
 public class ManifestProperty {
     
     
-    String packageName;
-    String versionName;
-    String versionCode;
+    String packageName = "";
+    String versionName = "";
+    String versionCode = "";
 //    String Signature;
     //TO DO : permission list ; Screen support ; minSDK; targetSDK; use feature List;
 
@@ -52,8 +52,8 @@ public class ManifestProperty {
 //    }
 
 
-    String iconString=null;
-    String appNameString;
+    String iconString="";
+    String appNameString="";
     
     public String getIconString() {
         return iconString;

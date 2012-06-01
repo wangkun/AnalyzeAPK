@@ -138,22 +138,24 @@ public class GetApkFileFromCassandra {
             byte[] allByte = new byte[0];
             for (int i = 0; i < blockNumbers; i++) {
                 ColumnPath column_path = new ColumnPath();
-                columnName = columnName + "_" + i;
-                column_path.setColumn(columnName.getBytes());
+                String columnName_No = columnName + "_" + i;
+                column_path.setColumn(columnName_No.getBytes());
                 column_path.setColumn_family(family);
                 ColumnOrSuperColumn column=client.get(ByteBuffer.wrap(key_user_id.getBytes()), column_path, ConsistencyLevel.ONE);
                 byte[] data=column.getColumn().getValue();
                 if (allByte==null) {
                     allByte=data;
                 }else {
-                    byte[] lastByte = allByte;
+                    byte[] lastByte = new byte[allByte.length];
+                    System.arraycopy(allByte,0,lastByte,0,allByte.length);
                     allByte = new byte[data.length+allByte.length];
                     System.arraycopy(lastByte,0,allByte,0,lastByte.length);
                     System.arraycopy(data,0,allByte,lastByte.length,data.length);
                 }
             }
-            apkFile=writeFile(allByte,apksPath+key_user_id+".apk");
+            apkFile=writeFile(allByte,apksPath+System.currentTimeMillis()+"_"+key_user_id+".apk");
             System.out.println("writeFile "+apkFile.getAbsolutePath());
+            log.debug("writeFile "+apkFile.getAbsolutePath());
 
             
             tr.close();
@@ -227,8 +229,8 @@ public class GetApkFileFromCassandra {
      * @param args
      */
     public static void main(String[] args) {
-//        getAPK("a1");
-        getAPK("10238749183806112220");
+//        getAPK("a1");7205617736938680212     ,2 block_num
+        getAPK("7205617736938680212");
     }
 
 }

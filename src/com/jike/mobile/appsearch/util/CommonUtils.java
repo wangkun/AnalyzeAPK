@@ -27,6 +27,10 @@ public class CommonUtils {
     private static final Logger log = LogManager.getLogger(CommonUtils.class);
 
     public static void deleteFiles(File file) {
+//        System.gc();
+        if (file==null) {
+            return;
+        }
         if (file.exists()) { // 判断文件是否存在
             if (file.isFile()) { // 判断是否是文件
                 file.delete(); // delete()方法 你应该知道 是删除的意思;
@@ -42,6 +46,23 @@ public class CommonUtils {
         }
         // System.out.println(file.getAbsolutePath()+" 删除完毕!" );
     }
+    
+    /**
+    * try to delete given file , try 10 times
+    * @param f
+    * @return true if file deleted success, nor false;
+    */
+    public static boolean forceDelete(File f) {
+        boolean result = false;
+        int tryCount = 0;
+        while (!result && tryCount++ < 10) {
+            log.debug("try to delete file " + f.getName() + " cnt:" + tryCount);
+            System.gc();
+            result = f.delete();
+        }
+        return result;
+    }
+
 
     public static String StrArrayListToString(ArrayList<String> strArrayList) {
         String reString = "";

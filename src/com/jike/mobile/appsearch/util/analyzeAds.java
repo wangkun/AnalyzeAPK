@@ -1,5 +1,8 @@
 package com.jike.mobile.appsearch.util;
 
+import org.antlr.runtime.DFA;
+
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -9,13 +12,15 @@ import java.util.Map;
 
 public class analyzeAds {
     
-    
+    public static int allList;
     public static Map<String, Integer> AdsFrequency = new HashMap<String, Integer>();
+    public static DecimalFormat df = new DecimalFormat("#0.00");
     public static void getAdsFrequency(List<String> AdsList){
         if (AdsList!=null&&AdsList.size()==0) {
             return;
         }
         for(String adsStr:AdsList){
+            allList++;
             if (AdsFrequency.containsKey(adsStr)) {
                 int i=AdsFrequency.get(adsStr)+1;
                 AdsFrequency.put(adsStr, i);
@@ -50,7 +55,7 @@ public class analyzeAds {
             //排序后
             for (int i = 0; i < infoIds.size(); i++) {
                 String id = infoIds.get(i).toString();
-                System.out.println(id);
+                System.out.println(id +" "+ df.format(infoIds.get(i).getValue()*100.0/allList)+"%");
             }
           //根据key排序
           //a 3

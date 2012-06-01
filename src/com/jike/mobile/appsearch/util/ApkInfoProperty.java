@@ -1,5 +1,10 @@
 package com.jike.mobile.appsearch.util;
 
+import org.apache.cassandra.cli.CliParser.newColumnFamily_return;
+import org.apache.commons.io.FileUtils;
+
+import java.io.File;
+import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -11,13 +16,30 @@ public class ApkInfoProperty {
 //14: required map<string,string> appName; 
 //15: required i32 securityLevel;
 //16: required bool isHasAds=false;
-    ManifestProperty manifestProperty = null;
-    ByteBuffer iconStream ;
-    Map<String, String> appNameMap;
-    ArrayList<String> adsList;
+    
+    ManifestProperty manifestProperty = new ManifestProperty();
+    ByteBuffer iconStream =null;
+    Map<String, String> appNameMap = new HashMap<String, String>();
+    ArrayList<String> adsList = new ArrayList<String>();
     Double apkSize=0.0;
     int securityLevel = 0 ;
     String MD5="";
+    
+    public ApkInfoProperty() {
+        // TODO Auto-generated constructor stub
+        manifestProperty = new ManifestProperty();
+        try {
+            iconStream = ByteBuffer.wrap(FileUtils.readFileToByteArray(new File(Constants.default_icon_file)));
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        appNameMap = new HashMap<String, String>();
+        adsList = new ArrayList<String>();
+        apkSize=0.0;
+        securityLevel = 0 ;
+        MD5="";
+    }
     public String getMD5() {
         return MD5;
     }

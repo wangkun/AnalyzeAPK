@@ -385,10 +385,15 @@ public class ApkInfoBuilder {
                         apkFullProperty.icon = ByteBuffer.wrap(FileUtils.readFileToByteArray(iconFile));
                     }
                     Map<String, String> appnameMap = new HashMap<String, String>();
-                    if (!re.getString("appname_cn").equalsIgnoreCase("null")&&re.getString("appname_cn").length()>0) {
+                    if (re.getString("appname_cn")!=null&&re.getString("appname_cn").length()>1&&!re.getString("appname_cn").equalsIgnoreCase("null")&&re.getString("appname_cn").length()>0) {
                         appnameMap.put("values-zh-rCN", re.getString("appname_cn"));
                     }
-                    appnameMap.put("values", re.getString("appname_en"));
+                    if (re.getString("appname_en")!=null&&re.getString("appname_en").length()>1) {
+                        appnameMap.put("values", re.getString("appname_en"));
+                    }else {
+                        appnameMap.put("values", "null");
+                    }
+                    
                     apkFullProperty.appName = appnameMap;
                     
                     apkFullProperty.AdsList=CommonUtils.getArrayListFromString(re.getString("AdsList"));
@@ -458,7 +463,7 @@ public static void getApkAdsFromDB() {
                 PreparedStatement pstmt = databaseManager.getConnection().prepareStatement(sql);
                 ResultSet re = pstmt.executeQuery(); 
                 while (re.next()) {
-                    System.out.println(re.getString("AdsList"));
+//                    System.out.println(re.getString("AdsList"));
                      ArrayList<String> AdsList = CommonUtils.getArrayListFromString(re.getString("AdsList"));
                      analyzeAds.getAdsFrequency(AdsList);
                 }

@@ -1,7 +1,6 @@
 package com.jike.mobile.appsearch.client;
 
 import com.jike.mobile.appsearch.thirft.ApkFullProperty;
-//import com.jike.mobile.appsearch.thirft.ApkSimpleProperty;
 import com.jike.mobile.appsearch.thirft.GetApkInfo;
 import com.jike.mobile.appsearch.util.CommonUtils;
 import com.jike.mobile.appsearch.util.analyzeAds;
@@ -9,16 +8,12 @@ import com.jike.mobile.appsearch.util.analyzeAds;
 import org.apache.thrift.TException;
 import org.apache.thrift.protocol.TBinaryProtocol;
 import org.apache.thrift.protocol.TProtocol;
+import org.apache.thrift.transport.TFramedTransport;
 import org.apache.thrift.transport.TSocket;
 import org.apache.thrift.transport.TTransport;
 import org.apache.thrift.transport.TTransportException;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStreamReader;
 
 public class GetApkInfosClient {
 
@@ -26,39 +21,42 @@ public class GetApkInfosClient {
      * @param args
      */
     public static void main(String[] args) {
-        String apkPath="D:\\apks\\apks9631\\apks9631\\wsv.slayton.apk";
+        String key="10808347862584889590";//"解析失败id=9094489175483464045";//"7205617736938680212";
+        GetApkInfosClient.getAPKinfo(key);
         
-        getAPKinfo(apkPath);
-        String filePathString="D:/apks/apks9631/apks9631";
-        File list=new File("D:/apks/apks9631/list.txt");
-        BufferedReader br = null;
-        try {
-            br = new BufferedReader(new InputStreamReader(  
-                    new FileInputStream("D:/apks/apks9631/list.txt")));
-        } catch (FileNotFoundException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }  
-  
-        try {
-            for (String line = br.readLine(); line != null; line = br.readLine()) {  
-                getAPKinfo(filePathString+"/"+line); 
-            }
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }  
-        try {
-            br.close();
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }  
-        analyzeAds.SortMapValue();
+        
+//        String apk_key="failedFileKey.log";
+//        String filePathString="D:/apks/apks9631/apks9631";
+////        File list=new File("D:/apks/apks9631/list.txt");
+//        BufferedReader br = null;
+//        try {
+//            br = new BufferedReader(new InputStreamReader(  
+//                    new FileInputStream(apk_key)));
+//        } catch (FileNotFoundException e) {
+//            // TODO Auto-generated catch block
+//            e.printStackTrace();
+//        }  
+//  
+//        try {
+//            for (String key = br.readLine(); key != null; key = br.readLine()) {  
+//                getAPKinfo(key); 
+//            }
+//        } catch (IOException e) {
+//            // TODO Auto-generated catch block
+//            e.printStackTrace();
+//        }  
+//        try {
+//            br.close();
+//        } catch (IOException e) {
+//            // TODO Auto-generated catch block
+//            e.printStackTrace();
+//        }  
+//        analyzeAds.SortMapValue();
     }
     public static void getAPKinfo(String apkPath) {
         
       //IP host port
+//        TTransport transport = new TFramedTransport( new TSocket("localhost",7911));
         TTransport transport = new TSocket("localhost",7911);
         
         try {

@@ -15,6 +15,7 @@
 
 package com.jike.mobile.appsearch.util;
 
+import java.io.File;
 import java.util.HashMap;
 
 /**
@@ -28,6 +29,8 @@ public class Constants {
 
     public static final HashMap<String, String> AdsMap = CommonUtils
             .getPropertiesValueMap(properties);
+    
+    public static final String default_icon_file = "defalut_icon.png";
 
     /*
      * cassandra-keyspace:apk_keyspace 
