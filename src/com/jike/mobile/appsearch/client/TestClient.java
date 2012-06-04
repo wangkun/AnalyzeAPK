@@ -1,9 +1,5 @@
 package com.jike.mobile.appsearch.client;
 
-import org.apache.cassandra.cli.CliParser.newColumnFamily_return;
-import org.jf.smali.smaliParser.class_spec_return;
-import org.jf.smali.smaliParser.integer_literal_return;
-
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -38,7 +34,7 @@ public class TestClient {
         try {
             for (String key = br.readLine(); key != null; key = br.readLine()) {  
                 decodedApps.add(key); 
-//                decodedApps.add(key); 
+                decodedApps.add(key); 
                 if (decodedApps.size()>100) {
                     break;
                 }
@@ -53,7 +49,7 @@ public class TestClient {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }  
-        int i = 12;
+        int i = 4;
         while (i > 0) {
             Thread t1 = new AnalyzeThread();
             t1.start();

@@ -1,6 +1,5 @@
 package com.jike.mobile.appsearch.util;
 
-import org.apache.cassandra.cli.CliParser.newColumnFamily_return;
 import org.apache.commons.io.FileUtils;
 
 import java.io.File;
@@ -18,7 +17,7 @@ public class ApkInfoProperty {
 //16: required bool isHasAds=false;
     
     ManifestProperty manifestProperty = new ManifestProperty();
-    ByteBuffer iconStream =null;
+    ByteBuffer iconStream = null;
     Map<String, String> appNameMap = new HashMap<String, String>();
     ArrayList<String> adsList = new ArrayList<String>();
     Double apkSize=0.0;

@@ -2,9 +2,6 @@
 package com.jike.mobile.appsearch.util;
 
 
-import org.xmlpull.v1.XmlPullParser;
-
-import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.dom4j.Attribute;
@@ -12,6 +9,7 @@ import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
+import org.xmlpull.v1.XmlPullParser;
 
 import zip.tool.Decompression;
 

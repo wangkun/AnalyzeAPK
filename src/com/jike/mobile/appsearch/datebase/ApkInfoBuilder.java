@@ -5,29 +5,21 @@ package com.jike.mobile.appsearch.datebase;
 import com.jike.mobile.appsearch.thirft.ApkFullProperty;
 import com.jike.mobile.appsearch.util.CommonUtils;
 import com.jike.mobile.appsearch.util.analyzeAds;
+import com.mysql.jdbc.Blob;
 
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.IOUtils;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
-import org.jf.dexlib.ClassDefItem.StaticFieldInitializer;
-import org.jf.smali.smaliParser.nonvoid_type_descriptor_return;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.nio.ByteBuffer;
-import java.nio.channels.Channels;
-import java.nio.channels.ReadableByteChannel;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class ApkInfoBuilder {
@@ -129,7 +121,7 @@ public class ApkInfoBuilder {
 //      `securitylevel` INT NULL ,
 //      PRIMARY KEY (`signature`, `packagename`) )ENGINE=InnoDB DEFAULT CHARSET=utf8;
     public static void SaveApkInfoToDB(ApkFullProperty apkFullProperty){
-        if(apkFullProperty==null&&apkFullProperty.icon==null){
+        if(apkFullProperty==null||apkFullProperty.icon==null){
             System.err.println("failed @ SaveApkInfoToDB apkFullProperty.icon==null ");
             return;
         }
@@ -225,10 +217,13 @@ public class ApkInfoBuilder {
 //                CommonUtils.WriteByteBufferToFile(icon, "insert.png");
                 
                 rs = databaseManager.execute(insertSql);
-                String sql = "UPDATE "+ tableName + " SET icon = ? where signature='"+signature+"';";
+                String sql = "UPDATE "+ tableName + " SET icon=? where signature='"+signature+"';";
                 PreparedStatement pstmt = databaseManager.getConnection().prepareStatement(sql);
-                pstmt.setBinaryStream(1, new ByteArrayInputStream(icon.array()), icon.remaining());
-                rs=pstmt.executeUpdate(); 
+                InputStream isInputStream = new ByteArrayInputStream(icon.array());
+                pstmt.setBinaryStream(1, isInputStream, icon.remaining());
+                
+                int up=pstmt.executeUpdate(); 
+                log.debug("icon.remaining()="+icon.remaining() + " up="+up);
                 pstmt.close();
                 
                 
@@ -378,10 +373,15 @@ public class ApkInfoBuilder {
                     apkFullProperty.xlargeScreen=re.getInt("xlargeScreen")==1;
                     apkFullProperty.signature=re.getString("signature");
 //                  ByteArray  apkFullProperty.icon=TODO
-                    InputStream is = re.getBinaryStream("icon");
-                    if(is!=null&&IOUtils.toByteArray(is).length>10){
-                        apkFullProperty.icon = ByteBuffer.wrap(IOUtils.toByteArray(is));
+                    Blob blob = (Blob)re.getBlob("icon");
+//                    InputStream is = re.getBlob("icon");
+//                    InputStream is =blob.getBinaryStream();
+                    byte[] bytes = blob.getBytes(1, (int)blob.length());
+                    if(blob.length()>1){
+                        log.debug("blob!=null "+" blob.length()= "+blob.length());
+                        apkFullProperty.icon = ByteBuffer.wrap(bytes);
                     }else {
+                        log.debug("blob.length()==null");
                         apkFullProperty.icon = ByteBuffer.wrap(FileUtils.readFileToByteArray(iconFile));
                     }
                     Map<String, String> appnameMap = new HashMap<String, String>();
@@ -508,7 +508,12 @@ public static void getApkAdsFromDB() {
 //        printProperty(getAPKInfoFromDB("qianming"));
 //        File iconFile = CommonUtils.WriteByteBufferToFile(getAPKInfoFromDB("qianming").icon, "haha.png");
 //        System.out.println(checkApkIsAnalyzed("qianming"));
-        getApkAdsFromDB();
+//        getApkAdsFromDB();
+        
+    }
+    
+    public static void testSavaIcon(String iconpath){
+        
     }
     
 
@@ -530,4 +535,5 @@ public static void getApkAdsFromDB() {
         System.out.println("getApkSize "+apkFullProperty.getApkSize());
         
     }
+    
 }

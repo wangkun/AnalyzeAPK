@@ -1,13 +1,13 @@
 package zip.tool;
 
-import java.io.IOException;
-import java.io.InputStream;
-
 import org.apache.tools.zip.ZipEntry;
 import org.apache.tools.zip.ZipFile;
 
+import java.io.IOException;
+import java.io.InputStream;
+
 /**
- * ½âÑ¹ËõÖ¸¶¨µÄÎÄ¼şĞÅÏ¢
+ * ï¿½ï¿½Ñ¹ï¿½ï¿½Ö¸ï¿½ï¿½ï¿½ï¿½ï¿½Ä¼ï¿½ï¿½ï¿½Ï¢
  * @author Administrator
  *
  */
@@ -24,12 +24,12 @@ public class Decompression {
 		
 	}
 	
-	//»ñµÃAndroidManifest.xmlÎÄ¼şÁ÷
+	//ï¿½ï¿½ï¿½AndroidManifest.xmlï¿½Ä¼ï¿½ï¿½ï¿½
 	public InputStream getAndroidManifest(){
 		ZipFile zFile;
 		try {
 			zFile = new ZipFile(this.path);
-			ZipEntry entry = zFile.getEntry("AndroidManifest.xml"); //Ö¸¶¨½âÑ¹ËõAndroidµÄÅäÖÃÎÄ¼ş
+			ZipEntry entry = zFile.getEntry("AndroidManifest.xml"); //Ö¸ï¿½ï¿½ï¿½ï¿½Ñ¹ï¿½ï¿½Androidï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¼ï¿½
 			entry.getComment();
 			entry.getCompressedSize();
 			entry.getCrc();
@@ -44,12 +44,12 @@ public class Decompression {
 		return null;
 	}
 	
-	//»ñµÃgetAndroidAppIconÎÄ¼şÁ÷
+	//ï¿½ï¿½ï¿½getAndroidAppIconï¿½Ä¼ï¿½ï¿½ï¿½
     public InputStream getAndroidAppIcon(){
         ZipFile zFile;
         try {
             zFile = new ZipFile(this.path);
-            ZipEntry entry = zFile.getEntry("res/drawable/app_icon.png"); //Ö¸¶¨½âÑ¹ËõAndroidµÄÅäÖÃÎÄ¼ş
+            ZipEntry entry = zFile.getEntry("res/drawable/app_icon.png"); //Ö¸ï¿½ï¿½ï¿½ï¿½Ñ¹ï¿½ï¿½Androidï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¼ï¿½
 //            entry.getComment();
 //            entry.getCompressedSize();
 //            entry.getCrc();

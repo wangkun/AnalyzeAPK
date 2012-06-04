@@ -3,7 +3,7 @@ package com.jike.mobile.appsearch.client;
 public class AnalyzeThread extends Thread {
     @Override
     public void run() {
-        while(!Thread.interrupted()){
+        while(!Thread.interrupted()&&TestClient.decodedApps.size()>0){
             String key = null;
             try {
                 key =  TestClient.decodedApps.take();

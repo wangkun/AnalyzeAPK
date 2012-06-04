@@ -1,7 +1,5 @@
 package com.jike.mobile.appsearch.util;
 
-import org.antlr.runtime.DFA;
-
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collections;

@@ -4,8 +4,8 @@
 package org.xmlpull.v1.local;
 
 
-import java.io.InputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.Reader;
 
 /**

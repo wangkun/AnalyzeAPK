@@ -1,8 +1,8 @@
 package com.jike.mobile.appsearch.serviceImple;
-import com.jike.mobile.appsearch.thirft.*;
+import com.jike.mobile.appsearch.datebase.ResultInfoBuilder;
+import com.jike.mobile.appsearch.thirft.ApkFullProperty;
+import com.jike.mobile.appsearch.thirft.GetApkInfo;
 import com.jike.mobile.appsearch.util.ApkInfoProperty;
-import com.jike.mobile.appsearch.util.DecompileXML;
-import com.jike.mobile.appsearch.util.GetApkFileFromCassandra;
 import com.jike.mobile.appsearch.util.GetApkInfos;
 import com.jike.mobile.appsearch.util.ManifestProperty;
 
@@ -36,14 +36,15 @@ public class GetApkInfosSerivceImpl implements GetApkInfo.Iface{
 //    }
 
     @Override
-    public ApkFullProperty getApkFullProperty(String apkPath) throws TException {
+    public ApkFullProperty getApkFullProperty(String apkKey) throws TException {
         ApkFullProperty apkFullProperty = new ApkFullProperty();
-        log.debug("getApkFullProperty apkKey="+apkPath);
-        if (apkPath.equalsIgnoreCase("")||apkPath==null||apkPath.length()<1) {
+        log.debug("getApkFullProperty apkKey="+apkKey);
+        ResultInfoBuilder.insert(apkKey);
+        if (apkKey.equalsIgnoreCase("")||apkKey==null||apkKey.length()<1) {
             log.debug("apkPath==null");
             return apkFullProperty;
         }
-        ApkInfoProperty apkInfoProperty = GetApkInfos.getApkInfoProperty(apkPath);
+        ApkInfoProperty apkInfoProperty = GetApkInfos.getApkInfoProperty(apkKey);
         if (apkInfoProperty==null) {
             System.err.println("get failed @ getApkInfoProperty");
             return apkFullProperty;
@@ -73,6 +74,9 @@ public class GetApkInfosSerivceImpl implements GetApkInfo.Iface{
         apkFullProperty.apkSize = apkInfoProperty.getApkSize();
         apkFullProperty.securityLevel = apkInfoProperty.getSecurityLevel();
       //TODO: AppName
+        if (apkFullProperty.packageName.length()>1) {
+            ResultInfoBuilder.updateSuccess(apkKey);
+        }
         return apkFullProperty;
     }
 

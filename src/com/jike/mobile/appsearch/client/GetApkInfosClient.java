@@ -8,7 +8,6 @@ import com.jike.mobile.appsearch.util.analyzeAds;
 import org.apache.thrift.TException;
 import org.apache.thrift.protocol.TBinaryProtocol;
 import org.apache.thrift.protocol.TProtocol;
-import org.apache.thrift.transport.TFramedTransport;
 import org.apache.thrift.transport.TSocket;
 import org.apache.thrift.transport.TTransport;
 import org.apache.thrift.transport.TTransportException;
@@ -21,7 +20,7 @@ public class GetApkInfosClient {
      * @param args
      */
     public static void main(String[] args) {
-        String key="10808347862584889590";//"解析失败id=9094489175483464045";//"7205617736938680212";
+        String key="10307996990971948249";//"no icon 10988429586710037558";//"解析失败id=9094489175483464045";//"7205617736938680212";
         GetApkInfosClient.getAPKinfo(key);
         
         
@@ -89,6 +88,7 @@ public class GetApkInfosClient {
         String iconPath="./iconFile/"+apkFullProperty.packageName+".png";
         if (apkFullProperty.packageName!=null) {
             File iconFile = CommonUtils.WriteByteBufferToFile(apkFullProperty.icon, iconPath);
+            System.out.println("iconFile"+iconFile.getAbsolutePath()+" size = "+ iconFile.length());
         }
         printProperty(apkFullProperty);
         analyzeAds.getAdsFrequency(apkFullProperty.AdsList);

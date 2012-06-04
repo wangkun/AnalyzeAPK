@@ -15,7 +15,6 @@
 
 package com.jike.mobile.appsearch.util;
 
-import java.io.File;
 import java.util.HashMap;
 
 /**

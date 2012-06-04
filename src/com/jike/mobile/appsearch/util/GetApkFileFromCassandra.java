@@ -1,7 +1,5 @@
 package com.jike.mobile.appsearch.util;
 
-import org.apache.cassandra.cli.CliParser.newColumnFamily_return;
-import org.apache.cassandra.cli.CliParser.username_return;
 import org.apache.cassandra.thrift.AuthenticationException;
 import org.apache.cassandra.thrift.AuthenticationRequest;
 import org.apache.cassandra.thrift.AuthorizationException;
@@ -13,7 +11,6 @@ import org.apache.cassandra.thrift.InvalidRequestException;
 import org.apache.cassandra.thrift.NotFoundException;
 import org.apache.cassandra.thrift.TimedOutException;
 import org.apache.cassandra.thrift.UnavailableException;
-import org.apache.cassandra.thrift.Cassandra.login_args;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.apache.thrift.TException;
@@ -23,9 +20,6 @@ import org.apache.thrift.transport.TFramedTransport;
 import org.apache.thrift.transport.TSocket;
 import org.apache.thrift.transport.TTransport;
 import org.apache.thrift.transport.TTransportException;
-import org.jf.dexlib.ClassDefItem.StaticFieldInitializer;
-
-import appsearch.ApkTfsService;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -35,7 +29,6 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.io.StringReader;
-import java.io.UnsupportedEncodingException;
 import java.nio.ByteBuffer;
 import java.util.HashMap;
 import java.util.Map;

@@ -7,9 +7,6 @@
 package appsearch;
 
 
-import java.util.Map;
-import java.util.HashMap;
-import org.apache.thrift.TEnum;
 
 public enum ImgType implements org.apache.thrift.TEnum {
   ICON(0),

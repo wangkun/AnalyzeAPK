@@ -17,12 +17,12 @@ package android.content.res.local;
 
 import org.xmlpull.v1.XmlPullParserException;
 
+import android.content.res.XmlResourceParser;
+import android.util.local.TypedValue;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Reader;
-
-import android.content.res.XmlResourceParser;
-import android.util.local.TypedValue;
 
 /**
  * @author Dmitry Skiba

@@ -1,13 +1,13 @@
 package com.jike.mobile.appsearch.datebase;
 
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
 
 public class DatabaseManager {
 	private static final Logger logger = LogManager

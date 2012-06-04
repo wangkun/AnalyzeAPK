@@ -1,10 +1,11 @@
 
 package com.jike.mobile.appsearch.util;
 
-import com.jike.mobile.appsearch.datebase.ApkInfoBuilder;
-import com.jike.mobile.appsearch.thirft.ApkFullProperty;
-
 import brut.androlib.AndrolibException;
+
+import com.jike.mobile.appsearch.datebase.ApkInfoBuilder;
+import com.jike.mobile.appsearch.datebase.ResultInfoBuilder;
+import com.jike.mobile.appsearch.thirft.ApkFullProperty;
 
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.io.FileUtils;
@@ -208,7 +209,7 @@ public class GetApkInfos {
     
     public static ApkInfoProperty getApkInfoProperty(String apkKey) {
         
-        
+        long start=System.currentTimeMillis();
         ApkInfoProperty apkInfoProperty = new ApkInfoProperty();
         
         //TODO verify MD5, if exist in DB, then , return DB result;
@@ -244,6 +245,7 @@ public class GetApkInfos {
             return apkInfoProperty;
         }
         File apkFile = GetApkFileFromCassandra.getAPK(apkKey);
+        ResultInfoBuilder.updateApksize(apkKey, apkFile.length()/1000);
         final File rootFile = decompileApk(apkFile);
         if (rootFile==null||!rootFile.exists()) {
             if (!apkFile.delete()) {
@@ -279,6 +281,8 @@ public class GetApkInfos {
         log.debug("getAdsList");
         apkInfoProperty.apkSize = (double)apkFile.length()/1000;
         
+        
+        
         if (!isAnalyzed) {
             ApkFullProperty apkFullProperty = new ApkFullProperty();
             apkFullProperty.packageName=manifestProperty.getPackageName();
@@ -297,7 +301,7 @@ public class GetApkInfos {
             //TODO
             apkFullProperty.signature=apkInfoProperty.getMD5();
             
-            apkFullProperty.icon = apkInfoProperty.getIconStream();
+            apkFullProperty.icon = apkInfoProperty.iconStream;
             apkFullProperty.appName = apkInfoProperty.getAppNameMap();
             apkFullProperty.AdsList = apkInfoProperty.getAdsList();
             apkFullProperty.apkSize = apkInfoProperty.getApkSize();
@@ -324,6 +328,9 @@ public class GetApkInfos {
         deleteThread.run();
 //        CommonUtils.deleteFiles(rootFile);
         log.debug(" delete rootFile " + rootFile.getAbsolutePath());
+        long useTime = System.currentTimeMillis()-start;
+        ResultInfoBuilder.updateAnalyzetime(apkKey, useTime);
+        log.debug("useTime = " + useTime);
         return apkInfoProperty;
     }
     
