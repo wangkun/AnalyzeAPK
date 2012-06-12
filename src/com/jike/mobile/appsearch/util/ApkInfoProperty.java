@@ -23,12 +23,13 @@ public class ApkInfoProperty {
     Double apkSize=0.0;
     int securityLevel = 0 ;
     String MD5="";
+    String updateTime = "";
     
     public ApkInfoProperty() {
         // TODO Auto-generated constructor stub
         manifestProperty = new ManifestProperty();
         try {
-            iconStream = ByteBuffer.wrap(FileUtils.readFileToByteArray(new File(Constants.default_icon_file)));
+            iconStream = ByteBuffer.wrap(FileUtils.readFileToByteArray(new File(Constants.DEFALUT_ICON)));
         } catch (IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
@@ -39,6 +40,15 @@ public class ApkInfoProperty {
         securityLevel = 0 ;
         MD5="";
     }
+    
+    public String getMakeTime() {
+        return updateTime;
+    }
+
+    public void setMakeTime(String makeTime) {
+        this.updateTime = makeTime;
+    }
+
     public String getMD5() {
         return MD5;
     }

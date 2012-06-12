@@ -4,6 +4,7 @@ package com.jike.mobile.appsearch.datebase;
 
 import com.jike.mobile.appsearch.thirft.ApkFullProperty;
 import com.jike.mobile.appsearch.util.CommonUtils;
+import com.jike.mobile.appsearch.util.Constants;
 import com.jike.mobile.appsearch.util.analyzeAds;
 import com.mysql.jdbc.Blob;
 
@@ -30,14 +31,14 @@ public class ApkInfoBuilder {
 //    final static String databaseName = "jike";
 //    final static String databaseUserName = "root";
 //    final static String databaseUserPassword = "123456";
-    final static String proFilePath = "DBInfo.properties";
+    final static String proFilePath = Constants.DBINFO_PROPERTIES;//"DBInfo.properties";
     static String host = "127.0.0.1";
     static String host_bk = "58.68.249.9";
     static String databaseName = "appsearch_mobile";
     static String databaseUserName = "jike";
     static String databaseUserPassword = "jikemobile";
     static String tableName = "analyzeapk";
-    private static File iconFile = new File("defalut_icon.png");
+    private static File iconFile = new File(Constants.DEFALUT_ICON);
     
     private static void initDB() {
         // TODO Auto-generated method stub
@@ -54,8 +55,8 @@ public class ApkInfoBuilder {
                 || databaseUserPassword == null || tableName == null
                 ) {
             System.err
-                    .println("Parameter error in function HandleMarketInfoData");
-            log.error("Parameter error in function HandleMarketInfoData");
+                    .println("Parameter error in function ConnectDB");
+            log.error("Parameter error in function ConnectDB");
             return null;
         }
 
@@ -119,6 +120,7 @@ public class ApkInfoBuilder {
 //      `adslist` TEXT NULL ,
 //      `apksize` DOUBLE NULL ,
 //      `securitylevel` INT NULL ,
+//      `updatetime` VARCHAR(45) NULL ,    
 //      PRIMARY KEY (`signature`, `packagename`) )ENGINE=InnoDB DEFAULT CHARSET=utf8;
     public static void SaveApkInfoToDB(ApkFullProperty apkFullProperty){
         if(apkFullProperty==null||apkFullProperty.icon==null){
@@ -140,7 +142,7 @@ public class ApkInfoBuilder {
                 apkFullProperty.smallScreen?1:0, apkFullProperty.normalScreen?1:0, apkFullProperty.largeScreen?1:0, apkFullProperty.xlargeScreen?1:0,
                 apkFullProperty.signature, apkFullProperty.icon, 
                 appname_en, appname_cn, 
-                apkFullProperty.AdsList.toString(), apkFullProperty.apkSize, apkFullProperty.securityLevel);
+                apkFullProperty.AdsList.toString(), apkFullProperty.apkSize, apkFullProperty.securityLevel, apkFullProperty.updateTime);
     }
 
     public static int HandlePrivacyInfoData(
@@ -165,7 +167,8 @@ public class ApkInfoBuilder {
             
             final String adslist,
             final double apksize,
-            final int securitylevel
+            final int securitylevel,
+            final String updatetime
             ) 
     {
         if (databaseName == null || databaseUserName == null
@@ -212,7 +215,8 @@ public class ApkInfoBuilder {
                         
                         "adslist='"+ adslist+"' , "+
                         "apksize="+ apksize+" , "+
-                        "securitylevel="+ securitylevel 
+                        "securitylevel="+ securitylevel +" , "+
+                        "updatetime='" + updatetime + "' ; "
                         ;
 //                CommonUtils.WriteByteBufferToFile(icon, "insert.png");
                 
@@ -223,7 +227,7 @@ public class ApkInfoBuilder {
                 pstmt.setBinaryStream(1, isInputStream, icon.remaining());
                 
                 int up=pstmt.executeUpdate(); 
-                log.debug("icon.remaining()="+icon.remaining() + " up="+up);
+//                log.debug("icon.remaining()="+icon.remaining() + " up="+up);
                 pstmt.close();
                 
                 
@@ -354,7 +358,7 @@ public class ApkInfoBuilder {
                 		"smallscreen,normalscreen,largescreen,xlargescreen," +
                 		"signature,icon," +
                 		"appname_en,appname_cn," +
-                		"adslist,apksize,securitylevel " +
+                		"adslist,apksize,securitylevel,updatetime " +
                 		"from "+ tableName + " WHERE signature='"+signature+"';";
                 
                 PreparedStatement pstmt = databaseManager.getConnection().prepareStatement(sql);
@@ -378,10 +382,10 @@ public class ApkInfoBuilder {
 //                    InputStream is =blob.getBinaryStream();
                     byte[] bytes = blob.getBytes(1, (int)blob.length());
                     if(blob.length()>1){
-                        log.debug("blob!=null "+" blob.length()= "+blob.length());
+//                        log.debug("blob!=null "+" blob.length()= "+blob.length());
                         apkFullProperty.icon = ByteBuffer.wrap(bytes);
                     }else {
-                        log.debug("blob.length()==null");
+                        log.error("blob.length()==null");
                         apkFullProperty.icon = ByteBuffer.wrap(FileUtils.readFileToByteArray(iconFile));
                     }
                     Map<String, String> appnameMap = new HashMap<String, String>();
@@ -399,6 +403,7 @@ public class ApkInfoBuilder {
                     apkFullProperty.AdsList=CommonUtils.getArrayListFromString(re.getString("AdsList"));
                     apkFullProperty.apkSize=re.getDouble("apkSize");
                     apkFullProperty.securityLevel=re.getInt("securitylevel");
+                    apkFullProperty.updateTime=re.getString("updateTime");
                 }
                 
                 

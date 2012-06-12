@@ -22,14 +22,24 @@ import java.util.HashMap;
  */
 public class Constants {
     
-    public static final boolean debugAtLocal=false;
+    public static final boolean debugAtLocal=true;//false;
 
-    public static final String properties = "Ads.properties";
-
-    public static final HashMap<String, String> AdsMap = CommonUtils
-            .getPropertiesValueMap(properties);
     
-    public static final String default_icon_file = "defalut_icon.png";
+    
+    public static final String CONFIG_FILE_PATH=debugAtLocal?"":"/home/wangkun/wk/AnalyzeApk/";//"/var/AnalyzeApk/";///home/wangkun/wk/AnalyzeApk
+    
+    public static final String OUTPUT_PATH = CONFIG_FILE_PATH+"./deFiles/";
+
+    public static final String DEFALUT_ICON = CONFIG_FILE_PATH+"defalut_icon.png";
+    
+    public static final String APKS_PATH=CONFIG_FILE_PATH+"./apks/";
+    
+    public static final String ADS_PROPERTIES = CONFIG_FILE_PATH+"Ads.properties";
+    
+    public static final String DBINFO_PROPERTIES = CONFIG_FILE_PATH+"DBInfo.properties";
+    
+    public static final HashMap<String, String> AdsMap = CommonUtils
+            .getPropertiesValueMap(ADS_PROPERTIES);
 
     /*
      * cassandra-keyspace:apk_keyspace 

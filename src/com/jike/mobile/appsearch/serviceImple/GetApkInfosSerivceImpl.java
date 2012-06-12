@@ -73,6 +73,8 @@ public class GetApkInfosSerivceImpl implements GetApkInfo.Iface{
         apkFullProperty.AdsList = apkInfoProperty.getAdsList();
         apkFullProperty.apkSize = apkInfoProperty.getApkSize();
         apkFullProperty.securityLevel = apkInfoProperty.getSecurityLevel();
+        apkFullProperty.setUpdateTimeIsSet(true);
+        apkFullProperty.updateTime = apkInfoProperty.getMakeTime();
       //TODO: AppName
         if (apkFullProperty.packageName.length()>1) {
             ResultInfoBuilder.updateSuccess(apkKey);

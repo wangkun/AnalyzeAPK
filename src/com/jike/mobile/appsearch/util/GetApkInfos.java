@@ -31,10 +31,10 @@ public class GetApkInfos {
 
 
 
-    private static String outputPath = "./deFiles/";
+    private static String outputPath = Constants.OUTPUT_PATH;
 
 
-    private static String defalut_icon = "defalut_icon.png";
+    private static String defalut_icon = Constants.DEFALUT_ICON;
 
     /**
      * @param args
@@ -43,7 +43,7 @@ public class GetApkInfos {
         String apkPath = "D:\\apks\\carpenter.apk";
         // decompileApk(apkPath);
         apkPath="D:\\apks\\apks9631\\apks9631\\wsv.slayton.apk";
-        apkPath = "1928359747515825434";
+        apkPath = "11317503348386965201";
 //        System.out.println("getApkMD5 = "+getApkMD5(apkPath));
         getApkInfoProperty(apkPath);
     }
@@ -51,6 +51,12 @@ public class GetApkInfos {
     
     
     private static File decompileApk(File apkFile) {
+        
+        File tempDeFiles=new File(outputPath);
+        
+        if (!tempDeFiles.exists()||!tempDeFiles.isDirectory()) {
+            tempDeFiles.mkdir();
+        }
         
         File rootFile = null;
         if (apkFile==null){
@@ -241,18 +247,28 @@ public class GetApkInfos {
             apkInfoProperty.adsList=(ArrayList<String>)apkFullProperty.AdsList;
             apkInfoProperty.apkSize=apkFullProperty.apkSize;
             apkInfoProperty.securityLevel=apkFullProperty.securityLevel;
+            apkInfoProperty.updateTime=apkFullProperty.updateTime;
             log.debug("get from DB");
             return apkInfoProperty;
         }
         File apkFile = GetApkFileFromCassandra.getAPK(apkKey);
         ResultInfoBuilder.updateApksize(apkKey, apkFile.length()/1000);
         final File rootFile = decompileApk(apkFile);
+        Runnable deleteFilesRunnable = new Runnable() {
+            @Override
+            public void run() {
+                // TODO Auto-generated method stub
+//                CommonUtils.forceDelete(apkFile);
+                CommonUtils.deleteFiles(rootFile);
+            }
+        };
+        Thread deleteThread = new Thread(deleteFilesRunnable);
         if (rootFile==null||!rootFile.exists()) {
             if (!apkFile.delete()) {
                 CommonUtils.forceDelete(apkFile);
                 log.error("forceDelete error @ " + apkFile.getName());
             }
-            CommonUtils.deleteFiles(rootFile);
+            deleteThread.run();
             System.err.println("failed @ rootFile==null");
             return apkInfoProperty;
         }
@@ -281,6 +297,7 @@ public class GetApkInfos {
         log.debug("getAdsList");
         apkInfoProperty.apkSize = (double)apkFile.length()/1000;
         
+        apkInfoProperty.updateTime = "" + CommonUtils.getApkMakeTime(apkFile.getAbsolutePath());
         
         
         if (!isAnalyzed) {
@@ -306,6 +323,8 @@ public class GetApkInfos {
             apkFullProperty.AdsList = apkInfoProperty.getAdsList();
             apkFullProperty.apkSize = apkInfoProperty.getApkSize();
             apkFullProperty.securityLevel = apkInfoProperty.getSecurityLevel();
+            
+            apkFullProperty.updateTime = apkInfoProperty.getMakeTime();
             ApkInfoBuilder.SaveApkInfoToDB(apkFullProperty);
             log.debug("save to DB");
         }
@@ -316,15 +335,7 @@ public class GetApkInfos {
         CommonUtils.forceDelete(apkFile);
         log.debug("forceDelete Apk end……");  
         
-        Runnable deleteFilesRunnable = new Runnable() {
-            @Override
-            public void run() {
-                // TODO Auto-generated method stub
-//                CommonUtils.forceDelete(apkFile);
-                CommonUtils.deleteFiles(rootFile);
-            }
-        };
-        Thread deleteThread = new Thread(deleteFilesRunnable);
+        
         deleteThread.run();
 //        CommonUtils.deleteFiles(rootFile);
         log.debug(" delete rootFile " + rootFile.getAbsolutePath());

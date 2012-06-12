@@ -6,21 +6,26 @@
  */
 package com.jike.mobile.appsearch.thirft;
 
-import org.apache.thrift.protocol.TTupleProtocol;
 import org.apache.thrift.scheme.IScheme;
 import org.apache.thrift.scheme.SchemeFactory;
 import org.apache.thrift.scheme.StandardScheme;
-import org.apache.thrift.scheme.TupleScheme;
 
-import java.nio.ByteBuffer;
-import java.util.ArrayList;
-import java.util.BitSet;
-import java.util.Collections;
-import java.util.EnumMap;
-import java.util.EnumSet;
-import java.util.HashMap;
+import org.apache.thrift.scheme.TupleScheme;
+import org.apache.thrift.protocol.TTupleProtocol;
 import java.util.List;
+import java.util.ArrayList;
 import java.util.Map;
+import java.util.HashMap;
+import java.util.EnumMap;
+import java.util.Set;
+import java.util.HashSet;
+import java.util.EnumSet;
+import java.util.Collections;
+import java.util.BitSet;
+import java.nio.ByteBuffer;
+import java.util.Arrays;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class ApkFullProperty implements org.apache.thrift.TBase<ApkFullProperty, ApkFullProperty._Fields>, java.io.Serializable, Cloneable {
   private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("ApkFullProperty");
@@ -42,6 +47,7 @@ public class ApkFullProperty implements org.apache.thrift.TBase<ApkFullProperty,
   private static final org.apache.thrift.protocol.TField ADS_LIST_FIELD_DESC = new org.apache.thrift.protocol.TField("AdsList", org.apache.thrift.protocol.TType.LIST, (short)15);
   private static final org.apache.thrift.protocol.TField APK_SIZE_FIELD_DESC = new org.apache.thrift.protocol.TField("apkSize", org.apache.thrift.protocol.TType.DOUBLE, (short)16);
   private static final org.apache.thrift.protocol.TField SECURITY_LEVEL_FIELD_DESC = new org.apache.thrift.protocol.TField("securityLevel", org.apache.thrift.protocol.TType.I32, (short)17);
+  private static final org.apache.thrift.protocol.TField UPDATE_TIME_FIELD_DESC = new org.apache.thrift.protocol.TField("updateTime", org.apache.thrift.protocol.TType.STRING, (short)18);
 
   private static final Map<Class<? extends IScheme>, SchemeFactory> schemes = new HashMap<Class<? extends IScheme>, SchemeFactory>();
   static {
@@ -66,6 +72,7 @@ public class ApkFullProperty implements org.apache.thrift.TBase<ApkFullProperty,
   public List<String> AdsList; // required
   public double apkSize; // required
   public int securityLevel; // optional
+  public String updateTime; // optional
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {
@@ -85,7 +92,8 @@ public class ApkFullProperty implements org.apache.thrift.TBase<ApkFullProperty,
     APP_NAME((short)14, "appName"),
     ADS_LIST((short)15, "AdsList"),
     APK_SIZE((short)16, "apkSize"),
-    SECURITY_LEVEL((short)17, "securityLevel");
+    SECURITY_LEVEL((short)17, "securityLevel"),
+    UPDATE_TIME((short)18, "updateTime");
 
     private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
@@ -134,6 +142,8 @@ public class ApkFullProperty implements org.apache.thrift.TBase<ApkFullProperty,
           return APK_SIZE;
         case 17: // SECURITY_LEVEL
           return SECURITY_LEVEL;
+        case 18: // UPDATE_TIME
+          return UPDATE_TIME;
         default:
           return null;
       }
@@ -183,7 +193,7 @@ public class ApkFullProperty implements org.apache.thrift.TBase<ApkFullProperty,
   private static final int __APKSIZE_ISSET_ID = 6;
   private static final int __SECURITYLEVEL_ISSET_ID = 7;
   private BitSet __isset_bit_vector = new BitSet(8);
-  private _Fields optionals[] = {_Fields.SECURITY_LEVEL};
+  private _Fields optionals[] = {_Fields.SECURITY_LEVEL,_Fields.UPDATE_TIME};
   public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
   static {
     Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
@@ -226,6 +236,8 @@ public class ApkFullProperty implements org.apache.thrift.TBase<ApkFullProperty,
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.DOUBLE)));
     tmpMap.put(_Fields.SECURITY_LEVEL, new org.apache.thrift.meta_data.FieldMetaData("securityLevel", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I32)));
+    tmpMap.put(_Fields.UPDATE_TIME, new org.apache.thrift.meta_data.FieldMetaData("updateTime", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
+        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
     metaDataMap = Collections.unmodifiableMap(tmpMap);
     org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(ApkFullProperty.class, metaDataMap);
   }
@@ -248,6 +260,8 @@ public class ApkFullProperty implements org.apache.thrift.TBase<ApkFullProperty,
     this.apkSize = (double)0;
 
     this.securityLevel = 0;
+
+    this.updateTime = "";
 
   }
 
@@ -361,6 +375,9 @@ public class ApkFullProperty implements org.apache.thrift.TBase<ApkFullProperty,
     }
     this.apkSize = other.apkSize;
     this.securityLevel = other.securityLevel;
+    if (other.isSetUpdateTime()) {
+      this.updateTime = other.updateTime;
+    }
   }
 
   public ApkFullProperty deepCopy() {
@@ -394,6 +411,8 @@ public class ApkFullProperty implements org.apache.thrift.TBase<ApkFullProperty,
     this.apkSize = (double)0;
 
     this.securityLevel = 0;
+
+    this.updateTime = "";
 
   }
 
@@ -863,6 +882,30 @@ public class ApkFullProperty implements org.apache.thrift.TBase<ApkFullProperty,
     __isset_bit_vector.set(__SECURITYLEVEL_ISSET_ID, value);
   }
 
+  public String getUpdateTime() {
+    return this.updateTime;
+  }
+
+  public ApkFullProperty setUpdateTime(String updateTime) {
+    this.updateTime = updateTime;
+    return this;
+  }
+
+  public void unsetUpdateTime() {
+    this.updateTime = null;
+  }
+
+  /** Returns true if field updateTime is set (has been assigned a value) and false otherwise */
+  public boolean isSetUpdateTime() {
+    return this.updateTime != null;
+  }
+
+  public void setUpdateTimeIsSet(boolean value) {
+    if (!value) {
+      this.updateTime = null;
+    }
+  }
+
   public void setFieldValue(_Fields field, Object value) {
     switch (field) {
     case PACKAGE_NAME:
@@ -1001,6 +1044,14 @@ public class ApkFullProperty implements org.apache.thrift.TBase<ApkFullProperty,
       }
       break;
 
+    case UPDATE_TIME:
+      if (value == null) {
+        unsetUpdateTime();
+      } else {
+        setUpdateTime((String)value);
+      }
+      break;
+
     }
   }
 
@@ -1057,6 +1108,9 @@ public class ApkFullProperty implements org.apache.thrift.TBase<ApkFullProperty,
     case SECURITY_LEVEL:
       return Integer.valueOf(getSecurityLevel());
 
+    case UPDATE_TIME:
+      return getUpdateTime();
+
     }
     throw new IllegalStateException();
   }
@@ -1102,6 +1156,8 @@ public class ApkFullProperty implements org.apache.thrift.TBase<ApkFullProperty,
       return isSetApkSize();
     case SECURITY_LEVEL:
       return isSetSecurityLevel();
+    case UPDATE_TIME:
+      return isSetUpdateTime();
     }
     throw new IllegalStateException();
   }
@@ -1269,6 +1325,15 @@ public class ApkFullProperty implements org.apache.thrift.TBase<ApkFullProperty,
       if (!(this_present_securityLevel && that_present_securityLevel))
         return false;
       if (this.securityLevel != that.securityLevel)
+        return false;
+    }
+
+    boolean this_present_updateTime = true && this.isSetUpdateTime();
+    boolean that_present_updateTime = true && that.isSetUpdateTime();
+    if (this_present_updateTime || that_present_updateTime) {
+      if (!(this_present_updateTime && that_present_updateTime))
+        return false;
+      if (!this.updateTime.equals(that.updateTime))
         return false;
     }
 
@@ -1458,6 +1523,16 @@ public class ApkFullProperty implements org.apache.thrift.TBase<ApkFullProperty,
         return lastComparison;
       }
     }
+    lastComparison = Boolean.valueOf(isSetUpdateTime()).compareTo(typedOther.isSetUpdateTime());
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    if (isSetUpdateTime()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.updateTime, typedOther.updateTime);
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+    }
     return 0;
   }
 
@@ -1581,6 +1656,16 @@ public class ApkFullProperty implements org.apache.thrift.TBase<ApkFullProperty,
       if (!first) sb.append(", ");
       sb.append("securityLevel:");
       sb.append(this.securityLevel);
+      first = false;
+    }
+    if (isSetUpdateTime()) {
+      if (!first) sb.append(", ");
+      sb.append("updateTime:");
+      if (this.updateTime == null) {
+        sb.append("null");
+      } else {
+        sb.append(this.updateTime);
+      }
       first = false;
     }
     sb.append(")");
@@ -1839,6 +1924,14 @@ public class ApkFullProperty implements org.apache.thrift.TBase<ApkFullProperty,
               org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
             }
             break;
+          case 18: // UPDATE_TIME
+            if (schemeField.type == org.apache.thrift.protocol.TType.STRING) {
+              struct.updateTime = iprot.readString();
+              struct.setUpdateTimeIsSet(true);
+            } else { 
+              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+            }
+            break;
           default:
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
         }
@@ -1975,6 +2068,13 @@ public class ApkFullProperty implements org.apache.thrift.TBase<ApkFullProperty,
         oprot.writeI32(struct.securityLevel);
         oprot.writeFieldEnd();
       }
+      if (struct.updateTime != null) {
+        if (struct.isSetUpdateTime()) {
+          oprot.writeFieldBegin(UPDATE_TIME_FIELD_DESC);
+          oprot.writeString(struct.updateTime);
+          oprot.writeFieldEnd();
+        }
+      }
       oprot.writeFieldStop();
       oprot.writeStructEnd();
     }
@@ -2037,9 +2137,15 @@ public class ApkFullProperty implements org.apache.thrift.TBase<ApkFullProperty,
       if (struct.isSetSecurityLevel()) {
         optionals.set(0);
       }
-      oprot.writeBitSet(optionals, 1);
+      if (struct.isSetUpdateTime()) {
+        optionals.set(1);
+      }
+      oprot.writeBitSet(optionals, 2);
       if (struct.isSetSecurityLevel()) {
         oprot.writeI32(struct.securityLevel);
+      }
+      if (struct.isSetUpdateTime()) {
+        oprot.writeString(struct.updateTime);
       }
     }
 
@@ -2116,10 +2222,14 @@ public class ApkFullProperty implements org.apache.thrift.TBase<ApkFullProperty,
       struct.setAdsListIsSet(true);
       struct.apkSize = iprot.readDouble();
       struct.setApkSizeIsSet(true);
-      BitSet incoming = iprot.readBitSet(1);
+      BitSet incoming = iprot.readBitSet(2);
       if (incoming.get(0)) {
         struct.securityLevel = iprot.readI32();
         struct.setSecurityLevelIsSet(true);
+      }
+      if (incoming.get(1)) {
+        struct.updateTime = iprot.readString();
+        struct.setUpdateTimeIsSet(true);
       }
     }
   }

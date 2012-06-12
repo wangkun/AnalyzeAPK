@@ -10,7 +10,7 @@ import java.util.concurrent.LinkedBlockingQueue;
 public class TestClient {
 
     private static String apkPath = "366089823295877054";
-    private static String apk_key = "failedFileKey.log";
+    private static String apk_key = "fail10000.csv";//"failedFileKey.log";
     
     public final static LinkedBlockingQueue<String> decodedApps = new LinkedBlockingQueue<String>();
 
@@ -34,8 +34,8 @@ public class TestClient {
         try {
             for (String key = br.readLine(); key != null; key = br.readLine()) {  
                 decodedApps.add(key); 
-                decodedApps.add(key); 
-                if (decodedApps.size()>100) {
+//                decodedApps.add(key); 
+                if (decodedApps.size()>20000) {
                     break;
                 }
             }
@@ -49,7 +49,7 @@ public class TestClient {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }  
-        int i = 4;
+        int i = 1;
         while (i > 0) {
             Thread t1 = new AnalyzeThread();
             t1.start();

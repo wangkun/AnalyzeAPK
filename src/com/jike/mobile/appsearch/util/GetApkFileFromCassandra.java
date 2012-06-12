@@ -41,7 +41,7 @@ public class GetApkFileFromCassandra {
     static int port = 9710;
     static String columnName = "apk";
     static String family="Standard1";
-    static String apksPath="./apks/";
+    static String apksPath=Constants.APKS_PATH;
     
     static String userName = "";
     static String passwd="";
@@ -100,6 +100,12 @@ public class GetApkFileFromCassandra {
     
     public static File getAPK(String key){
         initCassandra();
+        File tempDeFiles=new File(apksPath);
+        
+        if (!tempDeFiles.exists()||!tempDeFiles.isDirectory()) {
+            tempDeFiles.mkdir();
+        }
+        
         File apkFile=null;
         String key_user_id = key;
         

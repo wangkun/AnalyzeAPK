@@ -20,7 +20,7 @@ public class GetApkInfosClient {
      * @param args
      */
     public static void main(String[] args) {
-        String key="10307996990971948249";//"no icon 10988429586710037558";//"解析失败id=9094489175483464045";//"7205617736938680212";
+        String key="11317503348386965201";//"2k error 10496040029157976478";//"no icon 10988429586710037558";//"解析失败id=9094489175483464045";//"7205617736938680212";
         GetApkInfosClient.getAPKinfo(key);
         
         
@@ -53,10 +53,11 @@ public class GetApkInfosClient {
 //        analyzeAds.SortMapValue();
     }
     public static void getAPKinfo(String apkPath) {
-        
+        String localhost = "127.0.0.1";
+        localhost="10.1.3.213";//"192.168.40.130";//14.44
       //IP host port
 //        TTransport transport = new TFramedTransport( new TSocket("localhost",7911));
-        TTransport transport = new TSocket("localhost",7911);
+        TTransport transport = new TSocket(localhost,7911);
         
         try {
             transport.open();
@@ -110,6 +111,8 @@ public class GetApkInfosClient {
         System.out.println("getAdsList "+apkFullProperty.getAdsList());
         System.out.println("getAppNameMap "+apkFullProperty.getAppName());
         System.out.println("getApkSize "+apkFullProperty.getApkSize());
+        System.out.println("getSecurityLevel "+apkFullProperty.getSecurityLevel());
+        System.out.println("getUpdateTime "+apkFullProperty.getUpdateTime());
         
     }
 

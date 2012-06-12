@@ -4,6 +4,8 @@ package com.jike.mobile.appsearch.util;
 import org.apache.commons.io.FileUtils;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
+import org.apache.tools.zip.ZipEntry;
+import org.apache.tools.zip.ZipFile;
 
 import java.io.BufferedInputStream;
 import java.io.File;
@@ -39,13 +41,33 @@ public class CommonUtils {
                     deleteFiles(files[i]); // 把每个文件 用这个方法进行迭代
                 }
             }
-            file.delete();
+            if(file.exists()){
+                file.delete();
+                Runtime runtime=Runtime.getRuntime();
+            }
         } else {
             System.out.println("所删除的文件已经不存在！" + '\n');
         }
         // System.out.println(file.getAbsolutePath()+" 删除完毕!" );
     }
     
+    
+    public static void deletFileByExec(String filePath) {
+        Runtime runtime=Runtime.getRuntime();
+        String command="rm -rf "+filePath;
+        System.gc();
+        log.debug(command);
+        try {
+            
+            Thread.sleep(100);
+            runtime.exec(command);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+    }
     /**
     * try to delete given file , try 10 times
     * @param f
@@ -195,6 +217,24 @@ public class CommonUtils {
                 return len;
                 }
         };
+    }
+    
+    public static long getApkMakeTime(String apkPath){
+        ZipFile zFile;
+        try {
+            zFile = new ZipFile(apkPath);
+            ZipEntry entry = zFile.getEntry("AndroidManifest.xml"); 
+            long time = entry.getTime();//
+            entry=null;
+            zFile.close();
+            zFile=null;
+            
+            return time;
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return 0;
     }
     
 }

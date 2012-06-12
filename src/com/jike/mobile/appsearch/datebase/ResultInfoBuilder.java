@@ -4,6 +4,7 @@ package com.jike.mobile.appsearch.datebase;
 
 import com.jike.mobile.appsearch.thirft.ApkFullProperty;
 import com.jike.mobile.appsearch.util.CommonUtils;
+import com.jike.mobile.appsearch.util.Constants;
 
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
@@ -38,7 +39,7 @@ public class ResultInfoBuilder {
 //    final static String databaseName = "jike";
 //    final static String databaseUserName = "root";
 //    final static String databaseUserPassword = "123456";
-    final static String proFilePath = "DBInfo.properties";
+    final static String proFilePath = Constants.DBINFO_PROPERTIES;//"DBInfo.properties";
     static String host = "127.0.0.1";
     static String host_bk = "58.68.249.9";
     static String databaseName = "appsearch_mobile";
@@ -61,8 +62,8 @@ public class ResultInfoBuilder {
                 || databaseUserPassword == null || tableName == null
                 ) {
             System.err
-                    .println("Parameter error in function HandleMarketInfoData");
-            log.error("Parameter error in function HandleMarketInfoData");
+                    .println("Parameter error in function ConnectDB");
+            log.error("Parameter error in function ConnectDB");
             return null;
         }
 
@@ -190,7 +191,7 @@ public class ResultInfoBuilder {
                 String updataSql = "UPDATE " + tableName + " SET apksize = " + apksize + " "
                         + "WHERE signature='" + signature + "';" + "";
                 int upInsert = databaseManager.execute(updataSql);
-                log.debug("upInsert=" + upInsert + ";updataSql=" + updataSql);
+//                log.debug("upInsert=" + upInsert + ";updataSql=" + updataSql);
                 // "UPDATE "+ tableName +
                 // " SET icon = ? where signature='"+signature+"';";
                 return_value=true;
@@ -245,7 +246,7 @@ public class ResultInfoBuilder {
                 String updataSql = "UPDATE " + tableName + " SET analyzetime = " + analyzetime
                         + " " + "WHERE signature='" + signature + "';" + "";
                 int upInsert = databaseManager.execute(updataSql);
-                log.debug("upInsert=" + upInsert + ";updataSql=" + updataSql);
+//                log.debug("upInsert=" + upInsert + ";updataSql=" + updataSql);
                 // "UPDATE "+ tableName +
                 // " SET icon = ? where signature='"+signature+"';";
                 return_value = true;

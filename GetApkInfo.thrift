@@ -19,6 +19,7 @@ struct ApkFullProperty{
 	15: required list<string> AdsList;              // the Ads contains in apk
 	16: required double apkSize = 0;                //the apk size
 	17: optional i32 securityLevel = 0;             // security level from apk analyze, not yet finish
+	18: optional string updateTime = "";            // this app's make time
 }
 
 service GetApkInfo{

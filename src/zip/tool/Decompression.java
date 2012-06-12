@@ -7,7 +7,6 @@ import java.io.IOException;
 import java.io.InputStream;
 
 /**
- * ��ѹ��ָ�����ļ���Ϣ
  * @author Administrator
  *
  */
@@ -24,12 +23,11 @@ public class Decompression {
 		
 	}
 	
-	//���AndroidManifest.xml�ļ���
 	public InputStream getAndroidManifest(){
 		ZipFile zFile;
 		try {
 			zFile = new ZipFile(this.path);
-			ZipEntry entry = zFile.getEntry("AndroidManifest.xml"); //ָ����ѹ��Android�������ļ�
+			ZipEntry entry = zFile.getEntry("AndroidManifest.xml");  
 			entry.getComment();
 			entry.getCompressedSize();
 			entry.getCrc();
@@ -44,12 +42,11 @@ public class Decompression {
 		return null;
 	}
 	
-	//���getAndroidAppIcon�ļ���
     public InputStream getAndroidAppIcon(){
         ZipFile zFile;
         try {
             zFile = new ZipFile(this.path);
-            ZipEntry entry = zFile.getEntry("res/drawable/app_icon.png"); //ָ����ѹ��Android�������ļ�
+            ZipEntry entry = zFile.getEntry("res/drawable/app_icon.png"); //
 //            entry.getComment();
 //            entry.getCompressedSize();
 //            entry.getCrc();
