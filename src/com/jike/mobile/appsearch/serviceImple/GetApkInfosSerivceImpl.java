@@ -45,7 +45,7 @@ public class GetApkInfosSerivceImpl implements GetApkInfo.Iface{
             return apkFullProperty;
         }
         ApkInfoProperty apkInfoProperty = GetApkInfos.getApkInfoProperty(apkKey);
-        if (apkInfoProperty==null) {
+        if (apkInfoProperty==null&&apkFullProperty.packageName.length()<1) {
             System.err.println("get failed @ getApkInfoProperty");
             return apkFullProperty;
         }

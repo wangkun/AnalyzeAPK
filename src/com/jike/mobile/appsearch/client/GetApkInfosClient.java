@@ -20,7 +20,7 @@ public class GetApkInfosClient {
      * @param args
      */
     public static void main(String[] args) {
-        String key="11317503348386965201";//"2k error 10496040029157976478";//"no icon 10988429586710037558";//"解析失败id=9094489175483464045";//"7205617736938680212";
+        String key="10867632484002919730";//<-no manifest.xml; //"11317503348386965201";//"2k error 10496040029157976478";//"no icon 10988429586710037558";//"解析失败id=9094489175483464045";//"7205617736938680212";
         GetApkInfosClient.getAPKinfo(key);
         
         

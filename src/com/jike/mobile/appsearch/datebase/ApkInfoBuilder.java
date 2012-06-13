@@ -5,9 +5,11 @@ package com.jike.mobile.appsearch.datebase;
 import com.jike.mobile.appsearch.thirft.ApkFullProperty;
 import com.jike.mobile.appsearch.util.CommonUtils;
 import com.jike.mobile.appsearch.util.Constants;
+import com.jike.mobile.appsearch.util.UpdatetimePatch;
 import com.jike.mobile.appsearch.util.analyzeAds;
 import com.mysql.jdbc.Blob;
 
+import org.apache.cassandra.db.migration.avro.UpdateColumnFamily;
 import org.apache.commons.io.FileUtils;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
@@ -517,10 +519,115 @@ public static void getApkAdsFromDB() {
         
     }
     
-    public static void testSavaIcon(String iconpath){
-        
+    public static boolean updatetimePatch(String signature,String updatetime){
+        boolean return_value=false;
+        if (databaseName == null || databaseUserName == null
+                || databaseUserPassword == null || tableName == null
+                || signature == null ) {
+            System.err
+                    .println("Parameter error in function HandleMarketInfoData");
+            log.error("Parameter error in function HandleMarketInfoData");
+            return false;
+        }
+        int rs;
+        DatabaseManager databaseManager = ConnectDB();
+        if (databaseManager == null) {
+            System.err.println("Execute function connectDatabase is error");
+            log.error("Execute function connectDatabase is error");
+            return false;
+        }
+        try {
+            rs =1;
+            rs = databaseManager.checkTableExist(tableName);
+            if (rs == 1) {
+                String updataSql = "UPDATE " + tableName + " SET updatetime='" + updatetime + "' "
+                        + "WHERE signature='" + signature + "';" + "";
+                int upInsert = databaseManager.execute(updataSql);
+//                log.debug("upInsert=" + upInsert + ";updataSql=" + updataSql);
+                // "UPDATE "+ tableName +
+                // " SET icon = ? where signature='"+signature+"';";
+                return_value=true;
+            }
+            
+            if (rs == -1) {
+                System.err.println("Table in database is error");
+                log.error("Table in database is error");
+                return_value=false;
+            }
+        } catch (Exception e) {
+            log.error("select  analysis result faild :"
+                    + e.getMessage());
+            return_value=false;
+        } 
+      finally {
+          try {
+              if (databaseManager != null) {
+                  if (databaseManager.closeDatabase() == -1) {
+                      log.error("Execute function closeDatabase is error");
+                      return_value=false;
+                  }
+              }
+          } finally {
+              databaseManager = null;
+          }
+      }
+        return return_value;
     }
-    
+public static boolean findUpdatetimePatch() {
+        boolean return_value=false;
+        if (databaseName == null || databaseUserName == null
+                || databaseUserPassword == null || tableName == null
+                ) {
+            System.err
+                    .println("Parameter error in function findUpdatetimePatch");
+            log.error("Parameter error in function findUpdatetimePatch");
+            return false;
+        }
+        int rs;
+        DatabaseManager databaseManager = ConnectDB();
+        if (databaseManager == null) {
+            System.err.println("Execute function connectDatabase is error");
+            log.error("Execute function connectDatabase is error");
+            return false;
+        }
+        try {
+            rs =1;
+            rs = databaseManager.checkTableExist(tableName);
+            if (rs == 1) {
+                String sql = "SELECT signature " +
+                        "from "+ tableName + " WHERE updatetime='' ;";
+                ResultSet re = databaseManager.executeQuery(sql);//pstmt.executeQuery(); 
+                while(re.next()){
+                    UpdatetimePatch.TODO_APPS_QUEUE.add(re.getString("signature"));
+                }
+                return_value=true;
+            }
+            
+            if (rs == -1) {
+                System.err.println("Table in database is error");
+                log.error("Table in database is error");
+                return_value=false;
+            }
+        } catch (Exception e) {
+            log.error("select  analysis result faild :"
+                    + e.getMessage());
+            return_value=false;
+        } 
+      finally {
+          try {
+              if (databaseManager != null) {
+                  if (databaseManager.closeDatabase() == -1) {
+                      log.error("Execute function closeDatabase is error");
+                      return_value=false;
+                  }
+              }
+          } finally {
+              databaseManager = null;
+          }
+      }
+
+        return return_value;        
+    }
 
     public static void printProperty(ApkFullProperty apkFullProperty) {
         System.out.println("getPackageName "+apkFullProperty.getPackageName());

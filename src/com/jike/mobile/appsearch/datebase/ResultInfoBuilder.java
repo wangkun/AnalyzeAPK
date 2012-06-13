@@ -108,7 +108,7 @@ public class ResultInfoBuilder {
 
     
     public static boolean checkApkIsAnalyzed(String signature) {
-        
+        boolean return_value=false;
         if (databaseName == null || databaseUserName == null
                 || databaseUserPassword == null || tableName == null
                 || signature == null ) {
@@ -134,29 +134,29 @@ public class ResultInfoBuilder {
                 ResultSet re = pstmt.executeQuery(); 
                 if (re.next()) {
                     pstmt.close();
-                    return true;
+                    return_value=true;
                 }else {
                     pstmt.close();
-                    return false;
+                    return_value=false;
                 }
             }
             
             if (rs == -1) {
                 System.err.println("Table in database is error");
                 log.error("Table in database is error");
-                return false;
+                return_value=false;
             }
         } catch (Exception e) {
             log.error("select  analysis result faild :"
                     + e.getMessage());
-            return false;
+            return_value=false;
         } 
       finally {
           try {
               if (databaseManager != null) {
                   if (databaseManager.closeDatabase() == -1) {
                       log.error("Execute function closeDatabase is error");
-                      return false;
+                      return_value=false;
                   }
               }
           } finally {
@@ -164,7 +164,7 @@ public class ResultInfoBuilder {
           }
       }
 
-        return false;        
+        return return_value;        
     }
     
     public static boolean updateApksize(String signature,double apksize){

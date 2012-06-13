@@ -22,7 +22,7 @@ import java.util.HashMap;
  */
 public class Constants {
     
-    public static final boolean debugAtLocal=true;//false;
+    public static final boolean debugAtLocal=false;//false;
 
     
     

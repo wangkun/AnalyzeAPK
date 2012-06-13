@@ -229,7 +229,8 @@ public class GetApkFileFromCassandra {
      */
     public static void main(String[] args) {
 //        getAPK("a1");7205617736938680212     ,2 block_num
-        getAPK("7205617736938680212");
+        apksPath="";
+        getAPK("9606584932273528846");//10867632484002919730 没有 manifestxml 8218817529311072819不是zip
     }
 
 }
