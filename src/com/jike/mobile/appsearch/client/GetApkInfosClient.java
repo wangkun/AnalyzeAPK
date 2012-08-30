@@ -20,7 +20,8 @@ public class GetApkInfosClient {
      * @param args
      */
     public static void main(String[] args) {
-        String key="10867632484002919730";//<-no manifest.xml; //"11317503348386965201";//"2k error 10496040029157976478";//"no icon 10988429586710037558";//"解析失败id=9094489175483464045";//"7205617736938680212";
+        String key="13851920794926929216";
+        //" kill server 52448422673114159";//<-no manifest.xml; //"11317503348386965201";//"2k error 10496040029157976478";//"no icon 10988429586710037558";//"解析失败id=9094489175483464045";//"7205617736938680212";
         GetApkInfosClient.getAPKinfo(key);
         
         
@@ -55,6 +56,10 @@ public class GetApkInfosClient {
     public static void getAPKinfo(String apkPath) {
         String localhost = "127.0.0.1";
         localhost="10.1.3.213";//"192.168.40.130";//14.44
+        
+        localhost="10.1.1.94";//"192.168.40.130";//14.44
+        localhost="10.1.1.92";//"192.168.40.130";//14.44        
+//        localhost="192.168.40.130";//vmware
       //IP host port
 //        TTransport transport = new TFramedTransport( new TSocket("localhost",7911));
         TTransport transport = new TSocket(localhost,7911);

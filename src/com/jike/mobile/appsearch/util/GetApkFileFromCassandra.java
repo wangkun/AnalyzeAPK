@@ -23,15 +23,19 @@ import org.apache.thrift.transport.TTransportException;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.io.StringReader;
 import java.nio.ByteBuffer;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.LinkedBlockingQueue;
 
 public class GetApkFileFromCassandra {
     private static final Logger log = LogManager.getLogger(GetApkFileFromCassandra.class); 
@@ -97,19 +101,14 @@ public class GetApkFileFromCassandra {
 //        
 //        return apkFile;
 //    }
-    
-    public static File getAPK(String key){
+    public static File getAPK(String key, String apksPath){
         initCassandra();
         File tempDeFiles=new File(apksPath);
-        
         if (!tempDeFiles.exists()||!tempDeFiles.isDirectory()) {
             tempDeFiles.mkdir();
         }
-        
         File apkFile=null;
         String key_user_id = key;
-        
-        
         TTransport tr = new TFramedTransport(new TSocket(host, port));
         TProtocol proto = new TBinaryProtocol(tr);
         try {
@@ -119,10 +118,6 @@ public class GetApkFileFromCassandra {
             e.printStackTrace();
         }
         Cassandra.Client client = new Cassandra.Client(proto);
-        
-        
-        
-        
         try {
             client.set_keyspace(keyspace);
             client.login(auth_request);
@@ -133,7 +128,6 @@ public class GetApkFileFromCassandra {
             ColumnOrSuperColumn blockColumn=client.get(ByteBuffer.wrap(key_user_id.getBytes()), blockNumColumnPath, ConsistencyLevel.ONE);
             int blockNumbers=Integer.parseInt(new String(blockColumn.getColumn().getValue()));
             System.out.println("name="+new String(blockColumn.getColumn().getName())+" , value="+blockNumbers);
-            
             byte[] allByte = new byte[0];
             for (int i = 0; i < blockNumbers; i++) {
                 ColumnPath column_path = new ColumnPath();
@@ -155,8 +149,74 @@ public class GetApkFileFromCassandra {
             apkFile=writeFile(allByte,apksPath+System.currentTimeMillis()+"_"+key_user_id+".apk");
             System.out.println("writeFile "+apkFile.getAbsolutePath());
             log.debug("writeFile "+apkFile.getAbsolutePath());
-
+            tr.close();
+        } catch (InvalidRequestException e) {
+            e.printStackTrace();
+        } catch (TException e) {
+            e.printStackTrace();
+        } catch (NotFoundException e) {
+            e.printStackTrace();
+        } catch (UnavailableException e) {
+            e.printStackTrace();
+        } catch (TimedOutException e) {
+            e.printStackTrace();
+        } catch (AuthenticationException e) {
+            e.printStackTrace();
+        } catch (AuthorizationException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return apkFile;
+    }
+    
+    public static File getAPKtoFTP(String key, String apksPath){
+        initCassandra();
+        File tempDeFiles=new File(apksPath);
+        if (!tempDeFiles.exists()||!tempDeFiles.isDirectory()) {
+            tempDeFiles.mkdir();
+        }
+        File apkFile=null;
+        String key_user_id = key;
+        TTransport tr = new TFramedTransport(new TSocket(host, port));
+        TProtocol proto = new TBinaryProtocol(tr);
+        try {
+            tr.open();
             
+        } catch (TTransportException e) {
+            e.printStackTrace();
+        }
+        Cassandra.Client client = new Cassandra.Client(proto);
+        try {
+            client.set_keyspace(keyspace);
+            client.login(auth_request);
+            ColumnPath blockNumColumnPath = new ColumnPath();
+            blockNumColumnPath.setColumn(blockNumberName.getBytes());
+            blockNumColumnPath.setColumn_family(family);
+            ColumnOrSuperColumn blockColumn=client.get(ByteBuffer.wrap(key_user_id.getBytes()), blockNumColumnPath, ConsistencyLevel.ONE);
+            int blockNumbers=Integer.parseInt(new String(blockColumn.getColumn().getValue()));
+            System.out.println("name="+new String(blockColumn.getColumn().getName())+" , value="+blockNumbers);
+            byte[] allByte = new byte[0];
+            for (int i = 0; i < blockNumbers; i++) {
+                ColumnPath column_path = new ColumnPath();
+                String columnName_No = columnName + "_" + i;
+                column_path.setColumn(columnName_No.getBytes());
+                column_path.setColumn_family(family);
+                ColumnOrSuperColumn column=client.get(ByteBuffer.wrap(key_user_id.getBytes()), column_path, ConsistencyLevel.ONE);
+                byte[] data=column.getColumn().getValue();
+                if (allByte==null) {
+                    allByte=data;
+                }else {
+                    byte[] lastByte = new byte[allByte.length];
+                    System.arraycopy(allByte,0,lastByte,0,allByte.length);
+                    allByte = new byte[data.length+allByte.length];
+                    System.arraycopy(lastByte,0,allByte,0,lastByte.length);
+                    System.arraycopy(data,0,allByte,lastByte.length,data.length);
+                }
+            }
+            apkFile=writeFile(allByte,apksPath+"/"+key_user_id);
+            System.out.println("writeFile "+apkFile.getAbsolutePath());
+            log.debug("writeFile "+apkFile.getAbsolutePath());
             tr.close();
             
         } catch (InvalidRequestException e) {
@@ -164,22 +224,16 @@ public class GetApkFileFromCassandra {
         } catch (TException e) {
             e.printStackTrace();
         } catch (NotFoundException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         } catch (UnavailableException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         } catch (TimedOutException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         } catch (AuthenticationException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         } catch (AuthorizationException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         } catch (IOException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
         return apkFile;
@@ -227,10 +281,41 @@ public class GetApkFileFromCassandra {
     /**
      * @param args
      */
+    private static String apk_key = "virus69.csv";//"failedFileKey.log";
+    
+    public final static LinkedBlockingQueue<String> decodedApps = new LinkedBlockingQueue<String>();
     public static void main(String[] args) {
 //        getAPK("a1");7205617736938680212     ,2 block_num
-        apksPath="";
-        getAPK("9606584932273528846");//10867632484002919730 没有 manifestxml 8218817529311072819不是zip
+        apksPath="./virus_apks/";
+//        getAPK("665254284149278401",apksPath);//error: 13935918978980920564 kill server:52448422673114159 Can't find framework resources for package  2k=10496040029157976478 zip unlock 1627240477302188645  7096166839111425919无效数据  10867632484002919730 没有 manifestxml 8218817529311072819不是zip
+        BufferedReader br = null;
+        try {
+            br = new BufferedReader(new InputStreamReader(  
+                    new FileInputStream(apk_key)));
+        } catch (FileNotFoundException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }  
+  
+        try {
+            for (String key = br.readLine(); key != null; key = br.readLine()) {  
+                decodedApps.add(key); 
+                getAPK(key,apksPath);
+//                decodedApps.add(key); 
+                if (decodedApps.size()>200) {
+                    break;
+                }
+            }
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }  
+        try {
+            br.close();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
     }
 
 }

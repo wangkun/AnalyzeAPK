@@ -13,6 +13,7 @@ import org.apache.cassandra.db.migration.avro.UpdateColumnFamily;
 import org.apache.commons.io.FileUtils;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
+import org.jf.smali.smaliParser.integer_literal_return;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -35,7 +36,7 @@ public class ApkInfoBuilder {
 //    final static String databaseUserPassword = "123456";
     final static String proFilePath = Constants.DBINFO_PROPERTIES;//"DBInfo.properties";
     static String host = "127.0.0.1";
-    static String host_bk = "58.68.249.9";
+    static String host_bk = "127.0.0.1";//"10.1.9.9";
     static String databaseName = "appsearch_mobile";
     static String databaseUserName = "jike";
     static String databaseUserPassword = "jikemobile";
@@ -70,8 +71,7 @@ public class ApkInfoBuilder {
         databaseManager.setUserName(databaseUserName);
         databaseManager.setPassword(databaseUserPassword);
         int re = databaseManager.connectDatabase();
-        log.debug("databaseManager.connectDatabase()  "
-                + re);
+//        log.debug("databaseManager.connectDatabase()  "  + re);
         if (re==-1) {
             log.debug("retry host_bk");
             databaseManager.setConnectionString("jdbc:mysql://"+host_bk+":3306/"
@@ -87,6 +87,78 @@ public class ApkInfoBuilder {
         }
         return databaseManager;
     }
+    public static DatabaseManager ConnectDBforWrite(){
+        initDB();
+        if (databaseName == null || databaseUserName == null
+                || databaseUserPassword == null || tableName == null
+                ) {
+            System.err
+                    .println("Parameter error in function ConnectDB");
+            log.error("Parameter error in function ConnectDB");
+            return null;
+        }
+
+        DatabaseManager databaseManager = new DatabaseManager();
+        
+        databaseManager.setDriverName("com.mysql.jdbc.Driver");
+        databaseManager.setConnectionString("jdbc:mysql://"+host+":3306/"
+                + databaseName + "?useUnicode=true&characterEncoding=utf8");
+        databaseManager.setUserName(databaseUserName);
+        databaseManager.setPassword(databaseUserPassword);
+        int re = databaseManager.connectDatabase();
+//        log.debug("databaseManager.connectDatabase()  "  + re);
+        if (re==-1) {
+            log.debug("retry ConnectDBforWrite");
+            databaseManager.setConnectionString("jdbc:mysql://"+host_bk+":3306/"
+                    + databaseName + "?useUnicode=true&characterEncoding=utf8");
+            databaseManager.setUserName(databaseUserName);
+            databaseManager.setPassword(databaseUserPassword);
+            re = databaseManager.connectDatabase();
+            if(re==-1){   
+                log.debug("host_bk databaseManager.connectDatabase()  "
+                        + re);
+                return null;
+            }
+        }
+        return databaseManager;
+    }
+    
+    public static DatabaseManager ConnectDBforRead(){
+        initDB();
+        if (databaseName == null || databaseUserName == null
+                || databaseUserPassword == null || tableName == null
+                ) {
+            System.err
+                    .println("Parameter error in function ConnectDB");
+            log.error("Parameter error in function ConnectDB");
+            return null;
+        }
+
+        DatabaseManager databaseManager = new DatabaseManager();
+        
+        databaseManager.setDriverName("com.mysql.jdbc.Driver");
+        databaseManager.setConnectionString("jdbc:mysql://"+host_bk+":3306/"
+                + databaseName + "?useUnicode=true&characterEncoding=utf8");
+        databaseManager.setUserName(databaseUserName);
+        databaseManager.setPassword(databaseUserPassword);
+        int re = databaseManager.connectDatabase();
+//        log.debug("databaseManager.connectDatabase()  "  + re);
+        if (re==-1) {
+            log.debug("retry ConnectDBforRead");
+            databaseManager.setConnectionString("jdbc:mysql://"+host+":3306/"
+                    + databaseName + "?useUnicode=true&characterEncoding=utf8");
+            databaseManager.setUserName(databaseUserName);
+            databaseManager.setPassword(databaseUserPassword);
+            re = databaseManager.connectDatabase();
+            if(re==-1){   
+                log.debug("host_bk databaseManager.connectDatabase()  "
+                        + re);
+                return null;
+            }
+        }
+        return databaseManager;
+    }
+    
     
     public static void CloseDB(DatabaseManager databaseManager){
         try {
@@ -125,7 +197,8 @@ public class ApkInfoBuilder {
 //      `updatetime` VARCHAR(45) NULL ,    
 //      PRIMARY KEY (`signature`, `packagename`) )ENGINE=InnoDB DEFAULT CHARSET=utf8;
     public static void SaveApkInfoToDB(ApkFullProperty apkFullProperty){
-        if(apkFullProperty==null||apkFullProperty.icon==null){
+        if(apkFullProperty==null||apkFullProperty.icon==null||apkFullProperty.packageName.length()<1
+                ||apkFullProperty.appName.size()==0){
             System.err.println("failed @ SaveApkInfoToDB apkFullProperty.icon==null ");
             return;
         }
@@ -175,15 +248,15 @@ public class ApkInfoBuilder {
     {
         if (databaseName == null || databaseUserName == null
                 || databaseUserPassword == null || tableName == null
-                || signature == null || ( packagename == null)) {
+                || signature == null || ( packagename == null) || (appname_cn=="" && appname_en =="")) {
             System.err
-                    .println("Parameter error in function HandleMarketInfoData");
-            log.error("Parameter error in function HandleMarketInfoData");
+                    .println("Parameter error in function HandleMarketInfoData OR appname_cn==\"\" ");
+            log.error("Parameter error in function HandleMarketInfoData OR appname_cn==\"\" ");
             return -1;
         }
         String insertSql = null;
         int rs;
-        DatabaseManager databaseManager = ConnectDB();
+        DatabaseManager databaseManager = ConnectDBforWrite();
 
         if (databaseManager == null) {
             System.err.println("Execute function connectDatabase is error");
@@ -234,8 +307,8 @@ public class ApkInfoBuilder {
                 
                 
             }
-            log.debug("insert sql is " + insertSql);
             if (rs == -1) {
+                log.debug("HandlePrivacyInfoData:insert sql is " + insertSql);
                 System.err.println("Table in database is error");
                 log.error("Table in database is error");
                 return -1;
@@ -271,7 +344,7 @@ public class ApkInfoBuilder {
             return false;
         }
         int rs;
-        DatabaseManager databaseManager = ConnectDB();
+        DatabaseManager databaseManager = ConnectDBforRead();
         if (databaseManager == null) {
             System.err.println("Execute function connectDatabase is error");
             log.error("Execute function connectDatabase is error");
@@ -339,7 +412,7 @@ public class ApkInfoBuilder {
             return apkFullProperty;
         }
         int rs;
-        DatabaseManager databaseManager = ConnectDB();
+        DatabaseManager databaseManager = ConnectDBforRead();
 
         if (databaseManager == null) {
             System.err.println("Execute function connectDatabase is error");
@@ -411,7 +484,7 @@ public class ApkInfoBuilder {
                 
                 
                 pstmt.close();
-                log.debug("insert sql is " + sql);
+//                log.debug("insert sql is " + sql);
                 
             }
             
@@ -452,7 +525,7 @@ public static void getApkAdsFromDB() {
             return ;
         }
         int rs;
-        DatabaseManager databaseManager = ConnectDB();
+        DatabaseManager databaseManager = ConnectDBforRead();
 
         if (databaseManager == null) {
             System.err.println("Execute function connectDatabase is error");
@@ -530,7 +603,7 @@ public static void getApkAdsFromDB() {
             return false;
         }
         int rs;
-        DatabaseManager databaseManager = ConnectDB();
+        DatabaseManager databaseManager = ConnectDBforRead();
         if (databaseManager == null) {
             System.err.println("Execute function connectDatabase is error");
             log.error("Execute function connectDatabase is error");
@@ -584,7 +657,7 @@ public static boolean findUpdatetimePatch() {
             return false;
         }
         int rs;
-        DatabaseManager databaseManager = ConnectDB();
+        DatabaseManager databaseManager = ConnectDBforRead();
         if (databaseManager == null) {
             System.err.println("Execute function connectDatabase is error");
             log.error("Execute function connectDatabase is error");
@@ -645,7 +718,91 @@ public static boolean findUpdatetimePatch() {
         System.out.println("getAdsList "+apkFullProperty.getAdsList());
         System.out.println("getAppNameMap "+apkFullProperty.getAppName());
         System.out.println("getApkSize "+apkFullProperty.getApkSize());
-        
     }
     
+    public static ArrayList<String> getApkListBySecurityLevel(int level, int numbers) {
+        ArrayList<String> return_value = new ArrayList<String>();
+        if (databaseName == null || databaseUserName == null || databaseUserPassword == null
+                || tableName == null) {
+            System.err.println("Parameter error in function getApkArrayListBySecurityLevel");
+            log.error("Parameter error in function getApkArrayListBySecurityLevel");
+            return null;
+        }
+        int rs;
+        DatabaseManager databaseManager = ConnectDBforRead();
+        try {
+            rs = 1;
+            rs = databaseManager.checkTableExist(tableName);
+            if (rs == 1) {
+                String sql = "SELECT signature " + "from " + tableName + " WHERE securitylevel="
+                        + level + " LIMIT 0," + numbers + ";";
+                ResultSet re = databaseManager.executeQuery(sql);// pstmt.executeQuery();
+                while (re.next()) {
+                    return_value.add(re.getString("signature"));
+                }
+            }
+
+            if (rs == -1) {
+                System.err.println("Table in database is error");
+                log.error("Table in database is error");
+                return null;
+            }
+        } catch (Exception e) {
+            log.error("select  analysis result faild :" + e.getMessage());
+            return null;
+        } finally {
+            try {
+                if (databaseManager != null) {
+                    if (databaseManager.closeDatabase() == -1) {
+                        log.error("Execute function closeDatabase is error");
+                        return null;
+                    }
+                }
+            } finally {
+                databaseManager = null;
+            }
+        }
+        return return_value;
+    }
+    
+    public static boolean changeApkSecurityLevel(ArrayList<String> signatureList, int level) {
+        boolean return_value = false;
+        if (databaseName == null || databaseUserName == null || databaseUserPassword == null
+                || tableName == null) {
+            System.err.println("Parameter error in function getApkArrayListBySecurityLevel");
+            log.error("Parameter error in function getApkArrayListBySecurityLevel");
+            return false;
+        }
+        DatabaseManager databaseManager = ConnectDBforRead();
+        try {
+            if (databaseManager.checkTableExist(tableName) == 1) {
+                for (int index = 0; index < signatureList.size(); ++index) {
+                    String sql = "UPDATE " + tableName + " SET securitylevel=" + level + " "
+                            + "WHERE signature='" + signatureList.get(index) + "';";
+                    if(-1 == databaseManager.execute(sql)){
+                        log.error("Update security level error : " + sql);
+                    }
+                }
+            }else {
+                System.err.println("Table in database is error");
+                log.error("Table in database is error");
+                return false;
+            }
+        } catch (Exception e) {
+            log.error("select  analysis result faild :" + e.getMessage());
+            return false;
+        } finally {
+            try {
+                if (databaseManager != null) {
+                    if (databaseManager.closeDatabase() == -1) {
+                        log.error("Execute function closeDatabase is error");
+                        return false;
+                    }
+                }
+            } finally {
+                databaseManager = null;
+            }
+        }
+        return return_value;
+    }
 }

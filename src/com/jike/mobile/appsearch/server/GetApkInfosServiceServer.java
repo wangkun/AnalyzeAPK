@@ -2,6 +2,7 @@ package com.jike.mobile.appsearch.server;
 
 import com.jike.mobile.appsearch.serviceImple.GetApkInfosSerivceImpl;
 import com.jike.mobile.appsearch.thirft.GetApkInfo;
+import com.jike.mobile.appsearch.util.Constants;
 
 import org.apache.thrift.TProcessor;
 import org.apache.thrift.protocol.TBinaryProtocol;
@@ -18,6 +19,10 @@ public class GetApkInfosServiceServer {
      * @param args
      */
     public static void main(String[] args) {
+        if (args.length==1) {
+            Constants.CONFIG_FILE_PATH=args[0];
+        }
+//        else 本地路径
       //设置端口
         
         TServerSocket serverSocket;

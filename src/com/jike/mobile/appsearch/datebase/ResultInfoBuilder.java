@@ -75,11 +75,82 @@ public class ResultInfoBuilder {
         databaseManager.setUserName(databaseUserName);
         databaseManager.setPassword(databaseUserPassword);
         int re = databaseManager.connectDatabase();
-        log.debug("databaseManager.connectDatabase()  "
-                + re);
+//        log.debug("databaseManager.connectDatabase()  "
+//                + re);
         if (re==-1) {
             log.debug("retry host_bk");
             databaseManager.setConnectionString("jdbc:mysql://"+host_bk+":3306/"
+                    + databaseName + "?useUnicode=true&characterEncoding=utf8");
+            databaseManager.setUserName(databaseUserName);
+            databaseManager.setPassword(databaseUserPassword);
+            re = databaseManager.connectDatabase();
+            if(re==-1){   
+                log.debug("host_bk databaseManager.connectDatabase()  "
+                        + re);
+                return null;
+            }
+        }
+        return databaseManager;
+    }
+    public static DatabaseManager ConnectDBforWrite(){
+        initDB();
+        if (databaseName == null || databaseUserName == null
+                || databaseUserPassword == null || tableName == null
+                ) {
+            System.err
+                    .println("Parameter error in function ConnectDB");
+            log.error("Parameter error in function ConnectDB");
+            return null;
+        }
+
+        DatabaseManager databaseManager = new DatabaseManager();
+        
+        databaseManager.setDriverName("com.mysql.jdbc.Driver");
+        databaseManager.setConnectionString("jdbc:mysql://"+host+":3306/"
+                + databaseName + "?useUnicode=true&characterEncoding=utf8");
+        databaseManager.setUserName(databaseUserName);
+        databaseManager.setPassword(databaseUserPassword);
+        int re = databaseManager.connectDatabase();
+//        log.debug("databaseManager.connectDatabase()  "  + re);
+        if (re==-1) {
+            log.debug("retry ConnectDBforWrite");
+            databaseManager.setConnectionString("jdbc:mysql://"+host_bk+":3306/"
+                    + databaseName + "?useUnicode=true&characterEncoding=utf8");
+            databaseManager.setUserName(databaseUserName);
+            databaseManager.setPassword(databaseUserPassword);
+            re = databaseManager.connectDatabase();
+            if(re==-1){   
+                log.debug("host_bk databaseManager.connectDatabase()  "
+                        + re);
+                return null;
+            }
+        }
+        return databaseManager;
+    }
+    
+    public static DatabaseManager ConnectDBforRead(){
+        initDB();
+        if (databaseName == null || databaseUserName == null
+                || databaseUserPassword == null || tableName == null
+                ) {
+            System.err
+                    .println("Parameter error in function ConnectDB");
+            log.error("Parameter error in function ConnectDB");
+            return null;
+        }
+
+        DatabaseManager databaseManager = new DatabaseManager();
+        
+        databaseManager.setDriverName("com.mysql.jdbc.Driver");
+        databaseManager.setConnectionString("jdbc:mysql://"+host_bk+":3306/"
+                + databaseName + "?useUnicode=true&characterEncoding=utf8");
+        databaseManager.setUserName(databaseUserName);
+        databaseManager.setPassword(databaseUserPassword);
+        int re = databaseManager.connectDatabase();
+//        log.debug("databaseManager.connectDatabase()  "  + re);
+        if (re==-1) {
+            log.debug("retry ConnectDBforRead");
+            databaseManager.setConnectionString("jdbc:mysql://"+host+":3306/"
                     + databaseName + "?useUnicode=true&characterEncoding=utf8");
             databaseManager.setUserName(databaseUserName);
             databaseManager.setPassword(databaseUserPassword);
@@ -118,7 +189,7 @@ public class ResultInfoBuilder {
             return false;
         }
         int rs;
-        DatabaseManager databaseManager = ConnectDB();
+        DatabaseManager databaseManager = ConnectDBforRead();
         if (databaseManager == null) {
             System.err.println("Execute function connectDatabase is error");
             log.error("Execute function connectDatabase is error");
@@ -178,7 +249,7 @@ public class ResultInfoBuilder {
             return false;
         }
         int rs;
-        DatabaseManager databaseManager = ConnectDB();
+        DatabaseManager databaseManager = ConnectDBforWrite();
         if (databaseManager == null) {
             System.err.println("Execute function connectDatabase is error");
             log.error("Execute function connectDatabase is error");
@@ -232,7 +303,7 @@ public class ResultInfoBuilder {
             return false;
         }
         int rs;
-        DatabaseManager databaseManager = ConnectDB();
+        DatabaseManager databaseManager = ConnectDBforWrite();
         if (databaseManager == null) {
             System.err.println("Execute function connectDatabase is error");
             log.error("Execute function connectDatabase is error");
@@ -288,7 +359,7 @@ public class ResultInfoBuilder {
             return false;
         }
         int rs;
-        DatabaseManager databaseManager = ConnectDB();
+        DatabaseManager databaseManager = ConnectDBforWrite();
         if (databaseManager == null) {
             System.err.println("Execute function connectDatabase is error");
             log.error("Execute function connectDatabase is error");
@@ -301,7 +372,7 @@ public class ResultInfoBuilder {
                 String updataSql = "UPDATE " + tableName + " SET success = " + 1 + " "
                         + "WHERE signature='" + signature + "';" + "";
                 int upInsert = databaseManager.execute(updataSql);
-                log.debug("reInsert=" + upInsert + ";updataSql=" + updataSql);
+//                log.debug("reInsert=" + upInsert + ";updataSql=" + updataSql);
                 // "UPDATE "+ tableName +
                 // " SET icon = ? where signature='"+signature+"';";
                 return_value=true;
@@ -344,7 +415,7 @@ public class ResultInfoBuilder {
             return false;
         }
         int rs;
-        DatabaseManager databaseManager = ConnectDB();
+        DatabaseManager databaseManager = ConnectDBforWrite();
         if (databaseManager == null) {
             System.err.println("Execute function connectDatabase is error");
             log.error("Execute function connectDatabase is error");
@@ -364,7 +435,7 @@ public class ResultInfoBuilder {
                     		"WHERE signature='"+signature+"';"+
                     		"";
                     int upInsert = databaseManager.execute(updataSql);
-                    log.debug("reInsert="+upInsert+";updataSql="+updataSql);
+//                    log.debug("reInsert="+upInsert+";updataSql="+updataSql);
                     //"UPDATE "+ tableName + " SET icon = ? where signature='"+signature+"';";
                     
                     return_value=true;
@@ -374,7 +445,7 @@ public class ResultInfoBuilder {
                     		" (`signature`) VALUES ('"+signature+"');" ;
                     //INSERT INTO `appsearch_mobile`.`analyzeapk_result` (`signature`) VALUES ('asdf');
                     int reInsert = databaseManager.execute(insertSql);
-                    log.debug("reInsert="+reInsert+";insertSql="+insertSql);
+//                    log.debug("reInsert="+reInsert+";insertSql="+insertSql);
                     return_value=true;
                 }
             }

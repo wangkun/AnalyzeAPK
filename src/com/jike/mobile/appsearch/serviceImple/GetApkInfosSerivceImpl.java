@@ -3,6 +3,7 @@ import com.jike.mobile.appsearch.datebase.ResultInfoBuilder;
 import com.jike.mobile.appsearch.thirft.ApkFullProperty;
 import com.jike.mobile.appsearch.thirft.GetApkInfo;
 import com.jike.mobile.appsearch.util.ApkInfoProperty;
+import com.jike.mobile.appsearch.util.Constants;
 import com.jike.mobile.appsearch.util.GetApkInfos;
 import com.jike.mobile.appsearch.util.ManifestProperty;
 
@@ -38,10 +39,16 @@ public class GetApkInfosSerivceImpl implements GetApkInfo.Iface{
     @Override
     public ApkFullProperty getApkFullProperty(String apkKey) throws TException {
         ApkFullProperty apkFullProperty = new ApkFullProperty();
+        apkFullProperty = getFromApkInfo(new ApkInfoProperty());
         log.debug("getApkFullProperty apkKey="+apkKey);
         ResultInfoBuilder.insert(apkKey);
-        if (apkKey.equalsIgnoreCase("")||apkKey==null||apkKey.length()<1) {
-            log.debug("apkPath==null");
+        if (apkKey.equalsIgnoreCase("")||apkKey==null||apkKey.length()<2) {
+            log.error("apkPath==null");
+            return apkFullProperty;
+        }
+        //black list apkKey.equalsIgnoreCase("52448422673114159")||
+        if (Constants.BLACK_LIST.contains(apkKey)) {
+            log.error("black list = " + apkKey);
             return apkFullProperty;
         }
         ApkInfoProperty apkInfoProperty = GetApkInfos.getApkInfoProperty(apkKey);
@@ -72,6 +79,7 @@ public class GetApkInfosSerivceImpl implements GetApkInfo.Iface{
         apkFullProperty.appName = apkInfoProperty.getAppNameMap();
         apkFullProperty.AdsList = apkInfoProperty.getAdsList();
         apkFullProperty.apkSize = apkInfoProperty.getApkSize();
+        apkFullProperty.setSecurityLevelIsSet(true);
         apkFullProperty.securityLevel = apkInfoProperty.getSecurityLevel();
         apkFullProperty.setUpdateTimeIsSet(true);
         apkFullProperty.updateTime = apkInfoProperty.getMakeTime();
@@ -79,6 +87,39 @@ public class GetApkInfosSerivceImpl implements GetApkInfo.Iface{
         if (apkFullProperty.packageName.length()>1) {
             ResultInfoBuilder.updateSuccess(apkKey);
         }
+        return apkFullProperty;
+    }
+    
+    public static ApkFullProperty getFromApkInfo(ApkInfoProperty apkInfoProperty){
+        ApkFullProperty apkFullProperty = new ApkFullProperty();
+        
+        ManifestProperty manifestProperty = apkInfoProperty.getManifestProperty();
+        
+        apkFullProperty.packageName=manifestProperty.getPackageName();
+        apkFullProperty.versionName=manifestProperty.getVersionName();
+        apkFullProperty.versionCode=manifestProperty.getVersionCode();
+        apkFullProperty.usesPermissonList=manifestProperty.getUsesPermissonArrayList();
+        apkFullProperty.usesFeatureList=manifestProperty.getUsesFeatureArrayList();
+        
+        apkFullProperty.minSDK=manifestProperty.getMinSdkVersion();
+        apkFullProperty.targetSDK=manifestProperty.getTargetSdkVersion();
+        
+        apkFullProperty.smallScreen=manifestProperty.isSmallScreen();
+        apkFullProperty.normalScreen=manifestProperty.isNormalScreen();
+        apkFullProperty.largeScreen=manifestProperty.isLargeScreen();
+        apkFullProperty.xlargeScreen=manifestProperty.isxLargeScreen();
+        //TODO
+        apkFullProperty.signature=apkInfoProperty.getMD5();
+        if (apkInfoProperty.getIconStream()!=null) {
+            apkFullProperty.icon = apkInfoProperty.getIconStream();
+        }
+        apkFullProperty.appName = apkInfoProperty.getAppNameMap();
+        apkFullProperty.AdsList = apkInfoProperty.getAdsList();
+        apkFullProperty.apkSize = apkInfoProperty.getApkSize();
+        apkFullProperty.securityLevel = apkInfoProperty.getSecurityLevel();
+        apkFullProperty.setUpdateTimeIsSet(true);
+        apkFullProperty.updateTime = apkInfoProperty.getMakeTime();
+        
         return apkFullProperty;
     }
 

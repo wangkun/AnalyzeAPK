@@ -32,7 +32,7 @@ public class UpdatetimePatch {
                 e.printStackTrace();
             }
             if (keyString.length()>1&&keyString.length()<20) {
-                File apkFile = GetApkFileFromCassandra.getAPK(keyString);
+                File apkFile = GetApkFileFromCassandra.getAPK(keyString,Constants.APKS_PATH);
                 if (apkFile!=null&&apkFile.exists()) {
                     ApkInfoBuilder.updatetimePatch(keyString, ""+CommonUtils.getApkMakeTime(apkFile.getAbsolutePath()));
                     CommonUtils.forceDelete(apkFile);

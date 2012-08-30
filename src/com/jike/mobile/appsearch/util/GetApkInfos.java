@@ -71,10 +71,10 @@ public class GetApkInfos {
         String appName = (apkFile.getName().substring(0, apkFile.getName().length() - 4)).trim();
         try {
             if (apkFile.exists()) {
+                rootFile = new File(outputPath + appName);
                 brut.apktool.Main.main(new String[] {
                         "d", "-f", apkFile.getAbsolutePath(), outputPath + appName
                 });
-                rootFile = new File(outputPath + appName);
             } else {
             }
         } catch (AndrolibException e) {
@@ -108,6 +108,9 @@ public class GetApkInfos {
                 return false;
             }
         });
+        if (files==null||files.length==0) {
+            return new File(defalut_icon);
+        }
         for (File drawableFile : files) {
             File iconFile = new File(drawableFile.getAbsolutePath() + "/" + iconString + ".png");
             if (iconFile.exists()) {
@@ -140,6 +143,11 @@ public class GetApkInfos {
     }
     public static Map<String, String> getAppNameMap(File file, String appNameString) {
         Map<String, String>  appNameMap = new HashMap<String, String>();//<String, String>;
+        if (!appNameString.contains("@")||!appNameString.contains("/")) {
+            appNameMap.put("values", appNameString);
+            return appNameMap;
+        }
+        appNameString = appNameString.startsWith("@")?appNameString.split("/")[1]:appNameString;
         File resFile = new File(file.getAbsolutePath() + "/" + "res");
         if (!resFile.exists()) {
             return null;
@@ -221,7 +229,7 @@ public class GetApkInfos {
         //TODO verify MD5, if exist in DB, then , return DB result;
         boolean isAnalyzed=ApkInfoBuilder.checkApkIsAnalyzed(apkKey);
         if (isAnalyzed) {
-            log.debug("isAnalyzed");
+//            log.debug("isAnalyzed");
             ApkFullProperty apkFullProperty = ApkInfoBuilder.getAPKInfoFromDB(apkKey);
             ManifestProperty manifestProperty = new ManifestProperty();
             manifestProperty.packageName=apkFullProperty.packageName;
@@ -251,7 +259,7 @@ public class GetApkInfos {
             log.debug("get from DB");
             return apkInfoProperty;
         }
-        File apkFile = GetApkFileFromCassandra.getAPK(apkKey);
+        File apkFile = GetApkFileFromCassandra.getAPK(apkKey,Constants.APKS_PATH);
         ResultInfoBuilder.updateApksize(apkKey, apkFile.length()/1000);
         final File rootFile = decompileApk(apkFile);
         Runnable deleteFilesRunnable = new Runnable() {
@@ -280,7 +288,7 @@ public class GetApkInfos {
         
         apkInfoProperty.manifestProperty = manifestProperty;
         File iconFile = getIconRes(rootFile,manifestProperty.getIconString());
-        log.debug("getIconRes");
+//        log.debug("getIconRes");
 //        iconFile.
 //        if (iconFile==null&&iconFile.length()<1) {
 //            System.err.println("iconFile==null");
@@ -328,20 +336,20 @@ public class GetApkInfos {
             ApkInfoBuilder.SaveApkInfoToDB(apkFullProperty);
             log.debug("save to DB");
         }
-        log.debug("delete begin ..");
+//        log.debug("delete begin ..");
         
         
         
         CommonUtils.forceDelete(apkFile);
-        log.debug("forceDelete Apk end……");  
+//        log.debug("forceDelete Apk end……");  
         
         
         deleteThread.run();
 //        CommonUtils.deleteFiles(rootFile);
-        log.debug(" delete rootFile " + rootFile.getAbsolutePath());
+//        log.debug(" delete rootFile " + rootFile.getAbsolutePath());
         long useTime = System.currentTimeMillis()-start;
         ResultInfoBuilder.updateAnalyzetime(apkKey, useTime);
-        log.debug("useTime = " + useTime);
+//        log.debug("useTime = " + useTime);
         return apkInfoProperty;
     }
     
@@ -349,11 +357,11 @@ public class GetApkInfos {
     
     public static ManifestProperty getManifestProperty(File rootFile) {
 //        File rootFile = decompileApk(apkPath);
-        log.debug("getManifestProperty Start……");
+//        log.debug("getManifestProperty Start……");
         ManifestProperty mManifestProperty = new ManifestProperty();
         File manifestXMLFile = null;
         if (rootFile.exists()==false) {
-            return null;
+            return mManifestProperty;
         }
         File[]  decompileFiles = rootFile.listFiles(new FilenameFilter() {
             @Override
@@ -370,12 +378,11 @@ public class GetApkInfos {
                 manifestXMLFile = f;
             }
         }
-        mManifestProperty = ApkXMLParser.parserManifestXML(manifestXMLFile);
-        System.out.println("getAppName @ "+mManifestProperty.getAppName());
-        
-        
-
-        log.debug("getManifestProperty End……");
+        if (manifestXMLFile!=null) {
+            mManifestProperty = ApkXMLParser.parserManifestXML(manifestXMLFile);
+            System.out.println("getAppName @ "+mManifestProperty.getAppName());
+//            log.debug("getManifestProperty End……");
+        }
         return mManifestProperty;
     }
     

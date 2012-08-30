@@ -168,6 +168,15 @@ public class CommonUtils {
         }
         return hm;
     }
+    public static ArrayList<String> getBlackList(){
+        ArrayList<String> blackList = new ArrayList<String>();
+//        12630595494585610995
+        blackList.add("7563004401684491839");
+        blackList.add("52448422673114159");
+        blackList.add("12630595494585610995");
+        
+        return blackList;
+    }
     public static String getPropertiesValue(String name,String proFilePath) {
 //        String proFilePath = "PrivacyInfo.properties";
         InputStream in = null;

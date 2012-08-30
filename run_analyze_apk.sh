@@ -2,8 +2,9 @@
 # author by Kun Wang 
 
 usage="usage: run_analyze_apk.sh (start|stop) "
-#run_path=/home/wangkun/wk/AnalyzeApk/
-run_path=/var/AnalyzeApk/
+config_path=/home/wangkun/wk/AnalyzeApk/
+run_path=/home/wangkun/wk/AnalyzeApk/
+#run_path=/var/AnalyzeApk/
 process_name=GetApkInfoServiceServer.jar
 watcher_sh_name="$run_path"watcher_shell.sh
 
@@ -27,9 +28,9 @@ analyzeapk_server_start() {
 		else
 			java -jar "$run_path"$process_name &
 			sh ./$watcher_sh_name
-			echo 'restart at' >> "$run_path"restart.log
+			echo 'restart at' >> "$config_path"restart.log
 			time=$(date +%F"-"%H"-"%M"-"%S)
-			echo $time >> "$run_path"restart.log
+			echo $time >> "$config_path"restart.log
 		fi
   return 1
 }

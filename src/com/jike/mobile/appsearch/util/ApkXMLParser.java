@@ -76,7 +76,7 @@ public class ApkXMLParser {
                     }
                     if (element.attribute("label")!=null) {
                         String appname = element.attributeValue("label");
-                        appname = appname.startsWith("@")?appname.split("/")[1]:appname;
+//                        appname = appname.startsWith("@")?appname.split("/")[1]:appname;
                         manifestProperty.setAppName(appname);
                     }
                 }

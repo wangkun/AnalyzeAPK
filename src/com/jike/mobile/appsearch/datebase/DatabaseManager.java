@@ -129,30 +129,6 @@ public class DatabaseManager {
 		return rs;
 	}
 
-	public int addBatch(String executeString) {
-		if (executeString == null) {
-			System.err.println("Parameter is error in function addBatch");
-			logger.error("Parameter is error in function addBatch");
-			return -1;
-		}
-
-		if (m_pStatement == null) {
-			System.err
-					.println("Database Statement is NULL,can not execute addBatch");
-			logger.error("Database Statement is NULL,can not execute addBatch");
-			return -1;
-		}
-
-		try {
-			m_pStatement.addBatch(executeString);
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			System.err.println("SQLException :" + e.getMessage());
-			logger.error("SQLException :" + e.getMessage());
-			return -1;
-		}
-		return 1;
-	}
 
 	public int execute(String executeString) {
 		if (executeString == null) {
@@ -175,25 +151,6 @@ public class DatabaseManager {
 			System.err.println("SQLException :" + e.getMessage());
 			logger.error("SQLException :" + e.getMessage());
 			return -1;
-		}
-	}
-
-	public int[] executeBatch() {
-		if (m_pStatement == null) {
-			System.err
-					.println("Database Statement is NULL,can not execute BatchHandle");
-			logger
-					.error("Database Statement is NULL,can not execute BatchHandle");
-			return null;
-		}
-
-		try {
-			return m_pStatement.executeBatch();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			System.err.println("SQLException :" + e.getMessage());
-			logger.error("SQLException :" + e.getMessage());
-			return null;
 		}
 	}
 
